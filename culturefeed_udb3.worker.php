@@ -10,8 +10,13 @@ use Drupal\Core\DrupalKernel;
 use Symfony\Component\HttpFoundation\Request;
 use CultuurNet\UDB3\CommandHandling\QueueJob;
 
-$options = getopt('', array('drupal_root:'));
+$options = getopt('', array('drupal_root:', 'uri:'));
 $root = (isset($options['drupal_root'])) ? $options['drupal_root'] : '';
+
+$base_url = $options['uri'] ?: NULL;
+if ($base_url) {
+  $GLOBALS['base_url'] = $base_url;
+}
 
 if (!$root) {
   print "No Drupal root provided.\n";

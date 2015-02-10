@@ -69,6 +69,6 @@ function drush_culturefeed_udb3_udb3_worker() {
   $path = drupal_get_path('module', 'culturefeed_udb3');
   $command = $path . '/culturefeed_udb3.worker.php';
   $command .= " --drupal_root=" . DRUPAL_ROOT;
+  $command .= " --uri=" . $GLOBALS['base_url'];
   drush_shell_proc_open($command);
-
 }
