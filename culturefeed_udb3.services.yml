@@ -162,6 +162,7 @@ services:
     calls:
       - [setLogger, ['@culturefeed_udb3.logger.command_bus']]
       - [subscribe, ['@culturefeed_udb3.event_command_handler']]
+      - [subscribe, ['@culturefeed_udb3.event_export.command_handler']]
 
   culturefeed_udb3.event.service:
     class: CultuurNet\UDB3\LocalEventService
@@ -205,3 +206,31 @@ services:
     arguments: ['@culturefeed_udb3.event_relations_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
+
+  culturefeed_udb3.event_export:
+    class: CultuurNet\UDB3\EventExport\EventExportService
+    # We need to use a factory here to be able to resolve the public:// Drupal
+    # stream wrapper to its real path
+    factory_class: Drupal\culturefeed_udb3\EventExport\EventExportServiceFactory
+    factory_method: create
+    arguments:
+      - '@culturefeed_udb3.event.service'
+      - '@culturefeed_udb3.search_service'
+      - '@culturefeed_udb3.event_export.uuid_generator'
+      - 'public://downloads'
+      - '@culturefeed_udb3.event_export.iri_generator'
+      - '@culturefeed_udb3.event_export.mailer'
+
+  culturefeed_udb3.event_export.uuid_generator:
+    class: Broadway\UuidGenerator\Rfc4122\Version4Generator
+
+  culturefeed_udb3.event_export.iri_generator:
+    class: Drupal\culturefeed_udb3\LocalFileIriGenerator
+
+  culturefeed_udb3.event_export.mailer:
+    class: Drupal\culturefeed_udb3\EventExport\NotificationMailer
+    arguments: ['@plugin.manager.mail']
+
+  culturefeed_udb3.event_export.command_handler:
+    class: CultuurNet\UDB3\EventExport\EventExportCommandHandler
+    arguments: ['@culturefeed_udb3.event_export']

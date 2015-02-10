@@ -144,3 +144,22 @@ culturefeed_udb3.organizer:
     _format: ld_json
     _method: GET
 
+culturefeed_udb3.export.jsonld:
+  path: '/udb3/api/1.0/events/export/json'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsJSONLD'
+    _title: 'Export as JSONLD'
+  requirements:
+    _access: 'TRUE'
+    _format: json
+    _method: POST
+
+culturefeed_udb3.export.ooxml:
+  path: '/udb3/api/1.0/events/export/ooxml'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsOOXML'
+    _title: 'Export as OOXML'
+  requirements:
+    _access: 'TRUE'
+    _format: json
+    _method: POST
