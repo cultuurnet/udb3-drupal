@@ -149,6 +149,8 @@ services:
   culturefeed_udb3.event_command_handler:
     class: CultuurNet\UDB3\Event\EventCommandHandler
     arguments: ['@culturefeed_udb3.event_repository', '@culturefeed_udb3.search_service']
+    tags:
+      - { name: 'culturefeed_udb3.command_bus.subscriber' }
   culturefeed_udb3.logger.command_bus.factory:
     class: Drupal\culturefeed_udb3\LoggerCommandBusFactory
     arguments: ['@config.factory', '@logger.channel.culturefeed']
@@ -161,9 +163,8 @@ services:
     arguments: ['@culturefeed_udb3.main_command_bus', '%command_bus.queue_name%', '@culturefeed_udb3.command_bus_event_dispatcher']
     calls:
       - [setLogger, ['@culturefeed_udb3.logger.command_bus']]
-      - [subscribe, ['@culturefeed_udb3.event_command_handler']]
-      - [subscribe, ['@culturefeed_udb3.event_export.command_handler']]
-
+    tags:
+      - { name: 'service_collector', tag: 'culturefeed_udb3.command_bus.subscriber', call: 'subscribe' }
   culturefeed_udb3.event.service:
     class: CultuurNet\UDB3\LocalEventService
     arguments: ['@culturefeed_udb3.eventld_repository', '@culturefeed_udb3.event_repository', '@culturefeed_udb3.event_relations_repository', '@culturefeed_udb3.iri_generator']
@@ -185,7 +186,6 @@ services:
   culturefeed_udb3.event.used_keywords_memory:
     class: CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService
     arguments: ['@culturefeed_udb3.event.used_keywords_memory_repository']
-
 
   culturefeed_udb3.json_ld_subscriber:
     class: Drupal\culturefeed_udb3\JsonLdSubscriber
@@ -234,3 +234,5 @@ services:
   culturefeed_udb3.event_export.command_handler:
     class: CultuurNet\UDB3\EventExport\EventExportCommandHandler
     arguments: ['@culturefeed_udb3.event_export']
+    tags:
+      - { name: 'culturefeed_udb3.command_bus.subscriber' }
