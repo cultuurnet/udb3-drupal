@@ -1,6 +1,7 @@
 parameters:
   command_bus.queue_name: culturefeed-udb3
   resque.command.bus.event_command_context_set: broadway.command_handling.context
+  culturefeed_udb3.export_folder_location: 'public://downloads'
 
 services:
 
@@ -217,7 +218,7 @@ services:
       - '@culturefeed_udb3.event.service'
       - '@culturefeed_udb3.search_service'
       - '@culturefeed_udb3.event_export.uuid_generator'
-      - 'public://downloads'
+      - '%culturefeed_udb3.export_folder_location%'
       - '@culturefeed_udb3.event_export.iri_generator'
       - '@culturefeed_udb3.event_export.mailer'
 

@@ -12,3 +12,12 @@ function culturefeed_udb3_mail($key, &$message, $params) {
             break;
     }
 }
+
+/**
+ * Implements hook_install().
+ */
+function culturefeed_udb3_install() {
+    $exportLocation = \Drupal::getContainer()
+      ->getParameter('culturefeed_udb3.export_folder_location');
+    drupal_mkdir($exportLocation);
+}
