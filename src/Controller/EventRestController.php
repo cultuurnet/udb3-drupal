@@ -271,18 +271,21 @@ class EventRestController extends ControllerBase{
 
   }
 
-  public function newEvent(Request $request) {
+  /**
+   * Create a new event.
+   */
+  public function createEvent(Request $request) {
+
     $response = new JsonResponse();
     $body_content = json_decode($request->getContent());
 
     try {
       $event_id = $this->eventEditor->createEvent(
-        new Title($body_content->name),
-        $body_content->location,
-        \DateTime::createFromFormat(
-          \DateTime::ISO8601,
-          $body_content->date
-        )
+        $body_content->name->nl,
+        $body_content->type,
+        $body_content->place,
+        $body_content->calendar,
+        new \DateTime('NOW')
       );
 
       $response->setData(
