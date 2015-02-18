@@ -7,20 +7,23 @@
 
 namespace Drupal\culturefeed_udb3\Controller;
 
+use CultureFeed_User;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
+use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\Title;
+use CultuurNet\UDB3\EventServiceInterface;
+use CultuurNet\UDB3\Keyword;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Location;
+use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\CalendarBase;
+use CultuurNet\UDB3\Timestamps;
+use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use CultuurNet\UDB3\Search\PullParsingSearchService;
-use CultuurNet\UDB3\EventServiceInterface;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Keyword;
-use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
-use CultureFeed_User;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class EventRestController.
@@ -280,12 +283,24 @@ class EventRestController extends ControllerBase{
     $body_content = json_decode($request->getContent());
 
     try {
+
+      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->theme) || empty($body_content->location) || empty($body_content->calendar)) {
+        throw new \InvalidArgumentException('Required fields are missing');
+      }
+
+      if ($body_content->calendar->type == 'timestamps') {
+        $calendar = new Timestamps();
+        foreach ($body_content->calendar->timestamps as $timestamp) {
+          $calendar->addTimestamp(new \CultuurNet\UDB3\Timestamp($timestamp->date, $timestamp->timeend, $timestamp->timestart));
+        }
+      }
+
       $event_id = $this->eventEditor->createEvent(
-        $body_content->name->nl,
-        $body_content->type,
-        $body_content->place,
-        $body_content->calendar,
-        new \DateTime('NOW')
+        new Title($body_content->name->nl),
+        new EventType($body_content->type->id, $body_content->type->label),
+        new Theme($body_content->theme->id, $body_content->theme->label),
+        new Location($body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
+        $calendar
       );
 
       $response->setData(
