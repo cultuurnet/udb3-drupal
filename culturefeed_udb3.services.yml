@@ -122,9 +122,16 @@ services:
   culturefeed_udb3.eventld_repository:
     class: Drupal\culturefeed_udb3\EntityLdRepository
     arguments: ['event_document_repository', '@entity.manager']
+  culturefeed_udb3.description_filter.tidy:
+    class: CultuurNet\UDB3\Event\ReadModel\JSONLD\TidyDescriptionFilter
+  culturefeed_udb3.description_filter.strip_source:
+    class: CultuurNet\UDB3\Event\ReadModel\JSONLD\StripSourceDescriptionFilter
   culturefeed_udb3.eventld_projector:
     class: CultuurNet\UDB3\Event\EventLDProjector
     arguments: ['@culturefeed_udb3.eventld_repository', '@culturefeed_udb3.iri_generator', '@culturefeed_udb3.event.service', '@culturefeed_udb3.place.service', '@culturefeed_udb3.organizer.service']
+    calls:
+      - [addDescriptionFilter, ['@culturefeed_udb3.description_filter.tidy']]
+      - [addDescriptionFilter, ['@culturefeed_udb3.description_filter.strip_source']]
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   # Central event bus where domain events are published to. You can subscribe
