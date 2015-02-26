@@ -74,11 +74,21 @@ class EventsRestController extends ControllerBase {
     $q = $request->query->get('query', '*.*');
     $limit = $request->query->get('limit', 30);
     $start = $request->query->get('start', 0);
+    
+    $conditions = array();
+    $locationZip = $request->query->get('locationZip', 0);
+    if (!empty($locationZip)) {
+      $conditions['locationZip'] = $locationZip;
+    }
+    $locationCdbId = $request->query->get('locationCdbId', 0);
+    if (!empty($locationCdbId)) {
+      $conditions['locationCdbId'] = $locationCdbId;
+    }
 
-    $response = $this->searchService->search($q, $limit, $start);
+    $results = $this->searchService->search($q, $limit, $start, NULL, $conditions);
 
     $response = JsonLdResponse::create()
-      ->setData($response)
+      ->setData($results)
       ->setPublic()
       ->setClientTtl(60 * 1)
       ->setTtl(60 * 5);
