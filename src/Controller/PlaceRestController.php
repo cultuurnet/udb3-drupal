@@ -7,13 +7,14 @@
 
 namespace Drupal\culturefeed_udb3\Controller;
 
+use CultureFeed_User;
+use CultuurNet\UDB3\EntityServiceInterface;
+use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use CultuurNet\UDB3\EntityServiceInterface;
-use CultureFeed_User;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class PlaceRestController.
@@ -30,6 +31,13 @@ class PlaceRestController extends ControllerBase {
   protected $entityService;
 
   /**
+   * The place editor.
+   *
+   * @var PlaceEditingServiceInterface
+   */
+  protected $placeEditor;
+
+  /**
    * The culturefeed user.
    *
    * @var Culturefeed_User
@@ -40,8 +48,10 @@ class PlaceRestController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
+
     return new static(
       $container->get('culturefeed_udb3.place.service'),
+      $container->get('culturefeed_udb3.place.editor'),
       $container->get('culturefeed.current_user')
     );
   }
@@ -56,9 +66,11 @@ class PlaceRestController extends ControllerBase {
    */
   public function __construct(
     EntityServiceInterface $entity_service,
+    PlaceEditingServiceInterface $place_editor,
     CultureFeed_User $user
   ) {
     $this->entityService = $entity_service;
+    $this->placeEditor = $place_editor;
     $this->user = $user;
   }
 
