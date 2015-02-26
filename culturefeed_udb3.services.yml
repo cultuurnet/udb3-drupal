@@ -154,6 +154,11 @@ services:
     class: CultuurNet\UDB3\UDB2\EventRepository
     factory_service: culturefeed_udb3.event_repository.factory
     factory_method: get
+    calls:
+      - ['setLogger', ['@culturefeed_udb3.logger.channel.udb2']]
+  culturefeed_udb3.logger.channel.udb2:
+    parent: logger.channel_base
+    arguments: ['udb2']
   culturefeed_udb3.event_command_handler:
     class: CultuurNet\UDB3\Event\EventCommandHandler
     arguments: ['@culturefeed_udb3.event_repository', '@culturefeed_udb3.search_service']
