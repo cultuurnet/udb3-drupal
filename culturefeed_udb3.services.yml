@@ -89,7 +89,7 @@ services:
     arguments: ['@culturefeed_udb3.place.ld_repository', '@culturefeed_udb3.place.repository', '@culturefeed_udb3.place.iri_generator']
   culturefeed_udb3.place.editor:
     class: CultuurNet\UDB3\Place\DefaultPlaceEditingService
-    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuidgenerator', '@culturefeed_udb3.place.repository']
+    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuidgenerator', '@culturefeed_udb3.place.local_repository']
 
   # Organizer
   # Organizer: ld repository
@@ -155,6 +155,9 @@ services:
   culturefeed_udb3.event_command_handler:
     class: CultuurNet\UDB3\Event\EventCommandHandler
     arguments: ['@culturefeed_udb3.event_repository', '@culturefeed_udb3.search_service']
+  culturefeed_udb3.place_command_handler:
+    class: CultuurNet\UDB3\Place\CommandHandler
+    arguments: ['@culturefeed_udb3.place.local_repository']
   culturefeed_udb3.logger.command_bus.factory:
     class: Drupal\culturefeed_udb3\LoggerCommandBusFactory
     arguments: ['@config.factory', '@logger.channel.culturefeed']
@@ -168,6 +171,7 @@ services:
     calls:
       - [setLogger, ['@culturefeed_udb3.logger.command_bus']]
       - [subscribe, ['@culturefeed_udb3.event_command_handler']]
+      - [subscribe, ['@culturefeed_udb3.place_command_handler']]
 
   culturefeed_udb3.event.service:
     class: CultuurNet\UDB3\LocalEventService

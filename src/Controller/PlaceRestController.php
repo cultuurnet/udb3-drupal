@@ -9,6 +9,7 @@ namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
 use CultuurNet\UDB3\EntityServiceInterface;
+use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -104,6 +105,75 @@ class PlaceRestController extends ControllerBase {
       ->setPublic()
       ->setClientTtl(60 * 30)
       ->setTtl(60 * 5);
+
+    return $response;
+
+  }
+
+  /**
+   * Update the description property.
+   *
+   * @param Request $request
+   * @param type $cdbid
+   * @return JsonResponse
+   */
+  public function updateDescription(Request $request, $cdbid, $language) {
+
+    $response = new JsonResponse();
+    $body_content = json_decode($request->getContent());
+
+    if (!$body_content->description) {
+      return new JsonResponse(['error' => "description required"], 400);
+    }
+
+    try {
+
+      // If it's the main language, it should use updateDescription instead of translate.
+      if ($language == Event::MAIN_LANGUAGE_CODE) {
+
+        $command_id = $this->placeEditor->updateDescription(
+          $cdbid,
+          $body_content->description
+        );
+
+      }
+      else {
+        return new JsonResponse(['error' => "Translating places is not supported yet"], 400);
+      }
+
+      $response->setData(['commandId' => $command_id]);
+    } catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Update the typicalAgeRange property.
+   *
+   * @param Request $request
+   * @param type $cdbid
+   * @return JsonResponse
+   */
+  public function updateTypicalAgeRange(Request $request, $cdbid) {
+
+    $body_content = json_decode($request->getContent());
+    if (empty($body_content->typicalAgeRange)) {
+      return new JsonResponse(['error' => "typicalAgeRange required"], 400);
+    }
+
+    $response = new JsonResponse();
+    try {
+      $command_id = $this->placeEditor->updateTypicalAgeRange($cdbid, $body_content->typicalAgeRange);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
 
     return $response;
 
