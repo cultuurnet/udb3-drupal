@@ -123,9 +123,9 @@ services:
     class: Drupal\culturefeed_udb3\EntityLdRepository
     arguments: ['event_document_repository', '@entity.manager']
   culturefeed_udb3.description_filter.tidy:
-    class: CultuurNet\UDB3\Event\ReadModel\JSONLD\TidyDescriptionFilter
+    class: CultuurNet\UDB3\StringFilter\TidyStringFilter
   culturefeed_udb3.description_filter.strip_source:
-    class: CultuurNet\UDB3\Event\ReadModel\JSONLD\StripSourceDescriptionFilter
+    class: CultuurNet\UDB3\StringFilter\StripSourceStringFilter
   culturefeed_udb3.eventld_projector:
     class: CultuurNet\UDB3\Event\EventLDProjector
     arguments: ['@culturefeed_udb3.eventld_repository', '@culturefeed_udb3.iri_generator', '@culturefeed_udb3.event.service', '@culturefeed_udb3.place.service', '@culturefeed_udb3.organizer.service']
