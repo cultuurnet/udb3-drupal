@@ -8,6 +8,7 @@
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
+use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\Title;
@@ -16,10 +17,11 @@ use CultuurNet\UDB3\Keyword;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Location;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\CalendarBase;
 use CultuurNet\UDB3\Timestamps;
 use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
 use Drupal\Core\Controller\ControllerBase;
+use Exception;
+use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -153,7 +155,7 @@ class EventRestController extends ControllerBase{
       );
 
       $response->setData(['commandId' => $command_id]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -185,14 +187,56 @@ class EventRestController extends ControllerBase{
     }
 
     try {
-      $command_id = $this->eventEditor->translateDescription(
-        $cdbid,
-        new Language($language),
-        $body_content->description
-      );
+
+      // If it's the main language, it should use updateDescription instead of translate.
+      if ($language == Event::MAIN_LANGUAGE_CODE) {
+
+        $command_id = $this->eventEditor->updateDescription(
+          $cdbid,
+          $body_content->description
+        );
+
+      }
+      else {
+
+        $command_id = $this->eventEditor->translateDescription(
+          $cdbid,
+          new Language($language),
+          $body_content->description
+        );
+
+      }
 
       $response->setData(['commandId' => $command_id]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Update the typicalAgeRange property.
+   *
+   * @param Request $request
+   * @param type $cdbid
+   * @return JsonResponse
+   */
+  public function updateTypicalAgeRange(Request $request, $cdbid) {
+
+    $body_content = json_decode($request->getContent());
+    if (empty($body_content->typicalAgeRange)) {
+      return new JsonResponse(['error' => "typicalAgeRange required"], 400);
+    }
+
+    $response = new JsonResponse();
+    try {
+      $command_id = $this->eventEditor->updateTypicalAgeRange($cdbid, $body_content->typicalAgeRange);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -232,7 +276,7 @@ class EventRestController extends ControllerBase{
       );
 
       $response->setData(['commandId' => $command_id]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -265,7 +309,7 @@ class EventRestController extends ControllerBase{
       );
 
       $response->setData(['commandId' => $command_id]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -285,7 +329,7 @@ class EventRestController extends ControllerBase{
     try {
 
       if (empty($body_content->name) || empty($body_content->type) || empty($body_content->theme) || empty($body_content->location) || empty($body_content->calendar)) {
-        throw new \InvalidArgumentException('Required fields are missing');
+        throw new InvalidArgumentException('Required fields are missing');
       }
 
       if ($body_content->calendar->type == 'timestamps') {
@@ -313,7 +357,7 @@ class EventRestController extends ControllerBase{
           ),
         ]
       );
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
