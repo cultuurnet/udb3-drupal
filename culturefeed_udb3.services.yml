@@ -47,6 +47,9 @@ services:
     factory_service: culturefeed_udb3.udb2_entry_api_improved_factory
     factory_method: get
 
+  culturefeed_udb3.uuidgenerator:
+    class: Broadway\UuidGenerator\Rfc4122\Version4Generator
+
   # Factory for event busses.
   # Allows for subscribing Drupal services to the event bus on first publication
   # of an event.
@@ -84,6 +87,9 @@ services:
   culturefeed_udb3.place.service:
     class: CultuurNet\UDB3\PlaceService
     arguments: ['@culturefeed_udb3.place.ld_repository', '@culturefeed_udb3.place.repository', '@culturefeed_udb3.place.iri_generator']
+  culturefeed_udb3.place.editor:
+    class: CultuurNet\UDB3\Place\DefaultPlaceEditingService
+    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuidgenerator', '@culturefeed_udb3.place.repository']
 
   # Organizer
   # Organizer: ld repository
@@ -169,11 +175,9 @@ services:
   culturefeed_udb3.event.tagger:
     class: CultuurNet\UDB3\Event\DefaultEventTaggerService
     arguments: ['@culturefeed_udb3.event.service', '@culturefeed_udb3.event_command_bus']
-  culturefeed_udb3.event.uuidgenerator:
-    class: Broadway\UuidGenerator\Rfc4122\Version4Generator
   culturefeed_udb3.event.editor:
     class: CultuurNet\UDB3\Event\DefaultEventEditingService
-    arguments: ['@culturefeed_udb3.event.service', '@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.event.uuidgenerator', '@culturefeed_udb3.event_repository', '@culturefeed_udb3.place.service']
+    arguments: ['@culturefeed_udb3.event.service', '@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuidgenerator', '@culturefeed_udb3.event_repository', '@culturefeed_udb3.place.service']
 
   culturefeed_udb3.used_keywords_memory_event_store:
     class: Drupal\culturefeed_udb3\EventStore
