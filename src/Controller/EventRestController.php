@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Keyword;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Location;
 use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Timestamps;
 use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
 use Drupal\Core\Controller\ControllerBase;
@@ -328,15 +329,23 @@ class EventRestController extends ControllerBase{
 
     try {
 
-      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->theme) || empty($body_content->location) || empty($body_content->calendar)) {
-        throw new InvalidArgumentException('Required fields are missing');
+      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->theme) || empty($body_content->location) || empty($body_content->calendarType)) {
+        throw new \InvalidArgumentException('Required fields are missing');
       }
 
-      if ($body_content->calendar->type == 'timestamps') {
+      if ($body_content->calendarType == 'timestamps') {
         $calendar = new Timestamps();
         foreach ($body_content->calendar->timestamps as $timestamp) {
           $calendar->addTimestamp(new \CultuurNet\UDB3\Timestamp($timestamp->date, $timestamp->timeend, $timestamp->timestart));
         }
+      }
+      
+      $calendar = new Calendar();
+      if (!empty($body_content->startDate)) {
+        $calendar->setStartDate($body_content->startDate);
+      }
+      if (!empty($body_content->endDate)) {
+        $calendar->setEndDate($body_content->endDate);
       }
 
       $event_id = $this->eventEditor->createEvent(
