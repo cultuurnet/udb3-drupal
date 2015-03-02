@@ -44,12 +44,12 @@ class Udb3Index extends ContentEntityBase implements ContentEntityInterface {
       ->setDescription(t('Users culturefeed UUID.'));
 
     $fields['title'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Organizer name'))
-      ->setDescription(t('Organizer name.'));
+      ->setLabel(t('Item title'))
+      ->setDescription(t('Title.'));
 
     $fields['zip'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Organizer zip'))
-      ->setDescription(t('Organizer zip.'));
+      ->setLabel(t('Location zip'))
+      ->setDescription(t('Location zip.'));
 
     return $fields;
   }

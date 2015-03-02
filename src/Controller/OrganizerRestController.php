@@ -7,13 +7,13 @@
 
 namespace Drupal\culturefeed_udb3\Controller;
 
+use CultureFeed_User;
+use CultuurNet\UDB3\EntityServiceInterface;
+use CultuurNet\UDB3\ReadModel\Index\RepositoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use CultuurNet\UDB3\EntityServiceInterface;
-use CultureFeed_User;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class OrganizerRestController.
@@ -30,6 +30,13 @@ class OrganizerRestController extends ControllerBase {
   protected $entityService;
 
   /**
+   * The index repository.
+   *
+   * @var RepositoryInterface
+   */
+  protected $indexRepository;
+
+  /**
    * The culturefeed user.
    *
    * @var Culturefeed_User
@@ -42,6 +49,7 @@ class OrganizerRestController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('culturefeed_udb3.organizer.service'),
+      $container->get('culturefeed_udb3.udb3_index_repository'),
       $container->get('culturefeed.current_user')
     );
   }
@@ -51,14 +59,18 @@ class OrganizerRestController extends ControllerBase {
    *
    * @param EntityServiceInterface $entity_service
    *   The entity service.
+   * @param RepositoryInterface $indexRepository
+   *   The index repository.
    * @param CultureFeed_User $user
    *   The culturefeed user.
    */
   public function __construct(
     EntityServiceInterface $entity_service,
+    RepositoryInterface $indexRepository,
     CultureFeed_User $user
   ) {
     $this->entityService = $entity_service;
+    $this->indexRepository = $indexRepository;
     $this->user = $user;
   }
 
@@ -99,22 +111,52 @@ class OrganizerRestController extends ControllerBase {
 
   /**
    * Suggest organizers based on a search value.
-   * @param string $value
+   * @param string $title
    *
-   * @return JsonLdResponse
+   * @return JsonResponse
    *   The response.
    */
-  public function suggest($value) {
+  public function suggest($title) {
 
-    $results = $this->searchService->suggest($value);
+    $query = db_select('culturefeed_udb3_index', 'i');
+    $query->condition('title', '%' . db_like($title) . '%', 'LIKE');
+    $query->condition('type', 'organizer');
+    $query->range(0, 10);
+    $query->fields('i', array('id', 'title'));
+    $result = $query->execute();
 
-    $response = JsonLdResponse::create()
-      ->setData($results)
+    $matches = array();
+    foreach ($result as $row) {
+      $matches[] = $row;
+    }
+
+    return JsonResponse::create()
+      ->setContent(json_encode($matches))
       ->setPublic()
-      ->setClientTtl(60 * 1)
+      ->setClientTtl(60 * 30)
       ->setTtl(60 * 5);
 
-    return $response;
+  }
+
+  /**
+   * Search for duplicates organizers.
+   */
+  public function searchDuplicates($title, $zip) {
+
+    $results = $this->indexRepository->getOrganizersByTitleAndZip($title, $zip);
+
+    $duplicates = array();
+    foreach ($results as $entity_id) {
+      $result = new \stdClass();
+      $result->id = $entity_id;
+      $duplicates[] = $result;
+    }
+
+    return JsonResponse::create()
+      ->setContent(json_encode($duplicates))
+      ->setPublic()
+      ->setClientTtl(60 * 30)
+      ->setTtl(60 * 5);
 
   }
 

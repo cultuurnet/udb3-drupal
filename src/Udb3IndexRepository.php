@@ -44,21 +44,48 @@ class Udb3IndexRepository implements RepositoryInterface {
   /**
    * Update the index.
    */
-  public function updateIndex($id, $type, $userId, $name, $zip) {
+  public function updateIndex($id, $type, $userId, $title, $zip) {
     // For optimal performance we use a merge query here
     // instead of the entity API.
-    $query = $this->database->merge('culturefeed_udb3_udb3_index')
+    $query = $this->database->merge('culturefeed_udb3_index')
       ->key(array('id' => $id))
       ->fields(
         array(
           'type' => $type,
           'uid' => $userId,
-          'name' => $name,
+          'title' => $title,
           'zip' => $zip,
         )
       );
 
     $query->execute();
+  }
+
+  /**
+   * Search organizers that contain given title.
+   */
+  public function getOrganizersByTitle($title, $limit = 10) {
+
+    $query = $this->queryFactory->get('udb3_index');
+    $query->condition('title', '%' . db_like($title) . '%', 'LIKE');
+    $query->condition('type', 'organizer');
+    $query->range(0, $limit);
+
+    return $query->execute();
+  }
+
+  /**
+   * Search organizers that contain given title and the zip code.
+   */
+  public function getOrganizersByTitleAndZip($title, $zip, $limit = 10) {
+
+    $query = $this->queryFactory->get('udb3_index');
+    $query->condition('title', '%' . db_like($title) . '%', 'LIKE');
+    $query->condition('type', 'organizer');
+    $query->condition('zip', $zip);
+    $query->range(0, $limit);
+
+    return $query->execute();
   }
 
 }
