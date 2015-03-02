@@ -8,6 +8,7 @@
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
+use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
@@ -17,12 +18,9 @@ use CultuurNet\UDB3\Keyword;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Location;
 use CultuurNet\UDB3\Theme;
-use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\Timestamps;
 use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
 use Drupal\Core\Controller\ControllerBase;
 use Exception;
-use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,7 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Drupal\culturefeed_udb3\Controller
  */
-class EventRestController extends ControllerBase{
+class EventRestController extends ControllerBase {
 
   /**
    * The search service.
@@ -333,27 +331,12 @@ class EventRestController extends ControllerBase{
         throw new \InvalidArgumentException('Required fields are missing');
       }
 
-      if ($body_content->calendarType == 'timestamps') {
-        $calendar = new Timestamps();
-        foreach ($body_content->calendar->timestamps as $timestamp) {
-          $calendar->addTimestamp(new \CultuurNet\UDB3\Timestamp($timestamp->date, $timestamp->timeend, $timestamp->timestart));
-        }
-      }
-      
-      $calendar = new Calendar();
-      if (!empty($body_content->startDate)) {
-        $calendar->setStartDate($body_content->startDate);
-      }
-      if (!empty($body_content->endDate)) {
-        $calendar->setEndDate($body_content->endDate);
-      }
-
       $event_id = $this->eventEditor->createEvent(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
         new Theme($body_content->theme->id, $body_content->theme->label),
         new Location($body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
-        $calendar
+        new Calendar($body_content->calendarType, $body_content->startDate, $body_content->endDate, $body_content->timestamps, $body_content->openingHours)
       );
 
       $response->setData(
