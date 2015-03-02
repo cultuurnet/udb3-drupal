@@ -213,3 +213,13 @@ services:
     arguments: ['@culturefeed_udb3.event_relations_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
+
+  culturefeed_udb3.udb3_index_repository:
+    class: Drupal\culturefeed_udb3\Udb3IndexRepository
+    arguments: ['@entity.query', '@database']
+
+  culturefeed_udb3.organizer_udb3_index_projector:
+    class: CultuurNet\UDB3\Organizer\ReadModel\Index\Projector
+    arguments: ['@culturefeed_udb3.udb3_index_repository']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }

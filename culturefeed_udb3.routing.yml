@@ -174,3 +174,13 @@ culturefeed_udb3.organizer:
     _format: ld_json
     _method: GET
 
+culturefeed_udb3.organizer.suggest:
+  path: '/udb3/api/1.0/organizer/{value}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\OrganizerRestController::suggest'
+    _title: 'Organizer suggest'
+  requirements:
+    _access: 'TRUE'
+    _format: ld_json
+    _method: GET
+

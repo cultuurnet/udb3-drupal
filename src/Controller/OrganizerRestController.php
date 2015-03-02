@@ -97,4 +97,25 @@ class OrganizerRestController extends ControllerBase {
 
   }
 
+  /**
+   * Suggest organizers based on a search value.
+   * @param string $value
+   *
+   * @return JsonLdResponse
+   *   The response.
+   */
+  public function suggest($value) {
+
+    $results = $this->searchService->suggest($value);
+
+    $response = JsonLdResponse::create()
+      ->setData($results)
+      ->setPublic()
+      ->setClientTtl(60 * 1)
+      ->setTtl(60 * 5);
+
+    return $response;
+
+  }
+
 }
