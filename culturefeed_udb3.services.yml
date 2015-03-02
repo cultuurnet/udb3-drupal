@@ -147,15 +147,30 @@ services:
   culturefeed_udb3.local_event_repository:
     class: CultuurNet\UDB3\Event\EventRepository
     arguments: ['@culturefeed_udb3.event_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
+  culturefeed_udb3.udb2.event_cdbxml:
+    class: CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService
+    arguments: ['@culturefeed_udb3.search_api_2']
+  culturefeed_udb3.udb2.event_importer:
+    class: CultuurNet\UDB3\UDB2\EventImporter
+    arguments:
+      - '@culturefeed_udb3.udb2.event_cdbxml'
+      - '@culturefeed_udb3.local_event_repository'
+      - '@culturefeed_udb3.place.service'
+      - '@culturefeed_udb3.organizer.service'
+    calls:
+      - ['setLogger', ['@culturefeed_udb3.logger.channel.udb2']]
   culturefeed_udb3.event_repository.factory:
     class: Drupal\culturefeed_udb3\EventRepositoryFactory
-    arguments: ['@culturefeed_udb3.local_event_repository', '@culturefeed_udb3.search_api_2', '@culturefeed_udb3.udb2_entry_api_improved', '@culturefeed_udb3.place.service', '@culturefeed_udb3.organizer.service', '@culturefeed_udb3.event_stream_metadata_enricher', '@config.factory']
+    arguments:
+    - '@culturefeed_udb3.local_event_repository'
+    - '@culturefeed_udb3.udb2_entry_api_improved'
+    - '@culturefeed_udb3.udb2.event_importer'
+    - '@culturefeed_udb3.event_stream_metadata_enricher'
+    - '@config.factory'
   culturefeed_udb3.event_repository:
     class: CultuurNet\UDB3\UDB2\EventRepository
     factory_service: culturefeed_udb3.event_repository.factory
     factory_method: get
-    calls:
-      - ['setLogger', ['@culturefeed_udb3.logger.channel.udb2']]
   culturefeed_udb3.logger.channel.udb2:
     parent: logger.channel_base
     arguments: ['udb2']
