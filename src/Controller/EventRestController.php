@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\Title;
+use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\EventServiceInterface;
 use CultuurNet\UDB3\Keyword;
 use CultuurNet\UDB3\Language;
