@@ -327,16 +327,20 @@ class EventRestController extends ControllerBase {
 
     try {
 
-      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->theme) || empty($body_content->location) || empty($body_content->calendarType)) {
+      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->location) || empty($body_content->calendarType)) {
         throw new \InvalidArgumentException('Required fields are missing');
       }
 
+      $theme = null;
+      if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
+        $theme = new Theme($body_content->theme->id, $body_content->theme->label);
+      }
       $event_id = $this->eventEditor->createEvent(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
-        new Theme($body_content->theme->id, $body_content->theme->label),
         new Location($body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
-        new Calendar($body_content->calendarType, $body_content->startDate, $body_content->endDate, $body_content->timestamps, $body_content->openingHours)
+        new Calendar($body_content->calendarType, $body_content->startDate, $body_content->endDate, $body_content->timestamps, $body_content->openingHours),
+        $theme
       );
 
       $response->setData(
