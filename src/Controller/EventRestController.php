@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Drupal\culturefeed_udb3\Controller
  */
-class EventRestController extends ControllerBase {
+class EventRestController extends OfferRestBaseController {
 
   /**
    * The search service.
@@ -39,6 +39,12 @@ class EventRestController extends ControllerBase {
    * @var PullParsingSearchService;
    */
   protected $searchService;
+
+  /**
+   * The event editor
+   * @var EventEditingServiceInterface
+   */
+  protected $editor;
 
   /**
    * The event service.
@@ -85,7 +91,7 @@ class EventRestController extends ControllerBase {
     CultureFeed_User $user
   ) {
     $this->eventService = $event_service;
-    $this->eventEditor = $event_editor;
+    $this->editor = $event_editor;
     $this->usedKeywordsMemory = $used_keywords_memory;
     $this->user = $user;
   }
@@ -147,7 +153,7 @@ class EventRestController extends ControllerBase {
     }
 
     try {
-      $command_id = $this->eventEditor->translateTitle(
+      $command_id = $this->editor->translateTitle(
         $cdbid,
         new Language($language),
         $body_content->title
@@ -178,6 +184,11 @@ class EventRestController extends ControllerBase {
    */
   public function description(Request $request, $cdbid, $language) {
 
+    // If it's the main language, it should use updateDescription instead of translate.
+    if ($language == Event::MAIN_LANGUAGE_CODE) {
+      return parent::updateDescription($request, $cdbid, $language);
+    }
+
     $response = new JsonResponse();
     $body_content = json_decode($request->getContent());
 
@@ -187,55 +198,14 @@ class EventRestController extends ControllerBase {
 
     try {
 
-      // If it's the main language, it should use updateDescription instead of translate.
-      if ($language == Event::MAIN_LANGUAGE_CODE) {
-
-        $command_id = $this->eventEditor->updateDescription(
-          $cdbid,
-          $body_content->description
-        );
-
-      }
-      else {
-
-        $command_id = $this->eventEditor->translateDescription(
-          $cdbid,
-          new Language($language),
-          $body_content->description
-        );
-
-      }
+      $command_id = $this->editor->translateDescription(
+        $cdbid,
+        new Language($language),
+        $body_content->description
+      );
 
       $response->setData(['commandId' => $command_id]);
     } catch (Exception $e) {
-      $response->setStatusCode(400);
-      $response->setData(['error' => $e->getMessage()]);
-    }
-
-    return $response;
-
-  }
-
-  /**
-   * Update the typicalAgeRange property.
-   *
-   * @param Request $request
-   * @param type $cdbid
-   * @return JsonResponse
-   */
-  public function updateTypicalAgeRange(Request $request, $cdbid) {
-
-    $body_content = json_decode($request->getContent());
-    if (empty($body_content->typicalAgeRange)) {
-      return new JsonResponse(['error' => "typicalAgeRange required"], 400);
-    }
-
-    $response = new JsonResponse();
-    try {
-      $command_id = $this->eventEditor->updateTypicalAgeRange($cdbid, $body_content->typicalAgeRange);
-      $response->setData(['commandId' => $command_id]);
-    }
-    catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -263,7 +233,7 @@ class EventRestController extends ControllerBase {
     try {
 
       $keyword = new Keyword($body_content->keyword);
-      $command_id = $this->eventEditor->tag(
+      $command_id = $this->editor->tag(
         $cdbid,
         $keyword
       );
@@ -302,7 +272,7 @@ class EventRestController extends ControllerBase {
     $response = new JsonResponse();
 
     try {
-      $command_id = $this->eventEditor->eraseTag(
+      $command_id = $this->editor->eraseTag(
         $cdbid,
         new Keyword($keyword)
       );
@@ -335,7 +305,7 @@ class EventRestController extends ControllerBase {
       if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
         $theme = new Theme($body_content->theme->id, $body_content->theme->label);
       }
-      $event_id = $this->eventEditor->createEvent(
+      $event_id = $this->editor->createEvent(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
         new Location($body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),

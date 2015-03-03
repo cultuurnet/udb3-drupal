@@ -64,6 +64,16 @@ culturefeed_udb3.event.update_typical_age_range:
     _format: json
     _method: POST
 
+culturefeed_udb3.event.update_organizer:
+  path: '/udb3/api/1.0/event/{cdbid}/organizer'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::updateOrganizer'
+    _title: 'Update the organizer for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+
 culturefeed_udb3.event_create:
   path: '/udb3/api/1.0/event'
   defaults:
