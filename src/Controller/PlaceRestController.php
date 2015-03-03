@@ -8,15 +8,13 @@
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
+use CultuurNet\UDB3\Address;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Title;
-use CultuurNet\UDB3\Location;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Theme;
-use Drupal\Core\Controller\ControllerBase;
+use CultuurNet\UDB3\Title;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -135,20 +133,20 @@ class PlaceRestController extends OfferRestBaseController {
       if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
         $theme = new Theme($body_content->theme->id, $body_content->theme->label);
       }
-      $event_id = $this->editor->createPlace(
+      $place_id = $this->editor->createPlace(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
-        new Location($body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
+        new Address($body_content->location->address->streetAddress, $body_content->location->address->postalCode, $body_content->location->address->addressLocality, $body_content->location->address->addressCountry),
         new Calendar($body_content->calendarType, $body_content->startDate, $body_content->endDate, $body_content->timestamps, $body_content->openingHours),
         $theme
       );
 
       $response->setData(
         [
-          'eventId' => $event_id,
+          'placeId' => Address,
           'url' => $this->getUrlGenerator()->generateFromRoute(
-            'culturefeed_udb3.event',
-            ['cdbid' => $event_id],
+            'culturefeed_udb3.place',
+            ['cdbid' => $place_id],
             ['absolute' => TRUE]
           ),
         ]

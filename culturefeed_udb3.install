@@ -19,4 +19,17 @@ function culturefeed_udb3_update_8001() {
 
 }
 
+/**
+ * Register the newly added entity types.
+ */
+function culturefeed_udb3_update_8003() {
+
+  $entity_manager = \Drupal::entityManager();
+   foreach ($entity_manager->getDefinitions() as $entity_type) {
+     if ($entity_type->getLabel() == 'Culturefeed udb3 place relations') {
+       $entity_manager->onEntityTypeCreate($entity_type);
+     }
+   }
+
+}
 

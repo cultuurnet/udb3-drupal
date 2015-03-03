@@ -184,6 +184,16 @@ culturefeed_udb3.place.update_typical_age_range:
     _format: json
     _method: POST
 
+culturefeed_udb3.place.update_organizer:
+  path: '/udb3/api/1.0/place/{cdbid}/organizer'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateOrganizer'
+    _title: 'Update the organizer for this place'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+
 culturefeed_udb3.organizer:
   path: '/udb3/api/1.0/organizer/{cdbid}'
   defaults:

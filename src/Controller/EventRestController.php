@@ -308,7 +308,7 @@ class EventRestController extends OfferRestBaseController {
       $event_id = $this->editor->createEvent(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
-        new Location($body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
+        new Location($body_content->location->id, $body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
         new Calendar($body_content->calendarType, $body_content->startDate, $body_content->endDate, $body_content->timestamps, $body_content->openingHours),
         $theme
       );

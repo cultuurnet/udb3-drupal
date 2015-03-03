@@ -96,7 +96,7 @@ class OfferRestBaseController extends ControllerBase {
 
     $response = new JsonResponse();
     try {
-      $command_id = $this->editor->updateOrganizer($cdbid, $body_content->typicalAgeRange);
+      $command_id = $this->editor->updateOrganizer($cdbid, $body_content->organizer);
       $response->setData(['commandId' => $command_id]);
     }
     catch (\Exception $e) {
