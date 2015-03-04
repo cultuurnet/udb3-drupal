@@ -264,3 +264,13 @@ services:
     arguments: ['@culturefeed_udb3.event_export']
     tags:
       - { name: 'culturefeed_udb3.command_bus.subscriber' }
+
+  culturefeed_udb3.event_history_repository:
+    class: Drupal\culturefeed_udb3\EntityLdRepository
+    arguments: ['event_history', '@entity.manager']
+
+  culturefeed_udb3.event_history_projector:
+    class: CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector
+    arguments: ['@culturefeed_udb3.event_history_repository']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
