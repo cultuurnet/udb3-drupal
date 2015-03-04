@@ -7,7 +7,8 @@
 
 namespace Drupal\culturefeed_udb3\Controller;
 
-use CultuurNet\UDB3\Event\Event;
+use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\Timestamp;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,6 +107,69 @@ class OfferRestBaseController extends ControllerBase {
 
     return $response;
 
+  }
+
+  /**
+   * Init the calendar object to use for a create (event / place)
+   */
+  protected function initCalendarForCreate($body_content) {
+
+      // Cleanup empty timestamps.
+      $timestamps = array();
+      foreach ($body_content->timestamps as $timestamp) {
+        if (!empty($timestamp->date)) {
+          $date = date('Y-m-d', strtotime($timestamp->date));
+          if (!empty($timestamp->showStartHour)) {
+            $startDate = $date . 'T' . $timestamp->startHour . ':00';
+          }
+          else {
+            $startDate = $date . 'T00:00:00';
+          }
+
+          if (!empty($timestamp->showEndHour)) {
+            $endDate = $date . 'T' . $timestamp->endHour . ':00';
+          }
+          else {
+            $endDate = $date . 'T00:00:00';
+          }
+          $timestamps[strtotime($startDate)] = new Timestamp($startDate, $endDate);
+        }
+      }
+      ksort($timestamps);
+
+      $startDate = $body_content->startDate;
+      $endDate = $body_content->endDate;
+
+      // For single calendar type, check if it should be multiple
+      // Also calculate the correct startDate and endDate for the calendar object.
+      $calendarType = $body_content->calendarType;
+      if ($calendarType == Calendar::SINGLE && count($timestamps) == 1) {
+
+        // 1 timestamp = no timestamps needed. Copy start and enddate.
+        $firstTimestamp = current($timestamps);
+        $startDate = $firstTimestamp->getStartDate();
+        $endDate = $$firstTimestamp->getEndDate();
+        $timestamps = array();
+      }
+      elseif ($calendarType == Calendar::SINGLE && count($timestamps) > 1) {
+
+        // Multiple timestamps, startDate = first date, endDate = last date.
+        $calendarType = Calendar::MULTIPLE;
+        $firstTimestamp = current($timestamps);
+        $lastTimestamp = end($timestamps);
+        $startDate = $firstTimestamp->getStartDate();
+        $endDate = $lastTimestamp->getEndDate();
+
+      }
+
+      $openingHours = $body_content->openingHours;
+      foreach ($openingHours as $key => $openingHour) {
+        if (empty($openingHour->daysOfWeek) || empty($openingHour->opens) || empty($openingHour->closes)) {
+          unset($openingHours[$key]);
+        }
+      }
+
+      return new Calendar($calendarType, $startDate, $endDate, $timestamps, $openingHours);
   }
 
 }

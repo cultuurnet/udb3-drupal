@@ -8,18 +8,16 @@
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
-use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\EventServiceInterface;
 use CultuurNet\UDB3\Keyword;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Location;
 use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
-use Drupal\Core\Controller\ControllerBase;
 use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -301,15 +299,18 @@ class EventRestController extends OfferRestBaseController {
         throw new \InvalidArgumentException('Required fields are missing');
       }
 
+      $calendar = $this->initCalendarForCreate($body_content);
+
       $theme = null;
       if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
         $theme = new Theme($body_content->theme->id, $body_content->theme->label);
       }
+
       $event_id = $this->editor->createEvent(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
         new Location($body_content->location->id, $body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
-        new Calendar($body_content->calendarType, $body_content->startDate, $body_content->endDate, $body_content->timestamps, $body_content->openingHours),
+        $calendar,
         $theme
       );
 

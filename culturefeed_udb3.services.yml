@@ -78,7 +78,7 @@ services:
     arguments: ['@culturefeed_udb3.place.store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
   culturefeed_udb3.place.repository_factory:
     class: Drupal\culturefeed_udb3\PlaceRepositoryFactory
-    arguments: ['@culturefeed_udb3.place.local_repository', '@culturefeed_udb3.search_api_2', '@culturefeed_udb3.udb2_entry_api_improved', '@culturefeed_udb3.event_stream_metadata_enricher', '@config.factory']
+    arguments: ['@culturefeed_udb3.place.local_repository', '@culturefeed_udb3.search_api_2', '@culturefeed_udb3.udb2_entry_api_improved', '@culturefeed_udb3.organizer.service', '@culturefeed_udb3.event_stream_metadata_enricher', '@config.factory']
   culturefeed_udb3.place.repository:
     class: CultuurNet\UDB3\UDB2\PlaceRepository
     factory_service: culturefeed_udb3.place.repository_factory
@@ -89,7 +89,7 @@ services:
     arguments: ['@culturefeed_udb3.place.ld_repository', '@culturefeed_udb3.place.repository', '@culturefeed_udb3.place.iri_generator']
   culturefeed_udb3.place.editor:
     class: CultuurNet\UDB3\Place\DefaultPlaceEditingService
-    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuidgenerator', '@culturefeed_udb3.place.local_repository']
+    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuidgenerator', '@culturefeed_udb3.place.repository']
 
   # Organizer
   # Organizer: ld repository

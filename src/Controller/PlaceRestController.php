@@ -129,21 +129,28 @@ class PlaceRestController extends OfferRestBaseController {
         throw new InvalidArgumentException('Required fields are missing');
       }
 
+      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->location) || empty($body_content->calendarType)) {
+        throw new \InvalidArgumentException('Required fields are missing');
+      }
+
+      $calendar = $this->initCalendarForCreate($body_content);
+
       $theme = null;
       if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
         $theme = new Theme($body_content->theme->id, $body_content->theme->label);
       }
+
       $place_id = $this->editor->createPlace(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
         new Address($body_content->location->address->streetAddress, $body_content->location->address->postalCode, $body_content->location->address->addressLocality, $body_content->location->address->addressCountry),
-        new Calendar($body_content->calendarType, $body_content->startDate, $body_content->endDate, $body_content->timestamps, $body_content->openingHours),
+        $calendar,
         $theme
       );
 
       $response->setData(
         [
-          'placeId' => Address,
+          'placeId' => $place_id,
           'url' => $this->getUrlGenerator()->generateFromRoute(
             'culturefeed_udb3.place',
             ['cdbid' => $place_id],
