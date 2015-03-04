@@ -160,7 +160,7 @@ services:
     arguments: ['@culturefeed_udb3.event_repository', '@culturefeed_udb3.search_service']
   culturefeed_udb3.place_command_handler:
     class: CultuurNet\UDB3\Place\CommandHandler
-    arguments: ['@culturefeed_udb3.place.local_repository']
+    arguments: ['@culturefeed_udb3.place.repository']
   culturefeed_udb3.logger.command_bus.factory:
     class: Drupal\culturefeed_udb3\LoggerCommandBusFactory
     arguments: ['@config.factory', '@logger.channel.culturefeed']
