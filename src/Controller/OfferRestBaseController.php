@@ -137,12 +137,12 @@ class OfferRestBaseController extends ControllerBase {
       }
       ksort($timestamps);
 
-      $startDate = $body_content->startDate;
-      $endDate = $body_content->endDate;
+      $startDate = !empty($body_content->startDate) ? $body_content->startDate : '';
+      $endDate = !empty($body_content->endDate) ? $body_content->endDate : '';
 
       // For single calendar type, check if it should be multiple
       // Also calculate the correct startDate and endDate for the calendar object.
-      $calendarType = $body_content->calendarType;
+      $calendarType = !empty($body_content->calendarType) ? $body_content->calendarType : 'permanent';
       if ($calendarType == Calendar::SINGLE && count($timestamps) == 1) {
 
         // 1 timestamp = no timestamps needed. Copy start and enddate.

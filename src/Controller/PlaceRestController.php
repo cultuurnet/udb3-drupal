@@ -125,7 +125,7 @@ class PlaceRestController extends OfferRestBaseController {
 
     try {
 
-      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->location) || empty($body_content->calendarType)) {
+      if (empty($body_content->name) || empty($body_content->type)) {
         throw new InvalidArgumentException('Required fields are missing');
       }
 
@@ -139,7 +139,7 @@ class PlaceRestController extends OfferRestBaseController {
       if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
         $theme = new Theme($body_content->theme->id, $body_content->theme->label);
       }
-
+        
       $place_id = $this->editor->createPlace(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
