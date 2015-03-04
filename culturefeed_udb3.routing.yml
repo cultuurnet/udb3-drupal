@@ -233,3 +233,23 @@ culturefeed_udb3.organizer_create:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
+
+culturefeed_udb3.city.autocomplete:
+  path: '/udb3/api/1.0/city/suggest/{search_string}'
+  defaults:
+    _controller: 'Drupal\culturefeed_udb3\Controller\CityRestController::suggest'
+    _title: 'City suggest'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
+
+culturefeed_udb3.location.autocomplete:
+  path: '/udb3/api/1.0/location/suggest/{search_string}/{postal}'
+  defaults:
+    _controller: 'Drupal\culturefeed_udb3\Controller\LocationRestController::suggest'
+    _title: 'Location suggest'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
