@@ -136,10 +136,12 @@ class PlaceRestController extends OfferRestBaseController {
         $theme = new Theme($body_content->theme->id, $body_content->theme->label);
       }
         
+      $address = !empty($body_content->location->address) ? $body_content->location->address : $body_content->address;
+      
       $place_id = $this->editor->createPlace(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
-        new Address($body_content->location->address->streetAddress, $body_content->location->address->postalCode, $body_content->location->address->addressLocality, $body_content->location->address->addressCountry),
+        new Address($address->streetAddress, $address->postalCode, $address->addressLocality, $address->addressCountry),
         $calendar,
         $theme
       );
