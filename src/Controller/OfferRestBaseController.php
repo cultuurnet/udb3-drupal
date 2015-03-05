@@ -110,6 +110,29 @@ class OfferRestBaseController extends ControllerBase {
   }
 
   /**
+   * Delete the given organizer.
+   *
+   * @param Request $request
+   * @param type $cdbid
+   * @return JsonResponse
+   */
+  public function deleteOrganizer($cdbid, $organizerId) {
+
+    $response = new JsonResponse();
+    try {
+      $command_id = $this->editor->deleteOrganizer($cdbid, $organizerId);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (\Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
    * Init the calendar object to use for a create (event / place)
    */
   protected function initCalendarForCreate($body_content) {
@@ -148,7 +171,7 @@ class OfferRestBaseController extends ControllerBase {
         // 1 timestamp = no timestamps needed. Copy start and enddate.
         $firstTimestamp = current($timestamps);
         $startDate = $firstTimestamp->getStartDate();
-        $endDate = $$firstTimestamp->getEndDate();
+        $endDate = $firstTimestamp->getEndDate();
         $timestamps = array();
       }
       elseif ($calendarType == Calendar::SINGLE && count($timestamps) > 1) {

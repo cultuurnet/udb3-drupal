@@ -140,7 +140,10 @@ class OrganizerRestController extends ControllerBase {
 
     $matches = array();
     foreach ($result as $row) {
-      $matches[] = $row;
+      $organizer = new \stdClass();
+      $organizer->id = $row->id;
+      $organizer->name = $row->title;
+      $matches[] = $organizer;
     }
 
     return JsonResponse::create()
@@ -189,7 +192,7 @@ class OrganizerRestController extends ControllerBase {
 
       $addresses = array();
       $streetAddress = $body_content->street . ' ' . $body_content->number;
-      $addresses[] = new Address($streetAddress, $body_content->postalCode, $body_content->city, $body_content->country);
+      $addresses[] = new Address($streetAddress, $body_content->postalCode, $body_content->city, 'BE');
 
       $phones = array();
       $emails = array();

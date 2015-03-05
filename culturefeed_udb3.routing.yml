@@ -74,6 +74,16 @@ culturefeed_udb3.event.update_organizer:
     _format: json
     _method: POST
 
+culturefeed_udb3.event.delete_organizer:
+  path: '/udb3/event/1.0/place/{cdbid}/organizer/{organizerId}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deleteOrganizer'
+    _title: 'Delete the organizer for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+
 culturefeed_udb3.event_create:
   path: '/udb3/api/1.0/event'
   defaults:
@@ -193,6 +203,16 @@ culturefeed_udb3.place.update_organizer:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
+
+culturefeed_udb3.place.delete_organizer:
+  path: '/udb3/api/1.0/place/{cdbid}/organizer/{organizerId}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deleteOrganizer'
+    _title: 'Delete the organizer for this place'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
 
 culturefeed_udb3.organizer:
   path: '/udb3/api/1.0/organizer/{cdbid}'
