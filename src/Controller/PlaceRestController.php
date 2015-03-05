@@ -129,10 +129,6 @@ class PlaceRestController extends OfferRestBaseController {
         throw new InvalidArgumentException('Required fields are missing');
       }
 
-      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->location) || empty($body_content->calendarType)) {
-        throw new \InvalidArgumentException('Required fields are missing');
-      }
-
       $calendar = $this->initCalendarForCreate($body_content);
 
       $theme = null;
