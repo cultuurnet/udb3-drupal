@@ -186,13 +186,15 @@ class OrganizerRestController extends ControllerBase {
 
     try {
 
-      if (empty($body_content->name) || empty($body_content->street) || empty($body_content->number) || empty($body_content->city) || empty($body_content->postalCode) || empty($body_content->country)) {
+      if (empty($body_content->name)) {
         throw new \InvalidArgumentException('Required fields are missing');
       }
 
       $addresses = array();
-      $streetAddress = $body_content->street . ' ' . $body_content->number;
-      $addresses[] = new Address($streetAddress, $body_content->postalCode, $body_content->city, 'BE');
+      if (!empty($body_content->address->street) && !empty($body_content->address->number) && !empty($body_content->address->city) && !empty($body_content->address->postalCode) && !empty($body_content->address->country)) {
+        $streetAddress = $body_content->address->street . ' ' . $body_content->address->number;
+        $addresses[] = new Address($streetAddress, $body_content->address->postalCode, $body_content->address->city, $body_content->address->country);
+      }
 
       $phones = array();
       $emails = array();
