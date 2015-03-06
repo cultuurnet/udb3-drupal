@@ -139,26 +139,28 @@ class OfferRestBaseController extends ControllerBase {
 
       // Cleanup empty timestamps.
       $timestamps = array();
-      foreach ($body_content->timestamps as $timestamp) {
-        if (!empty($timestamp->date)) {
-          $date = date('Y-m-d', strtotime($timestamp->date));
-          if (!empty($timestamp->showStartHour)) {
-            $startDate = $date . 'T' . $timestamp->startHour . ':00';
-          }
-          else {
-            $startDate = $date . 'T00:00:00';
-          }
+      if (!empty($body_content->timestamps)) {
+        foreach ($body_content->timestamps as $timestamp) {
+          if (!empty($timestamp->date)) {
+            $date = date('Y-m-d', strtotime($timestamp->date));
+            if (!empty($timestamp->showStartHour)) {
+              $startDate = $date . 'T' . $timestamp->startHour . ':00';
+            }
+            else {
+              $startDate = $date . 'T00:00:00';
+            }
 
-          if (!empty($timestamp->showEndHour)) {
-            $endDate = $date . 'T' . $timestamp->endHour . ':00';
+            if (!empty($timestamp->showEndHour)) {
+              $endDate = $date . 'T' . $timestamp->endHour . ':00';
+            }
+            else {
+              $endDate = $date . 'T00:00:00';
+            }
+            $timestamps[strtotime($startDate)] = new Timestamp($startDate, $endDate);
           }
-          else {
-            $endDate = $date . 'T00:00:00';
-          }
-          $timestamps[strtotime($startDate)] = new Timestamp($startDate, $endDate);
         }
+        ksort($timestamps);
       }
-      ksort($timestamps);
 
       $startDate = !empty($body_content->startDate) ? $body_content->startDate : '';
       $endDate = !empty($body_content->endDate) ? $body_content->endDate : '';
@@ -185,10 +187,14 @@ class OfferRestBaseController extends ControllerBase {
 
       }
 
-      $openingHours = $body_content->openingHours;
-      foreach ($openingHours as $key => $openingHour) {
-        if (empty($openingHour->daysOfWeek) || empty($openingHour->opens) || empty($openingHour->closes)) {
-          unset($openingHours[$key]);
+      // Remove empty opening hours.
+      $openingHours = array();
+      if (!empty($body_content->openingHours)) {
+        $openingHours = $body_content->openingHours;
+        foreach ($openingHours as $key => $openingHour) {
+          if (empty($openingHour->daysOfWeek) || empty($openingHour->opens) || empty($openingHour->closes)) {
+            unset($openingHours[$key]);
+          }
         }
       }
 

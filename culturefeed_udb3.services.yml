@@ -213,7 +213,17 @@ services:
 
   culturefeed_udb3.event_relations_projector:
     class: CultuurNet\UDB3\Event\ReadModel\Relations\Projector
-    arguments: ['@culturefeed_udb3.event_relations_repository']
+    arguments: ['@culturefeed_udb3.event_relations_repository', '@culturefeed_udb3.event.service']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+
+  culturefeed_udb3.place_relations_repository:
+    class: Drupal\culturefeed_udb3\PlaceRelationsRepository
+    arguments: ['@entity.query', '@database']
+
+  culturefeed_udb3.place_relations_projector:
+    class: CultuurNet\UDB3\Place\ReadModel\Relations\Projector
+    arguments: ['@culturefeed_udb3.place_relations_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
 

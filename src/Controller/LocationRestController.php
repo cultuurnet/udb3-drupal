@@ -46,5 +46,5 @@ class LocationRestController extends ControllerBase {
       ->setTtl(60 * 5);
 
   }
-  
+
 }

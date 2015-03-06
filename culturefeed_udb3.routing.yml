@@ -75,9 +75,9 @@ culturefeed_udb3.event.update_organizer:
     _method: POST
 
 culturefeed_udb3.event.delete_organizer:
-  path: '/udb3/event/1.0/place/{cdbid}/organizer/{organizerId}'
+  path: '/udb3/api/1.0/event/{cdbid}/organizer/{organizerId}'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deleteOrganizer'
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteOrganizer'
     _title: 'Delete the organizer for this event'
   requirements:
     _culturefeed_current_user: 'TRUE'

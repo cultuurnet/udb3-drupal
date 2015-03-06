@@ -33,6 +33,7 @@ class CityRestController extends ControllerBase {
       $query->fields('csc', array('cid', 'name', 'zip'));
       $query->condition('cid', '%' . db_like($search_string) . '%', 'LIKE');
       $query->condition('cid', '%(' . db_like($search_string) . '%)', 'NOT LIKE');
+      $query->range(0, 10);
 
       $result = $query->execute();
 
@@ -47,5 +48,5 @@ class CityRestController extends ControllerBase {
     return new JsonResponse($matches);
 
   }
-  
+
 }

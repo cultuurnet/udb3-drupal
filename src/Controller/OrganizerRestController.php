@@ -221,7 +221,7 @@ class OrganizerRestController extends ControllerBase {
 
       $response->setData(
         [
-          'organiserId' => $organizer_id,
+          'organizerId' => $organizer_id,
           'url' => $this->getUrlGenerator()->generateFromRoute(
             'culturefeed_udb3.organizer',
             ['cdbid' => $organizer_id],
