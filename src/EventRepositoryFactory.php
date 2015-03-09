@@ -9,8 +9,11 @@ namespace Drupal\culturefeed_udb3;
 
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\Event\EventRepository;
+use CultuurNet\UDB3\OrganizerService;
+use CultuurNet\UDB3\PlaceService;
 use CultuurNet\UDB3\UDB2\EntryAPIImprovedFactory;
 use CultuurNet\UDB3\UDB2\EventImporterInterface;
+use CultuurNet\UDB3\UDB2\EventRepository as EventRepository2;
 use Drupal\Core\Config\ConfigFactory;
 
 /**
@@ -42,6 +45,16 @@ class EventRepositoryFactory implements EventRepositoryFactoryInterface {
   protected $config;
 
   /**
+   * @var OrganizerService
+   */
+  protected $organizerService;
+
+  /**
+   * @var PlaceService
+   */
+  protected $placeService;
+
+  /**
    * Constructs an event repository factory.
    *
    * @param EventRepository $local_event_repository
@@ -58,12 +71,16 @@ class EventRepositoryFactory implements EventRepositoryFactoryInterface {
     EventRepository $local_event_repository,
     EntryAPIImprovedFactory $improved_entry_api,
     EventImporterInterface $event_importer,
+    PlaceService $place_service,
+    OrganizerService $organizer_service,
     MetadataEnrichingEventStreamDecorator $event_stream_metadata_enricher,
     ConfigFactory $config
   ) {
     $this->localEventRepository = $local_event_repository;
     $this->improvedEntryApi = $improved_entry_api;
     $this->eventImporter = $event_importer;
+    $this->organizerService = $organizer_service;
+    $this->placeService = $place_service;
     $this->eventStreamMetadataEnricher = $event_stream_metadata_enricher;
     $this->config = $config->get('culturefeed_udb3.settings');
   }
@@ -73,10 +90,12 @@ class EventRepositoryFactory implements EventRepositoryFactoryInterface {
    */
   public function get() {
 
-    $udb2_repository_decorator = new \CultuurNet\UDB3\UDB2\EventRepository(
+    $udb2_repository_decorator = new EventRepository2(
       $this->localEventRepository,
       $this->improvedEntryApi,
       $this->eventImporter,
+      $this->placeService,
+      $this->organizerService,
       array($this->eventStreamMetadataEnricher)
     );
 
