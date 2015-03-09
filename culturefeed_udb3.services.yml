@@ -174,6 +174,8 @@ services:
     - '@culturefeed_udb3.local_event_repository'
     - '@culturefeed_udb3.udb2_entry_api_improved'
     - '@culturefeed_udb3.udb2.event_importer'
+    - '@culturefeed_udb3.place.service'
+    - '@culturefeed_udb3.organizer.service'
     - '@culturefeed_udb3.event_stream_metadata_enricher'
     - '@config.factory'
   culturefeed_udb3.event_repository:
