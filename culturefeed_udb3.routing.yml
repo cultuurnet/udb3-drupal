@@ -94,6 +94,16 @@ culturefeed_udb3.event.delete_organizer:
     _format: json
     _method: DELETE
 
+culturefeed_udb3.event.update_contactpoint:
+  path: '/udb3/api/1.0/event/{cdbid}/contactPoint'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::updateContactPoint'
+    _title: 'Update the contact info for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+
 culturefeed_udb3.event_create:
   path: '/udb3/api/1.0/event'
   defaults:
@@ -223,6 +233,16 @@ culturefeed_udb3.place.delete_organizer:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: DELETE
+
+culturefeed_udb3.place.update_contactpoint:
+  path: '/udb3/api/1.0/place/{cdbid}/contactPoint'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateContactPoint'
+    _title: 'Update the contact info for this place'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
 
 culturefeed_udb3.organizer:
   path: '/udb3/api/1.0/organizer/{cdbid}'

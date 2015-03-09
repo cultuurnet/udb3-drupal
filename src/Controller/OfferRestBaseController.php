@@ -8,6 +8,7 @@
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Timestamp;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -121,6 +122,52 @@ class OfferRestBaseController extends ControllerBase {
     $response = new JsonResponse();
     try {
       $command_id = $this->editor->deleteOrganizer($cdbid, $organizerId);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (\Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Update the contactPoint.
+   *
+   * @param Request $request
+   * @param type $cdbid
+   * @return JsonResponse
+   */
+  public function updateContactPoint(Request $request, $cdbid) {
+
+    $body_content = json_decode($request->getContent());
+    if (empty($body_content->contactPoint)) {
+      return new JsonResponse(['error' => "contactPoint required"], 400);
+    }
+
+    // Create an array for each contact type.
+    $phones = array();
+    $emails = array();
+    $urls = array();
+    if (!empty($body_content->contactPoint)) {
+      foreach ($body_content->contactPoint as $contactInfo) {
+        if ($contactInfo->type == 'phone') {
+          $phones[] = $contactInfo->value;
+        }
+        elseif ($contactInfo->type == 'email') {
+          $emails[] = $contactInfo->value;
+        }
+        elseif ($contactInfo->type == 'url') {
+          $urls[] = $contactInfo->value;
+        }
+      }
+    }
+
+    $response = new JsonResponse();
+    try {
+      $command_id = $this->editor->updateContactPoint($cdbid, new ContactPoint($phones, $emails, $urls));
       $response->setData(['commandId' => $command_id]);
     }
     catch (\Exception $e) {
