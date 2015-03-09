@@ -1,14 +1,25 @@
 <?php
-
 /**
  * @file
- * Install / update file for culturefeed_udb3.
+ * Installation and update routines for culturefeed_udb3.
  */
+
+/**
+ * Register the event history entity type.
+ */
+function culturefeed_udb3_update_8001() {
+  $entity_manager = \Drupal::entityManager();
+  foreach ($entity_manager->getDefinitions() as $entity_type) {
+    if ($entity_type->id() == 'event_history') {
+      $entity_manager->onEntityTypeCreate($entity_type);
+    }
+  }
+}
 
 /**
  * Register the newly added entity types.
  */
-function culturefeed_udb3_update_8001() {
+function culturefeed_udb3_update_8002() {
 
   $entity_manager = \Drupal::entityManager();
    foreach ($entity_manager->getDefinitions() as $entity_type) {
@@ -32,4 +43,3 @@ function culturefeed_udb3_update_8003() {
    }
 
 }
-

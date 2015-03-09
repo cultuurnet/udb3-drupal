@@ -51,6 +51,7 @@ function drush_culturefeed_udb3_udb3_delete_data() {
     'place_store',
     'used_keywords_memory_event_store',
     'event_relations',
+    'event_history',
   );
 
   foreach ($entities as $entity_type) {
@@ -69,6 +70,6 @@ function drush_culturefeed_udb3_udb3_worker() {
   $path = drupal_get_path('module', 'culturefeed_udb3');
   $command = $path . '/culturefeed_udb3.worker.php';
   $command .= " --drupal_root=" . DRUPAL_ROOT;
+  $command .= " --uri=" . $GLOBALS['base_url'];
   drush_shell_proc_open($command);
-
 }

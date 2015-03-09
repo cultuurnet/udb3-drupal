@@ -24,6 +24,16 @@ culturefeed_udb3.event:
     _format: ld_json
     _method: GET
 
+culturefeed_udb3.event.history:
+  path: '/udb3/api/1.0/event/{cdbid}/history'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventHistoryController::history'
+    _title: 'Event history'
+  requirements:
+    _access: 'TRUE'
+    _format: json
+    _method: GET
+
 culturefeed_udb3.event.title:
   path: '/udb3/api/1.0/event/{cdbid}/{language}/title'
   defaults:
@@ -273,3 +283,23 @@ culturefeed_udb3.location.autocomplete:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: GET
+
+culturefeed_udb3.export.jsonld:
+  path: '/udb3/api/1.0/events/export/json'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsJSONLD'
+    _title: 'Export as JSONLD'
+  requirements:
+    _access: 'TRUE'
+    _format: json
+    _method: POST
+
+culturefeed_udb3.export.ooxml:
+  path: '/udb3/api/1.0/events/export/ooxml'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsOOXML'
+    _title: 'Export as OOXML'
+  requirements:
+    _access: 'TRUE'
+    _format: json
+    _method: POST
