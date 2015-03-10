@@ -25,7 +25,7 @@ class OfferRestBaseController extends ControllerBase {
    * Update the description property.
    *
    * @param Request $request
-   * @param type $cdbid
+   * @param string $cdbid
    * @return JsonResponse
    */
   public function updateDescription(Request $request, $cdbid) {
@@ -58,7 +58,7 @@ class OfferRestBaseController extends ControllerBase {
    * Update the typicalAgeRange property.
    *
    * @param Request $request
-   * @param type $cdbid
+   * @param string $cdbid
    * @return JsonResponse
    */
   public function updateTypicalAgeRange(Request $request, $cdbid) {
@@ -86,7 +86,7 @@ class OfferRestBaseController extends ControllerBase {
    * Update the organizer property.
    *
    * @param Request $request
-   * @param type $cdbid
+   * @param string $cdbid
    * @return JsonResponse
    */
   public function updateOrganizer(Request $request, $cdbid) {
@@ -113,8 +113,8 @@ class OfferRestBaseController extends ControllerBase {
   /**
    * Delete the given organizer.
    *
-   * @param Request $request
-   * @param type $cdbid
+   * @param string $cdbid
+   * @param string $organizerId
    * @return JsonResponse
    */
   public function deleteOrganizer($cdbid, $organizerId) {
@@ -137,37 +137,49 @@ class OfferRestBaseController extends ControllerBase {
    * Update the contactPoint.
    *
    * @param Request $request
-   * @param type $cdbid
+   * @param string $cdbid
    * @return JsonResponse
    */
   public function updateContactPoint(Request $request, $cdbid) {
 
     $body_content = json_decode($request->getContent());
-    if (empty($body_content->contactPoint)) {
-      return new JsonResponse(['error' => "contactPoint required"], 400);
-    }
-
-    // Create an array for each contact type.
-    $phones = array();
-    $emails = array();
-    $urls = array();
-    if (!empty($body_content->contactPoint)) {
-      foreach ($body_content->contactPoint as $contactInfo) {
-        if ($contactInfo->type == 'phone') {
-          $phones[] = $contactInfo->value;
-        }
-        elseif ($contactInfo->type == 'email') {
-          $emails[] = $contactInfo->value;
-        }
-        elseif ($contactInfo->type == 'url') {
-          $urls[] = $contactInfo->value;
-        }
-      }
+    if (empty($body_content->contactPoint) || !isset($body_content->contactPoint->url) || !isset($body_content->contactPoint->email) || !isset($body_content->contactPoint->phone)) {
+      return new JsonResponse(['error' => "contactPoint and his properties required"], 400);
     }
 
     $response = new JsonResponse();
     try {
-      $command_id = $this->editor->updateContactPoint($cdbid, new ContactPoint($phones, $emails, $urls));
+      $command_id = $this->editor->updateContactPoint($cdbid, new ContactPoint($body_content->contactPoint->phone, $body_content->contactPoint->email, $body_content->contactPoint->url));
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (\Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Update the facilities.
+   *
+   * @param Request $request
+   * @param string $cdbid
+   * @return JsonResponse
+   */
+  public function updateFacilities(Request $request, $cdbid) {
+
+    return new JsonResponse(['error' => "facilities required"], 200);
+
+    $body_content = json_decode($request->getContent());
+    if (empty($body_content->facilities)) {
+      return new JsonResponse(['error' => "facilities required"], 400);
+    }
+
+    $response = new JsonResponse();
+    try {
+      $command_id = $this->editor->updateFacilities($cdbid, $body_content->facilities);
       $response->setData(['commandId' => $command_id]);
     }
     catch (\Exception $e) {
