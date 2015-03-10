@@ -14,8 +14,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
 use CultuurNet\UDB3\EventServiceInterface;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Keyword;
-use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
+use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService;
 use CultureFeed_User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,7 +57,7 @@ class EventRestController extends ControllerBase{
     return new static(
       $container->get('culturefeed_udb3.event.service'),
       $container->get('culturefeed_udb3.event.editor'),
-      $container->get('culturefeed_udb3.event.used_keywords_memory'),
+      $container->get('culturefeed_udb3.event.used_labels_memory'),
       $container->get('culturefeed.current_user')
     );
   }
@@ -69,20 +69,20 @@ class EventRestController extends ControllerBase{
    *   The event service.
    * @param EventEditingServiceInterface $event_editor
    *   The event editor.
-   * @param DefaultUsedKeywordsMemoryService $used_keywords_memory
-   *   The event tagger.
+   * @param DefaultUsedLabelsMemoryService $used_labels_memory
+   *   The event labeller.
    * @param CultureFeed_User $user
    *   The culturefeed user.
    */
   public function __construct(
     EventServiceInterface $event_service,
     EventEditingServiceInterface $event_editor,
-    DefaultUsedKeywordsMemoryService $used_keywords_memory,
+    DefaultUsedLabelsMemoryService $used_labels_memory,
     CultureFeed_User $user
   ) {
     $this->eventService = $event_service;
     $this->eventEditor = $event_editor;
-    $this->usedKeywordsMemory = $used_keywords_memory;
+    $this->usedLabelsMemory = $used_labels_memory;
     $this->user = $user;
   }
 
@@ -199,7 +199,7 @@ class EventRestController extends ControllerBase{
   }
 
   /**
-   * Adds a keyword.
+   * Adds a label.
    *
    * @param Request $request
    *   The request.
@@ -209,23 +209,23 @@ class EventRestController extends ControllerBase{
    * @return JsonResponse
    *   The response.
    */
-  public function addKeyword(Request $request, $cdbid) {
+  public function addLabel(Request $request, $cdbid) {
 
     $response = new JsonResponse();
     $body_content = json_decode($request->getContent());
 
     try {
 
-      $keyword = new Keyword($body_content->keyword);
-      $command_id = $this->eventEditor->tag(
+      $label = new Label($body_content->label);
+      $command_id = $this->eventEditor->label(
         $cdbid,
-        $keyword
+        $label
       );
 
       $user = $this->user;
-      $this->usedKeywordsMemory->rememberKeywordUsed(
+      $this->usedLabelsMemory->rememberLabelUsed(
         $user->id,
-        $keyword
+        $label
       );
 
       $response->setData(['commandId' => $command_id]);
@@ -239,26 +239,26 @@ class EventRestController extends ControllerBase{
   }
 
   /**
-   * Deletes a keyword.
+   * Deletes a label.
    *
    * @param Request $request
    *   The request.
    * @param string $cdbid
    *   The event id.
-   * @param string $keyword
-   *   The keyword.
+   * @param string $label
+   *   The label.
    *
    * @return JsonResponse
    *   The response.
    */
-  public function deleteKeyword(Request $request, $cdbid, $keyword) {
+  public function deleteLabel(Request $request, $cdbid, $label) {
 
     $response = new JsonResponse();
 
     try {
-      $command_id = $this->eventEditor->eraseTag(
+      $command_id = $this->eventEditor->unlabel(
         $cdbid,
-        new Keyword($keyword)
+        new Label($label)
       );
 
       $response->setData(['commandId' => $command_id]);

@@ -196,8 +196,8 @@ services:
   culturefeed_udb3.event.service:
     class: CultuurNet\UDB3\LocalEventService
     arguments: ['@culturefeed_udb3.eventld_repository', '@culturefeed_udb3.event_repository', '@culturefeed_udb3.event_relations_repository', '@culturefeed_udb3.iri_generator']
-  culturefeed_udb3.event.tagger:
-    class: CultuurNet\UDB3\Event\DefaultEventTaggerService
+  culturefeed_udb3.event.labeller:
+    class: CultuurNet\UDB3\Event\DefaultEventLabellerService
     arguments: ['@culturefeed_udb3.event.service', '@culturefeed_udb3.event_command_bus']
   culturefeed_udb3.event.uuidgenerator:
     class: Broadway\UuidGenerator\Rfc4122\Version4Generator
@@ -205,15 +205,15 @@ services:
     class: CultuurNet\UDB3\Event\DefaultEventEditingService
     arguments: ['@culturefeed_udb3.event.service', '@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.event.uuidgenerator', '@culturefeed_udb3.event_repository', '@culturefeed_udb3.place.service']
 
-  culturefeed_udb3.used_keywords_memory_event_store:
+  culturefeed_udb3.used_labels_memory_event_store:
     class: Drupal\culturefeed_udb3\EventStore
-    arguments: ['used_keywords_memory_event_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.serialize', '@culturefeed_udb3.serialize']
-  culturefeed_udb3.event.used_keywords_memory_repository:
-    class: CultuurNet\UDB3\UsedKeywordsMemory\UsedKeywordsMemoryRepository
-    arguments: ['@culturefeed_udb3.used_keywords_memory_event_store', '@culturefeed_udb3.event_bus']
-  culturefeed_udb3.event.used_keywords_memory:
-    class: CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService
-    arguments: ['@culturefeed_udb3.event.used_keywords_memory_repository']
+    arguments: ['used_labels_memory_event_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.serialize', '@culturefeed_udb3.serialize']
+  culturefeed_udb3.event.used_labels_memory_repository:
+    class: CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryRepository
+    arguments: ['@culturefeed_udb3.used_labels_memory_event_store', '@culturefeed_udb3.event_bus']
+  culturefeed_udb3.event.used_labels_memory:
+    class: CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService
+    arguments: ['@culturefeed_udb3.event.used_labels_memory_repository']
 
   culturefeed_udb3.json_ld_subscriber:
     class: Drupal\culturefeed_udb3\JsonLdSubscriber
