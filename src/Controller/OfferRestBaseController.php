@@ -7,10 +7,12 @@
 
 namespace Drupal\culturefeed_udb3\Controller;
 
+use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Timestamp;
 use Drupal\Core\Controller\ControllerBase;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,7 +47,7 @@ class OfferRestBaseController extends ControllerBase {
       );
 
       $response->setData(['commandId' => $command_id]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -73,7 +75,7 @@ class OfferRestBaseController extends ControllerBase {
       $command_id = $this->editor->updateTypicalAgeRange($cdbid, $body_content->typicalAgeRange);
       $response->setData(['commandId' => $command_id]);
     }
-    catch (\Exception $e) {
+    catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -101,7 +103,7 @@ class OfferRestBaseController extends ControllerBase {
       $command_id = $this->editor->updateOrganizer($cdbid, $body_content->organizer);
       $response->setData(['commandId' => $command_id]);
     }
-    catch (\Exception $e) {
+    catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -124,7 +126,7 @@ class OfferRestBaseController extends ControllerBase {
       $command_id = $this->editor->deleteOrganizer($cdbid, $organizerId);
       $response->setData(['commandId' => $command_id]);
     }
-    catch (\Exception $e) {
+    catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
@@ -152,7 +154,68 @@ class OfferRestBaseController extends ControllerBase {
       $command_id = $this->editor->updateContactPoint($cdbid, new ContactPoint($body_content->contactPoint->phone, $body_content->contactPoint->email, $body_content->contactPoint->url));
       $response->setData(['commandId' => $command_id]);
     }
-    catch (\Exception $e) {
+    catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+  
+  /**
+   * Update the bookingInfo.
+   *
+   * @param Request $request
+   * @param string $cdbid
+   * @return JsonResponse
+   */
+  public function updateBookingInfo(Request $request, $cdbid) {
+
+    $body_content = json_decode($request->getContent());
+    if (empty($body_content->bookingInfo)) {
+      return new JsonResponse(['error' => "bookingInfo required"], 400);
+    }
+
+    $response = new JsonResponse();
+    try {
+      $data = $body_content->bookingInfo;
+      $bookingInfo = new BookingInfo($data->url, $data->urlLabel, $data->phone, $data->email, 
+        $data->availabilityStarts, $data->availabilityEnds, $data->availabilityStarts, $data->availabilityStarts);
+      $command_id = $this->editor->updateBookingInfo($cdbid, $bookingInfo);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Update the facilities.
+   *
+   * @param Request $request
+   * @param string $cdbid
+   * @return JsonResponse
+   */
+  public function updateFacilities(Request $request, $cdbid) {
+
+    return new JsonResponse(['error' => "facilities required"], 200);
+
+    $body_content = json_decode($request->getContent());
+    if (empty($body_content->facilities)) {
+      return new JsonResponse(['error' => "facilities required"], 400);
+    }
+
+    $response = new JsonResponse();
+    try {
+      $command_id = $this->editor->updateFacilities($cdbid, $body_content->facilities);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
     }
