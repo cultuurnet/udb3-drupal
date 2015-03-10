@@ -9,9 +9,9 @@ namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
 use CultuurNet\UDB3\Address;
-use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
@@ -135,9 +135,9 @@ class PlaceRestController extends OfferRestBaseController {
       if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
         $theme = new Theme($body_content->theme->id, $body_content->theme->label);
       }
-        
+
       $address = !empty($body_content->location->address) ? $body_content->location->address : $body_content->address;
-      
+
       $place_id = $this->editor->createPlace(
         new Title($body_content->name->nl),
         new EventType($body_content->type->id, $body_content->type->label),
@@ -162,6 +162,39 @@ class PlaceRestController extends OfferRestBaseController {
     }
 
     return $response;
+  }
+
+  /**
+   * Update the facilities.
+   *
+   * @param Request $request
+   * @param string $cdbid
+   * @return JsonResponse
+   */
+  public function updateFacilities(Request $request, $cdbid) {
+
+    $body_content = json_decode($request->getContent());
+    if (empty($body_content->facilities)) {
+      return new JsonResponse(['error' => "facilities required"], 400);
+    }
+
+    $facilities = array();
+    foreach ($body_content->facilities as $facility) {
+      $facilities[] = new Facility($facility->id, $facility->label);
+    }
+
+    $response = new JsonResponse();
+    try {
+      $command_id = $this->editor->updateFacilities($cdbid, $facilities);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (\Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
   }
 
 }

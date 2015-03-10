@@ -162,36 +162,6 @@ class OfferRestBaseController extends ControllerBase {
   }
 
   /**
-   * Update the facilities.
-   *
-   * @param Request $request
-   * @param string $cdbid
-   * @return JsonResponse
-   */
-  public function updateFacilities(Request $request, $cdbid) {
-
-    return new JsonResponse(['error' => "facilities required"], 200);
-
-    $body_content = json_decode($request->getContent());
-    if (empty($body_content->facilities)) {
-      return new JsonResponse(['error' => "facilities required"], 400);
-    }
-
-    $response = new JsonResponse();
-    try {
-      $command_id = $this->editor->updateFacilities($cdbid, $body_content->facilities);
-      $response->setData(['commandId' => $command_id]);
-    }
-    catch (\Exception $e) {
-      $response->setStatusCode(400);
-      $response->setData(['error' => $e->getMessage()]);
-    }
-
-    return $response;
-
-  }
-
-  /**
    * Init the calendar object to use for a create (event / place)
    */
   protected function initCalendarForCreate($body_content) {
