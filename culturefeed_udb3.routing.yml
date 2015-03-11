@@ -303,3 +303,13 @@ culturefeed_udb3.export.ooxml:
     _access: 'TRUE'
     _format: json
     _method: POST
+
+culturefeed_udb3.content:
+  path: '/udb3/api/1.0/udb3_content_current_user'
+  defaults:
+    _controller: 'Drupal\culturefeed_udb3\Controller\ContentController::contentForCurrentUser'
+    _title: 'City suggest'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
