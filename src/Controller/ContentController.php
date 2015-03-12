@@ -65,13 +65,14 @@ class ContentController extends ControllerBase {
       // Get details
       $table = 'culturefeed_udb3_' . $result->type . '_store';
       $details_query = db_select($table, 's')
-          ->fields('s', array('payload'))
+          ->fields('s', array('payload', 'recorded_on'))
           ->condition('s.uuid', $result->id);
       $details = $details_query->execute()->fetch();
       $result->details = json_decode($details->payload);
-      $content['content'][] = $result;
-
+      $result->recorded_on = strtotime($details->recorded_on);
+      $content['content'][$result->recorded_on] = $result;
     }
+
     return new JsonResponse($content);
   }
 }
