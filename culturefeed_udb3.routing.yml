@@ -103,7 +103,7 @@ culturefeed_udb3.event.update_contactpoint:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
-    
+
 culturefeed_udb3.event.update_bookinginfo:
   path: '/udb3/api/1.0/event/{cdbid}/bookingInfo'
   defaults:
@@ -113,6 +113,34 @@ culturefeed_udb3.event.update_bookinginfo:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
+
+culturefeed_udb3.event.add_image:
+  path: '/udb3/api/1.0/event/{cdbid}/image'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::addImage'
+    _title: 'Add new images to the event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+
+culturefeed_udb3.event.update_image:
+  path: '/udb3/api/1.0/event/{cdbid}/image/{index}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::updateImage'
+    _title: 'Update an image'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _method: POST
+
+culturefeed_udb3.event.delete_image:
+  path: '/udb3/api/1.0/event/{cdbid}/image/{index}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteImage'
+    _title: 'Delete an image'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _method: DELETE
 
 culturefeed_udb3.event_create:
   path: '/udb3/api/1.0/event'
@@ -253,7 +281,7 @@ culturefeed_udb3.place.update_contactpoint:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
-    
+
 culturefeed_udb3.place.update_bookinginfo:
   path: '/udb3/api/1.0/place/{cdbid}/bookingInfo'
   defaults:
@@ -273,6 +301,33 @@ culturefeed_udb3.place.update_facilities:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
+
+culturefeed_udb3.place.add_image:
+  path: '/udb3/api/1.0/place/{cdbid}/image'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::addImage'
+    _title: 'Add new images to the place'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _method: POST
+
+culturefeed_udb3.place.update_image:
+  path: '/udb3/api/1.0/place/{cdbid}/image/{index}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateImage'
+    _title: 'Update an image'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _method: POST
+
+culturefeed_udb3.place.delete_image:
+  path: '/udb3/api/1.0/place/{cdbid}/image/{index}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deleteImage'
+    _title: 'Delete an image'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _method: DELETE
 
 culturefeed_udb3.organizer:
   path: '/udb3/api/1.0/organizer/{cdbid}'

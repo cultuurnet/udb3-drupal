@@ -10,16 +10,20 @@ namespace Drupal\culturefeed_udb3\Controller;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\MediaObject;
 use CultuurNet\UDB3\Timestamp;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\culturefeed_udb3\ImageUploadInterface;
+use Drupal\image\Entity\ImageStyle;
 use Exception;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Base class for offer reset callbacks.
  */
-class OfferRestBaseController extends ControllerBase {
+abstract class OfferRestBaseController extends ControllerBase implements ImageUploadInterface {
 
   protected $editor;
 
@@ -162,7 +166,7 @@ class OfferRestBaseController extends ControllerBase {
     return $response;
 
   }
-  
+
   /**
    * Update the bookingInfo.
    *
@@ -180,7 +184,7 @@ class OfferRestBaseController extends ControllerBase {
     $response = new JsonResponse();
     try {
       $data = $body_content->bookingInfo;
-      $bookingInfo = new BookingInfo($data->url, $data->urlLabel, $data->phone, $data->email, 
+      $bookingInfo = new BookingInfo($data->url, $data->urlLabel, $data->phone, $data->email,
         $data->availabilityStarts, $data->availabilityEnds, $data->availabilityStarts, $data->availabilityStarts);
       $command_id = $this->editor->updateBookingInfo($cdbid, $bookingInfo);
       $response->setData(['commandId' => $command_id]);
@@ -203,8 +207,6 @@ class OfferRestBaseController extends ControllerBase {
    */
   public function updateFacilities(Request $request, $cdbid) {
 
-    return new JsonResponse(['error' => "facilities required"], 200);
-
     $body_content = json_decode($request->getContent());
     if (empty($body_content->facilities)) {
       return new JsonResponse(['error' => "facilities required"], 400);
@@ -213,6 +215,128 @@ class OfferRestBaseController extends ControllerBase {
     $response = new JsonResponse();
     try {
       $command_id = $this->editor->updateFacilities($cdbid, $body_content->facilities);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Add an image.
+   *
+   * @param Request $request
+   * @param type $cdbid
+   */
+  public function addImage(Request $request, $cdbid) {
+
+    if (!$request->files->has('file')) {
+      return new JsonResponse(['error' => "file required"], 400);
+    }
+
+    // Save the image in drupal files.
+    $drupal_file = $this->saveUploadedImage($request->files->get('file'), $this->getImageDestination($cdbid));
+    if (!$drupal_file) {
+      return new JsonResponse(['error' => "Error while saving file"], 400);
+    }
+
+    $description = $request->request->get('description');
+    $copyrightHolder = $request->request->get('copyrightHolder');
+
+    // Create the command and return the url to the image + thumbnail version.
+    $response = new JsonResponse();
+    try {
+      $url = file_create_url($drupal_file->getFileUri());
+      $thumbnail_url = ImageStyle::load('thumbnail')->buildUrl($drupal_file->getFileUri());
+      $command_id = $this->editor->addImage($cdbid, new MediaObject($url, $thumbnail_url, $description, $copyrightHolder));
+      $response->setData(['commandId' => $command_id, 'thumbnail' => $thumbnail_url, 'url' => $url]);
+    }
+    catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Update an image.
+   *
+   * @param Request $request
+   * @param string $cdbid
+   * @param string $index
+   */
+  public function updateImage(Request $request, $cdbid, $index) {
+
+    $response = new JsonResponse();
+    try {
+
+      $itemJson = $this->getItem($cdbid);
+      $item = json_decode($itemJson);
+      if (!isset($item->mediaObject[$index])) {
+        return new JsonResponse(['error' => "The image to edit was not found"], 400);
+      }
+
+      // A new file was uploaded.
+      if ($request->files->has('file')) {
+
+        $drupal_file = $this->saveUploadedImage($request->files->get('file'), $this->getImageDestination($cdbid));
+        if (!$drupal_file) {
+          return new JsonResponse(['error' => "Error while saving file"], 400);
+        }
+
+        $url = file_create_url($drupal_file->getFileUri());
+        $thumbnail_url = ImageStyle::load('thumbnail')->buildUrl($drupal_file->getFileUri());
+
+      }
+      // Use existing url.
+      else {
+        $url = $item->mediaObject[$index]->url;
+        $thumbnail_url = $item->mediaObject[$index]->thumbnailUrl;
+      }
+
+      $description = $request->request->get('description');
+      $copyright = $request->request->get('copyright');
+
+      $command_id = $this->editor->updateImage($cdbid, $index, new MediaObject($url, $thumbnail_url, $description, $copyright));
+      return new JsonResponse(['error' => "description required"], 400);
+      $response->setData(['commandId' => $command_id, 'thumbnailUrl' => $thumbnail_url, 'url' => $url]);
+    }
+    catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Delete an image.
+   *
+   * @param Request $request
+   * @param string $cdbid
+   * @param string $index
+   */
+  public function deleteImage($cdbid, $index) {
+
+    try {
+
+      $itemJson = $this->getItem($cdbid);
+      $item = json_decode($itemJson);
+      if (!isset($item->mediaObject[$index])) {
+        return new JsonResponse(['error' => "The image to edit was not found"], 400);
+      }
+
+      $response = new JsonResponse();
+
+      $response->setData(['thumbnailUrl' => 'ok']);
+      $command_id = $this->editor->deleteImage($cdbid, $index);
       $response->setData(['commandId' => $command_id]);
     }
     catch (Exception $e) {
@@ -291,6 +415,20 @@ class OfferRestBaseController extends ControllerBase {
       }
 
       return new Calendar($calendarType, $startDate, $endDate, $timestamps, $openingHours);
+  }
+
+  /**
+   * Save the uploaded image to the destination folder.
+   */
+  protected function saveUploadedImage(UploadedFile $file, $destination) {
+
+      $filename = $file->getClientOriginalName();
+
+      // Save the image in drupal files.
+      file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
+
+      return file_save_data(file_get_contents($file->getPathname()), $destination . '/' . $filename, FILE_EXISTS_RENAME);
+
   }
 
 }

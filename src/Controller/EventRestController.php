@@ -31,6 +31,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class EventRestController extends OfferRestBaseController {
 
+  const IMAGE_UPLOAD_DIR = 'public://events';
+
   /**
    * The search service.
    *
@@ -116,7 +118,7 @@ class EventRestController extends OfferRestBaseController {
    *   The response.
    */
   public function details($cdbid) {
-    $event = $this->eventService->getEvent($cdbid);
+    $event = $this->getDetail($cdbid);
 
     $response = JsonResponse::create()
       ->setContent($event)
@@ -330,6 +332,20 @@ class EventRestController extends OfferRestBaseController {
     }
 
     return $response;
+  }
+
+  /**
+   * Get the image destination.
+   */
+  public function getImageDestination($id) {
+    return self::IMAGE_UPLOAD_DIR . '/' . $id;
+  }
+
+  /**
+   * Get the detail of an item.
+   */
+  public function getItem($id) {
+    return $this->eventService->getEvent($id);
   }
 
 }

@@ -192,8 +192,6 @@ services:
   culturefeed_udb3.place_command_handler:
     class: CultuurNet\UDB3\Place\CommandHandler
     arguments: ['@culturefeed_udb3.place.repository']
-    tags:
-      - { name: 'culturefeed_udb3.command_bus.subscriber' }
 
   culturefeed_udb3.logger.command_bus.factory:
     class: Drupal\culturefeed_udb3\LoggerCommandBusFactory

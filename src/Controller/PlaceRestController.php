@@ -29,6 +29,8 @@ use Symfony\Component\Serializer\Exception\Exception;
  */
 class PlaceRestController extends OfferRestBaseController {
 
+  const IMAGE_UPLOAD_DIR = 'public://places';
+
   /**
    * The entity service.
    *
@@ -103,7 +105,7 @@ class PlaceRestController extends OfferRestBaseController {
    */
   public function details($cdbid) {
 
-    $place = $this->entityService->getEntity($cdbid);
+    $place = $this->getDetail($cdbid);
 
     $response = JsonResponse::create()
       ->setContent($place)
@@ -195,6 +197,20 @@ class PlaceRestController extends OfferRestBaseController {
 
     return $response;
 
+  }
+
+  /**
+   * Get the image destination.
+   */
+  public function getImageDestination($id) {
+    return self::IMAGE_UPLOAD_DIR . '/' . $id;
+  }
+
+  /**
+   * Get the detail of an item.
+   */
+  public function getItem($id) {
+    return $this->entityService->getEntity($id);
   }
 
 }
