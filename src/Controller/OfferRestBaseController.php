@@ -13,8 +13,10 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\MediaObject;
 use CultuurNet\UDB3\Timestamp;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Site\Settings;
 use Drupal\culturefeed_udb3\ImageUploadInterface;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\file\Entity\File;
 use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -282,6 +284,11 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
         return new JsonResponse(['error' => "The image to edit was not found"], 400);
       }
 
+      // Get the fid of the old file.
+      $url = $item->mediaObject[$index]->url;
+      $thumbnail_url = $item->mediaObject[$index]->thumbnailUrl;
+      $old_fid = $this->getFileIdByUrl($url);
+
       // A new file was uploaded.
       if ($request->files->has('file')) {
 
@@ -299,8 +306,6 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
       }
       // Use existing url.
       else {
-        $url = $item->mediaObject[$index]->url;
-        $thumbnail_url = $item->mediaObject[$index]->thumbnailUrl;
 
         // Format is json if only the text was changed.
         $body_content = json_decode($request->getContent());
@@ -309,7 +314,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
 
       }
 
-      $command_id = $this->editor->updateImage($cdbid, $index, new MediaObject($url, $thumbnail_url, $description, $copyright));
+      $command_id = $this->editor->updateImage($cdbid, $index, new MediaObject($url, $thumbnail_url, $description, $copyright, $old_fid));
       $response->setData(['commandId' => $command_id, 'thumbnailUrl' => $thumbnail_url, 'url' => $url]);
     }
     catch (Exception $e) {
@@ -338,10 +343,12 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
         return new JsonResponse(['error' => "The image to edit was not found"], 400);
       }
 
-      $response = new JsonResponse();
+      // Get the fid of the old file.
+      $url = $item->mediaObject[$index]->url;
+      $old_fid = $this->getFileIdByUrl($url);
 
-      $response->setData(['thumbnailUrl' => 'ok']);
-      $command_id = $this->editor->deleteImage($cdbid, $index);
+      $response = new JsonResponse();
+      $command_id = $this->editor->deleteImage($cdbid, $index, $old_fid);
       $response->setData(['commandId' => $command_id]);
     }
     catch (Exception $e) {
@@ -432,7 +439,22 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
       // Save the image in drupal files.
       file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
 
-      return file_save_data(file_get_contents($file->getPathname()), $destination . '/' . $filename, FILE_EXISTS_RENAME);
+      $file = file_save_data(file_get_contents($file->getPathname()), $destination . '/' . $filename, FILE_EXISTS_RENAME);
+      \Drupal\file\FileUsage\FileUsageBase::add($file, 'culturefeed_udb3');
+
+      return $file;
+
+  }
+
+  /**
+   * Get the file id of a given url.
+   */
+  protected function getFileIdByUrl($url) {
+
+      $public_files_path = Settings::get('file_public_path', conf_path() . '/files');
+      $uri = str_replace($GLOBALS['base_url'] . '/' . $public_files_path . '/', 'public://', $url);
+
+      return db_query('SELECT fid FROM {file_managed} WHERE uri = :uri', array(':uri' => $uri))->fetchField();
 
   }
 

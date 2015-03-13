@@ -309,3 +309,15 @@ services:
     arguments: ['@culturefeed_udb3.event_history_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
+
+  culturefeed_udb3.drupal_udb3_event_event_listener:
+    class: Drupal\culturefeed_udb3\Udb3EventEventListener
+    arguments: ['@file.usage']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+
+  culturefeed_udb3.drupal_udb3_place_event_listener:
+      class: Drupal\culturefeed_udb3\Udb3PlaceEventListener
+      arguments: ['@file.usage']
+      tags:
+        - { name: 'culturefeed_udb3.event_bus.subscriber' }
