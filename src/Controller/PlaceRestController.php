@@ -60,7 +60,8 @@ class PlaceRestController extends OfferRestBaseController {
     return new static(
       $container->get('culturefeed_udb3.place.service'),
       $container->get('culturefeed_udb3.place.editor'),
-      $container->get('culturefeed.current_user')
+      $container->get('culturefeed.current_user'),
+      $container->get('file.usage')
     );
   }
 
