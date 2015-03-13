@@ -9,6 +9,10 @@ services:
   culturefeed_udb3.iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
     arguments: ['@url_generator']
+  culturefeed_udb3.eventstore_payload_serializer:
+    class: CultuurNet\UDB3\EventSourcing\PayloadManipulatingSerializer
+    factory_class: CultuurNet\UDB3\BackwardsCompatiblePayloadSerializerFactory
+    factory_method: createSerializer
   culturefeed_udb3.serialize:
     class: Broadway\Serializer\SimpleInterfaceSerializer
   culturefeed_udb3.main_command_bus:
@@ -62,7 +66,7 @@ services:
   # Place: repository
   culturefeed_udb3.place.store:
     class: Drupal\culturefeed_udb3\EventStore
-    arguments: ['place_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.serialize', '@culturefeed_udb3.serialize']
+    arguments: ['place_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
   culturefeed_udb3.place.iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
     arguments: ['@url_generator', 'culturefeed_udb3.place']
@@ -94,7 +98,7 @@ services:
   # Organizer: repository
   culturefeed_udb3.organizer.store:
     class: Drupal\culturefeed_udb3\EventStore
-    arguments: ['organizer_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.serialize', '@culturefeed_udb3.serialize']
+    arguments: ['organizer_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
   culturefeed_udb3.organizer.iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
     arguments: ['@url_generator', 'culturefeed_udb3.organizer']
@@ -143,7 +147,7 @@ services:
     factory_method: get
   culturefeed_udb3.event_store:
     class: Drupal\culturefeed_udb3\EventStore
-    arguments: ['event_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.serialize', '@culturefeed_udb3.serialize']
+    arguments: ['event_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
   culturefeed_udb3.local_event_repository:
     class: CultuurNet\UDB3\Event\EventRepository
     arguments: ['@culturefeed_udb3.event_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
@@ -207,7 +211,7 @@ services:
 
   culturefeed_udb3.used_labels_memory_event_store:
     class: Drupal\culturefeed_udb3\EventStore
-    arguments: ['used_labels_memory_event_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.serialize', '@culturefeed_udb3.serialize']
+    arguments: ['used_labels_memory_event_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
   culturefeed_udb3.event.used_labels_memory_repository:
     class: CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryRepository
     arguments: ['@culturefeed_udb3.used_labels_memory_event_store', '@culturefeed_udb3.event_bus']
