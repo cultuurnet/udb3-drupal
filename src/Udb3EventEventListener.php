@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Events\ImageDeleted;
 use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use Drupal\file\Entity\File;
+use Drupal\file\FileUsage\FileUsageInterface;
 
 /**
  * Eventlistener on events in drupal to cleanup drupal stuff.
@@ -19,6 +20,18 @@ use Drupal\file\Entity\File;
 class Udb3EventEventListener implements EventListenerInterface {
 
     use DelegateEventHandlingToSpecificMethodTrait;
+
+    /**
+     * @var FileUsageInterface
+     */
+    protected $fileUsage;
+
+    /**
+     * Construct the listener.
+     */
+    public function __construct(FileUsageInterface $fileUsage) {
+      $this->fileUsage = $fileUsage;
+    }
 
     /**
      * Cleanup file entities after image update.
@@ -39,7 +52,7 @@ class Udb3EventEventListener implements EventListenerInterface {
           $file = File::load($internalId);
           // Delete the usage, cron will  delete the file if this was the only usage.
           if ($file) {
-            $this->fileUsage->delete($file, 'culturefeed_udb3');
+            $this->fileUsage->delete($file, 'culturefeed_udb3', 'udb3_item', $imageUpdated->getEventId());
           }
       }
 
@@ -55,7 +68,7 @@ class Udb3EventEventListener implements EventListenerInterface {
           $file = File::load($internalId);
           // Delete the usage, cron will  delete the file if this was the only usage.
           if ($file) {
-            $this->fileUsage->delete($file, 'culturefeed_udb3');
+            $this->fileUsage->delete($file, 'culturefeed_udb3', 'udb3_item', $imageUpdated->getEventId());
           }
         }
     }

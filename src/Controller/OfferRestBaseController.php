@@ -241,7 +241,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     }
 
     // Save the image in drupal files.
-    $drupal_file = $this->saveUploadedImage($request->files->get('file'), $this->getImageDestination($cdbid));
+    $drupal_file = $this->saveUploadedImage($request->files->get('file'), $cdbid, $this->getImageDestination($cdbid));
     if (!$drupal_file) {
       return new JsonResponse(['error' => "Error while saving file"], 400);
     }
@@ -292,7 +292,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
       // A new file was uploaded.
       if ($request->files->has('file')) {
 
-        $drupal_file = $this->saveUploadedImage($request->files->get('file'), $this->getImageDestination($cdbid));
+        $drupal_file = $this->saveUploadedImage($request->files->get('file'), $cdbid, $this->getImageDestination($cdbid));
         if (!$drupal_file) {
           return new JsonResponse(['error' => "Error while saving file"], 400);
         }
@@ -432,7 +432,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
   /**
    * Save the uploaded image to the destination folder.
    */
-  protected function saveUploadedImage(UploadedFile $file, $destination) {
+  protected function saveUploadedImage(UploadedFile $file, $itemId, $destination) {
 
       $filename = $file->getClientOriginalName();
 
@@ -440,7 +440,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
       file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
 
       $file = file_save_data(file_get_contents($file->getPathname()), $destination . '/' . $filename, FILE_EXISTS_RENAME);
-      $this->fileUsage->add($file, 'culturefeed_udb3', '', 0);
+      $this->fileUsage->add($file, 'culturefeed_udb3', 'udb3_item', $itemId);
 
       return $file;
 

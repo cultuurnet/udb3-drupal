@@ -21,6 +21,9 @@ class Udb3PlaceEventListener implements EventListenerInterface {
 
     use DelegateEventHandlingToSpecificMethodTrait;
 
+    /**
+     * @var FileUsageInterface
+     */
     protected $fileUsage;
 
     /**
