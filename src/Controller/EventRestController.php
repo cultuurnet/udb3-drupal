@@ -118,7 +118,7 @@ class EventRestController extends OfferRestBaseController {
    *   The response.
    */
   public function details($cdbid) {
-    $event = $this->getDetail($cdbid);
+    $event = $this->getItem($cdbid);
 
     $response = JsonResponse::create()
       ->setContent($event)

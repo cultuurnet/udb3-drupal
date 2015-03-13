@@ -105,7 +105,7 @@ class PlaceRestController extends OfferRestBaseController {
    */
   public function details($cdbid) {
 
-    $place = $this->getDetail($cdbid);
+    $place = $this->getItem($cdbid);
 
     $response = JsonResponse::create()
       ->setContent($place)

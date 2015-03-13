@@ -253,7 +253,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
       $url = file_create_url($drupal_file->getFileUri());
       $thumbnail_url = ImageStyle::load('thumbnail')->buildUrl($drupal_file->getFileUri());
       $command_id = $this->editor->addImage($cdbid, new MediaObject($url, $thumbnail_url, $description, $copyrightHolder));
-      $response->setData(['commandId' => $command_id, 'thumbnail' => $thumbnail_url, 'url' => $url]);
+      $response->setData(['commandId' => $command_id, 'thumbnailUrl' => $thumbnail_url, 'url' => $url]);
     }
     catch (Exception $e) {
       $response->setStatusCode(400);
@@ -293,18 +293,23 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
         $url = file_create_url($drupal_file->getFileUri());
         $thumbnail_url = ImageStyle::load('thumbnail')->buildUrl($drupal_file->getFileUri());
 
+        $description = $request->request->get('description');
+        $copyright = $request->request->get('copyrightHolder');
+
       }
       // Use existing url.
       else {
         $url = $item->mediaObject[$index]->url;
         $thumbnail_url = $item->mediaObject[$index]->thumbnailUrl;
+
+        // Format is json if only the text was changed.
+        $body_content = json_decode($request->getContent());
+        $description = empty($body_content->description) ? '' : $body_content->description;
+        $copyright = empty($body_content->copyrightHolder) ? '' : $body_content->copyrightHolder;
+
       }
 
-      $description = $request->request->get('description');
-      $copyright = $request->request->get('copyright');
-
       $command_id = $this->editor->updateImage($cdbid, $index, new MediaObject($url, $thumbnail_url, $description, $copyright));
-      return new JsonResponse(['error' => "description required"], 400);
       $response->setData(['commandId' => $command_id, 'thumbnailUrl' => $thumbnail_url, 'url' => $url]);
     }
     catch (Exception $e) {
