@@ -440,7 +440,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
       file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
 
       $file = file_save_data(file_get_contents($file->getPathname()), $destination . '/' . $filename, FILE_EXISTS_RENAME);
-      \Drupal\file\FileUsage\FileUsageBase::add($file, 'culturefeed_udb3');
+      \Drupal\file\FileUsage\FileUsageBase::add($file, 'culturefeed_udb3', '', 0);
 
       return $file;
 
