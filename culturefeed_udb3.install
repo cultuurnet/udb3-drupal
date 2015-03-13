@@ -15,3 +15,15 @@ function culturefeed_udb3_update_8001() {
     }
   }
 }
+
+/**
+ * Register the used labels entity type.
+ */
+function culturefeed_udb3_update_8002() {
+    $entity_manager = \Drupal::entityManager();
+    foreach ($entity_manager->getDefinitions() as $entity_type) {
+        if ($entity_type->id() == 'used_labels_memory_event_store') {
+            $entity_manager->onEntityTypeCreate($entity_type);
+        }
+    }
+}
