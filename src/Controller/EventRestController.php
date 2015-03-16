@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Location;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
+use Drupal\file\FileUsage\FileUsageInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -61,6 +62,12 @@ class EventRestController extends OfferRestBaseController {
   protected $user;
 
   /**
+   * The file usage interface.
+   * @var FileUsageInterface
+   */
+  protected $fileUsage;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -68,7 +75,8 @@ class EventRestController extends OfferRestBaseController {
       $container->get('culturefeed_udb3.event.service'),
       $container->get('culturefeed_udb3.event.editor'),
       $container->get('culturefeed_udb3.event.used_keywords_memory'),
-      $container->get('culturefeed.current_user')
+      $container->get('culturefeed.current_user'),
+      $container->get('file.usage')
     );
   }
 
@@ -88,12 +96,14 @@ class EventRestController extends OfferRestBaseController {
     EventServiceInterface $event_service,
     EventEditingServiceInterface $event_editor,
     DefaultUsedKeywordsMemoryService $used_keywords_memory,
-    CultureFeed_User $user
+    CultureFeed_User $user,
+    FileUsageInterface $fileUsage
   ) {
     $this->eventService = $event_service;
     $this->editor = $event_editor;
     $this->usedKeywordsMemory = $used_keywords_memory;
     $this->user = $user;
+    $this->fileUsage = $fileUsage;
   }
 
   /**

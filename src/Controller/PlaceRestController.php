@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use Drupal\file\FileUsage\FileUsageInterface;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -60,7 +61,8 @@ class PlaceRestController extends OfferRestBaseController {
     return new static(
       $container->get('culturefeed_udb3.place.service'),
       $container->get('culturefeed_udb3.place.editor'),
-      $container->get('culturefeed.current_user')
+      $container->get('culturefeed.current_user'),
+      $container->get('file.usage')
     );
   }
 
@@ -75,11 +77,13 @@ class PlaceRestController extends OfferRestBaseController {
   public function __construct(
     EntityServiceInterface $entity_service,
     PlaceEditingServiceInterface $place_editor,
-    CultureFeed_User $user
+    CultureFeed_User $user,
+    FileUsageInterface $fileUsage
   ) {
     $this->entityService = $entity_service;
     $this->editor = $place_editor;
     $this->user = $user;
+    $this->fileUsage = $fileUsage;
   }
 
   /**
