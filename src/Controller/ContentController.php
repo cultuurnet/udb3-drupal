@@ -58,7 +58,8 @@ class ContentController extends ControllerBase {
     $content = array();
     $results_query = db_select('culturefeed_udb3_index', 'i')
         ->fields('i', array('id', 'type', 'title', 'zip'))
-        ->condition('i.uid', $user_id);
+        ->condition('i.uid', $user_id)
+        ->condition('i.type', 'organizer', '!=');
     $results = $results_query->execute();
 
     foreach ($results as $result) {
