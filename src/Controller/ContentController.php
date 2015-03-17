@@ -69,9 +69,12 @@ class ContentController extends ControllerBase {
           ->fields('s', array('payload', 'recorded_on'))
           ->condition('s.uuid', $result->id);
       $details = $details_query->execute()->fetch();
-      $result->details = json_decode($details->payload);
-      $result->recorded_on = strtotime($details->recorded_on);
-      $content['content'][$result->recorded_on] = $result;
+      if ($details) {
+        $result->details = json_decode($details->payload);
+        $result->recorded_on = strtotime($details->recorded_on);
+        $content['content'][$result->recorded_on] = $result;
+      }
+
     }
 
     return new JsonResponse($content);
