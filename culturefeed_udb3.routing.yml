@@ -142,6 +142,16 @@ culturefeed_udb3.event.delete_image:
     _culturefeed_current_user: 'TRUE'
     _method: DELETE
 
+culturefeed_udb3.event.update:
+  path: '/udb3/api/1.0/event/{cdbid}/major-info'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::updateMajorInfo'
+    _title: 'Update major info'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+
 culturefeed_udb3.event_create:
   path: '/udb3/api/1.0/event'
   defaults:
@@ -328,6 +338,16 @@ culturefeed_udb3.place.delete_image:
   requirements:
     _culturefeed_current_user: 'TRUE'
     _method: DELETE
+
+culturefeed_udb3.place.update:
+  path: '/udb3/api/1.0/place/{cdbid}/major-info'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateMajorInfo'
+    _title: 'Update major info'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
 
 culturefeed_udb3.organizer:
   path: '/udb3/api/1.0/organizer/{cdbid}'

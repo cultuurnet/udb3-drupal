@@ -420,7 +420,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
       if (!empty($body_content->openingHours)) {
         $openingHours = $body_content->openingHours;
         foreach ($openingHours as $key => $openingHour) {
-          if (empty($openingHour->daysOfWeek) || empty($openingHour->opens) || empty($openingHour->closes)) {
+          if (empty($openingHour->dayOfWeek) || empty($openingHour->opens) || empty($openingHour->closes)) {
             unset($openingHours[$key]);
           }
         }

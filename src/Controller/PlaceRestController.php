@@ -171,6 +171,49 @@ class PlaceRestController extends OfferRestBaseController {
   }
 
   /**
+   * Update the major info of an item.
+   */
+  public function updateMajorInfo(Request $request, $cdbid) {
+
+    $response = new JsonResponse();
+    $body_content = json_decode($request->getContent());
+
+    try {
+
+      if (empty($body_content->name) || empty($body_content->type)) {
+        throw new \InvalidArgumentException('Required fields are missing');
+      }
+
+      $calendar = $this->initCalendarForCreate($body_content);
+
+      $theme = null;
+      if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
+        $theme = new Theme($body_content->theme->id, $body_content->theme->label);
+      }
+
+      $address = !empty($body_content->location->address) ? $body_content->location->address : $body_content->address;
+
+      $command_id = $this->editor->updateMajorInfo(
+        $cdbid,
+        new Title($body_content->name->nl),
+        new EventType($body_content->type->id, $body_content->type->label),
+        new Address($address->streetAddress, $address->postalCode, $address->addressLocality, $address->addressCountry),
+        $calendar,
+        $theme
+      );
+
+      $response->setData(['commandId' => $command_id]);
+
+    } catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
+  }
+
+  /**
    * Update the facilities.
    *
    * @param Request $request
