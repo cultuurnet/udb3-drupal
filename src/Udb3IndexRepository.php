@@ -44,19 +44,24 @@ class Udb3IndexRepository implements RepositoryInterface {
   /**
    * Update the index.
    */
-  public function updateIndex($id, $type, $userId, $title, $zip) {
+  public function updateIndex($id, $type, $userId, $title, $zip, $creationDate = null) {
+
+    $fields_to_insert = array(
+      'type' => $type,
+      'uid' => $userId,
+      'title' => $title,
+      'zip' => $zip,
+    );
+
+    if (!empty($creationDate)) {
+      $fields_to_insert['created_on'] = $creationDate->getTimestamp();
+    }
+
     // For optimal performance we use a merge query here
     // instead of the entity API.
     $query = $this->database->merge('culturefeed_udb3_index')
       ->key(array('id' => $id))
-      ->fields(
-        array(
-          'type' => $type,
-          'uid' => $userId,
-          'title' => $title,
-          'zip' => $zip,
-        )
-      );
+      ->fields($fields_to_insert);
 
     $query->execute();
   }

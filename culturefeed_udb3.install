@@ -43,3 +43,14 @@ function culturefeed_udb3_update_8003() {
    }
 
 }
+
+/**
+ * Add indexes for udb3_index.
+ */
+function culturefeed_udb3_update_8004() {
+
+  db_add_index('culturefeed_udb3_index', 'type', array('type'));
+  db_add_index('culturefeed_udb3_index', 'uid', array('uid'));
+  db_add_index('culturefeed_udb3_index', 'zip', array('zip'));
+
+}

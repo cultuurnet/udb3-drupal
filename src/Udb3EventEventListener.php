@@ -68,7 +68,7 @@ class Udb3EventEventListener implements EventListenerInterface {
           $file = File::load($internalId);
           // Delete the usage, cron will  delete the file if this was the only usage.
           if ($file) {
-            $this->fileUsage->delete($file, 'culturefeed_udb3', 'udb3_item', $imageUpdated->getEventId());
+            $this->fileUsage->delete($file, 'culturefeed_udb3', 'udb3_item', $imageDeleted->getEventId());
           }
         }
     }

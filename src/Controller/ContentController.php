@@ -57,22 +57,25 @@ class ContentController extends ControllerBase {
     $user_id = $this->user->id;
     $content = array();
     $results_query = db_select('culturefeed_udb3_index', 'i')
-        ->fields('i', array('id', 'type', 'title', 'zip'))
+        ->fields('i', array('id', 'type', 'created_on'))
         ->condition('i.uid', $user_id)
-        ->condition('i.type', 'organizer', '!=');
+        ->condition('i.type', 'organizer', '!=')
+        ->orderBy('created_on', 'DESC')
+        ->range(0, 50);
     $results = $results_query->execute();
 
     foreach ($results as $result) {
-      // Get details
-      $table = 'culturefeed_udb3_' . $result->type . '_store';
-      $details_query = db_select($table, 's')
-          ->fields('s', array('payload', 'recorded_on'))
-          ->condition('s.uuid', $result->id);
+
+      $table = 'culturefeed_udb3_' . $result->type . '_document_repository';
+      $details_query = db_select($table, 'd')
+          ->fields('d', array('body'))
+          ->condition('d.id', $result->id);
       $details = $details_query->execute()->fetch();
       if ($details) {
-        $result->details = json_decode($details->payload);
-        $result->recorded_on = strtotime($details->recorded_on);
-        $content['content'][$result->recorded_on] = $result;
+        $jsonLd = json_decode($details->body);
+        $jsonLd->type = $result->type;
+        $jsonLd->id = $result->id;
+        $content['content'][] = $jsonLd;
       }
 
     }
