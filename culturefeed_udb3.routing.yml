@@ -173,3 +173,13 @@ culturefeed_udb3.export.ooxml:
     _access: 'TRUE'
     _format: json
     _method: POST
+
+culturefeed_udb3.export.pdf:
+  path: '/udb3/api/1.0/events/export/pdf'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsPDF'
+    _title: 'Export as PDF'
+  requirements:
+    _access: 'TRUE'
+    _format: json
+    _method: POST
