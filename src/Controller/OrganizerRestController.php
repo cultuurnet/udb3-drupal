@@ -191,9 +191,8 @@ class OrganizerRestController extends ControllerBase {
       }
 
       $addresses = array();
-      if (!empty($body_content->address->street) && !empty($body_content->address->number) && !empty($body_content->address->city) && !empty($body_content->address->postalCode) && !empty($body_content->address->country)) {
-        $streetAddress = $body_content->address->street . ' ' . $body_content->address->number;
-        $addresses[] = new Address($streetAddress, $body_content->address->postalCode, $body_content->address->city, $body_content->address->country);
+      if (!empty($body_content->address->streetAddress) && !empty($body_content->address->locality) && !empty($body_content->address->postalCode) && !empty($body_content->address->country)) {
+        $addresses[] = new Address($body_content->address->streetAddress, $body_content->address->postalCode, $body_content->address->locality, $body_content->address->country);
       }
 
       $phones = array();
