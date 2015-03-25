@@ -9,13 +9,14 @@ namespace Drupal\culturefeed_udb3\EventExport\Controller;
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
-use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDF;
+use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDFJSONDeserializer;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Web\EmailAddress;
+use ValueObjects\String\String;
 
 class EventExportController extends ControllerBase
 {
@@ -89,22 +90,10 @@ class EventExportController extends ControllerBase
     }
 
     public function exportAsPDF(Request $request) {
-        $body = json_decode($request->getContent(), true);
 
-        $email = isset($body['email']) ? new EmailAddress($body['email']) : null;
-        $selection = isset($body['selection']) ? $body['selection']: null;
-        $customizations = isset($body['customizations']) ? $body['customizations']: null;
-
-        $command = new ExportEventsAsPDF(
-            new EventExportQuery(
-                $body['query']
-            ),
-            $email,
-            $selection,
-            null,
-            $customizations
-        );
-
+        $deserializer = new ExportEventsAsPDFJSONDeserializer();
+        $jsonString = new String($request->getContent());
+        $command = $deserializer->deserialize($jsonString);
         $commandId = $this->commandBus->dispatch($command);
 
         return JsonResponse::create(
