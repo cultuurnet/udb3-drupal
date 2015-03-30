@@ -371,19 +371,39 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
         foreach ($body_content->timestamps as $timestamp) {
           if (!empty($timestamp->date)) {
             $date = date('Y-m-d', strtotime($timestamp->date));
-            if (!empty($timestamp->showStartHour)) {
-              $startDate = $date . 'T' . $timestamp->startHour . ':00';
+
+            // Check if a correct starthour is given.
+            if (!empty($timestamp->showStartHour) && !empty($timestamp->startHour)) {
+
+              list($hour, $minute) = explode(':', $timestamp->startHour);
+              if (strlen($hour) == 2 && strlen($minute) == 2) {
+                $startDate = $date . 'T' . $timestamp->startHour . ':00';
+              }
+              else {
+                $startDate = $date . 'T00:00:00';
+              }
+
             }
             else {
               $startDate = $date . 'T00:00:00';
             }
 
-            if (!empty($timestamp->showEndHour)) {
-              $endDate = $date . 'T' . $timestamp->endHour . ':00';
+            // Check if a correct endhour is given.
+            if (!empty($timestamp->showEndHour) && !empty($timestamp->endHour)) {
+
+              list($hour, $minute) = explode(':', $timestamp->endHour);
+              if (strlen($hour) == 2 && strlen($minute) == 2) {
+                $endDate = $date . 'T' . $timestamp->endHour . ':00';
+              }
+              else {
+                $endDate = $date . 'T00:00:00';
+              }
+
             }
             else {
               $endDate = $date . 'T00:00:00';
             }
+
             $timestamps[strtotime($startDate)] = new Timestamp($startDate, $endDate);
           }
         }
