@@ -370,7 +370,7 @@ culturefeed_udb3.organizer.suggest:
     _method: GET
 
 culturefeed_udb3.organizer.duplicates:
-  path: '/udb3/api/1.0/organizer/search-duplicates/{title}/{zip}'
+  path: '/udb3/api/1.0/organizer/search-duplicates/{title}'
   defaults:
     _controller: '\Drupal\culturefeed_udb3\Controller\OrganizerRestController::searchDuplicates'
     _title: 'Organizer search for duplicates'

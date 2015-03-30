@@ -157,9 +157,15 @@ class OrganizerRestController extends ControllerBase {
   /**
    * Search for duplicates organizers.
    */
-  public function searchDuplicates($title, $zip) {
+  public function searchDuplicates(Request $request, $title) {
 
-    $results = $this->indexRepository->getOrganizersByTitleAndZip($title, $zip);
+    $postalcode = $request->query->get('postalcode');
+    if (empty($postalcode)) {
+      $results = $this->indexRepository->getOrganizersByTitle($title);
+    }
+    else {
+      $results = $this->indexRepository->getOrganizersByTitleAndZip($title);
+    }
 
     $duplicates = array();
     foreach ($results as $entity_id) {
