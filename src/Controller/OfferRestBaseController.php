@@ -254,7 +254,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     try {
       $url = file_create_url($drupal_file->getFileUri());
       $thumbnail_url = ImageStyle::load('thumbnail')->buildUrl($drupal_file->getFileUri());
-      $command_id = $this->editor->addImage($cdbid, new MediaObject($url, $thumbnail_url, $description, $copyrightHolder));
+      $command_id = $this->editor->addImage($cdbid, new MediaObject($url, $thumbnail_url, $description, $copyrightHolder, '', 'ImageObject'));
       $response->setData(['commandId' => $command_id, 'thumbnailUrl' => $thumbnail_url, 'url' => $url]);
     }
     catch (Exception $e) {
@@ -314,7 +314,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
 
       }
 
-      $command_id = $this->editor->updateImage($cdbid, $index, new MediaObject($url, $thumbnail_url, $description, $copyright, $old_fid));
+      $command_id = $this->editor->updateImage($cdbid, $index, new MediaObject($url, $thumbnail_url, $description, $copyright, $old_fid, 'ImageObject'));
       $response->setData(['commandId' => $command_id, 'thumbnailUrl' => $thumbnail_url, 'url' => $url]);
     }
     catch (Exception $e) {

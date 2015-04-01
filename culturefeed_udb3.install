@@ -54,3 +54,45 @@ function culturefeed_udb3_update_8004() {
   db_add_index('culturefeed_udb3_index', 'zip', array('zip'));
 
 }
+
+/**
+ * Convert all existing media objects to type ImageObject.
+ */
+function culturefeed_udb3_update_8007() {
+
+  // All events.
+  $result = db_query('SELECT * FROM {culturefeed_udb3_event_document_repository}');
+  foreach ($result as $row) {
+    $event = json_decode($row->body);
+
+    if (!empty($event->mediaObject)) {
+      foreach ($event->mediaObject as $key => $mediaObject) {
+        $mediaLd = array('@type' => 'ImageObject');
+        $mediaLd += (array)$event->mediaObject[$key];
+        $event->mediaObject[$key] = $mediaLd;
+      }
+      db_update('culturefeed_udb3_event_document_repository')
+        ->condition('id', $row->id)
+        ->fields(array('body' => json_encode($event)))
+        ->execute();
+    }
+  }
+
+  // All places.
+  $result = db_query('SELECT * FROM {culturefeed_udb3_place_document_repository}');
+  foreach ($result as $row) {
+    $place = json_decode($row->body);
+    if (!empty($place->mediaObject)) {
+      foreach ($place->mediaObject as $key => $mediaObject) {
+        $mediaLd = array('@type' => 'ImageObject');
+        $mediaLd += (array)$place->mediaObject[$key];
+        $place->mediaObject[$key] = $mediaLd;
+      }
+      db_update('culturefeed_udb3_place_document_repository')
+        ->condition('id', $row->id)
+        ->fields(array('body' => json_encode($place)))
+        ->execute();
+    }
+  }
+
+}
