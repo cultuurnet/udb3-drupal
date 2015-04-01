@@ -56,6 +56,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     } catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
@@ -84,6 +85,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
@@ -112,6 +114,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
@@ -135,6 +138,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
@@ -163,6 +167,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
@@ -194,6 +199,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
@@ -222,6 +228,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
@@ -260,6 +267,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
@@ -320,6 +328,7 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
     catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
     }
 
     return $response;
