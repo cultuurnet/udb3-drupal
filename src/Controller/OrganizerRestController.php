@@ -164,7 +164,7 @@ class OrganizerRestController extends ControllerBase {
       $results = $this->indexRepository->getOrganizersByTitle($title);
     }
     else {
-      $results = $this->indexRepository->getOrganizersByTitleAndZip($title);
+      $results = $this->indexRepository->getOrganizersByTitleAndZip($title, $postalcode);
     }
 
     $duplicates = array();
