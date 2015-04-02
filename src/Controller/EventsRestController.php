@@ -80,6 +80,11 @@ class EventsRestController extends ControllerBase {
     if (!empty($locationZip)) {
       $conditions['locationZip'] = $locationZip;
     }
+
+    if ($request->query->has('place')) {
+      $conditions['place_only'] = TRUE;
+    }
+
     $locationCdbId = $request->query->get('locationCdbId', 0);
     if (!empty($locationCdbId)) {
       $conditions['locationCdbId'] = $locationCdbId;
