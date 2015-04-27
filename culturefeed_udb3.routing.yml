@@ -54,11 +54,11 @@ culturefeed_udb3.event.description:
     _format: json
     _method: POST
 
-culturefeed_udb3.event.keywords:
-  path: '/udb3/api/1.0/event/{cdbid}/keywords'
+culturefeed_udb3.event.labels:
+  path: '/udb3/api/1.0/event/{cdbid}/labels'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::addKeyword'
-    _title: 'Add event keyword'
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::addLabel'
+    _title: 'Add event label'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _format: json
@@ -172,11 +172,11 @@ culturefeed_udb3.place_create:
     _format: json
     _method: POST
 
-culturefeed_udb3.event.keywords_delete:
-  path: '/udb3/api/1.0/event/{cdbid}/keywords/{keyword}'
+culturefeed_udb3.event.labels_delete:
+  path: '/udb3/api/1.0/event/{cdbid}/labels/{label}'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteKeyword'
-    _title: 'Delete event keyword'
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteLabel'
+    _title: 'Delete event label'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _format: json
@@ -192,21 +192,21 @@ culturefeed_udb3.events.search:
     _format: ld_json
     _method: GET
 
-culturefeed_udb3.events.tag:
-  path: '/udb3/api/1.0/events/tag'
+culturefeed_udb3.events.label:
+  path: '/udb3/api/1.0/events/label'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\EventsRestController::tagEvents'
-    _title: 'Events tagger'
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventsRestController::labelEvents'
+    _title: 'Events labeller'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
 
-culturefeed_udb3.query.tag:
-  path: '/udb3/api/1.0/query/tag'
+culturefeed_udb3.query.label:
+  path: '/udb3/api/1.0/query/label'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\EventsRestController::tagQuery'
-    _title: 'Query tagger'
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventsRestController::labelQuery'
+    _title: 'Query labeller'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _format: json
@@ -222,11 +222,11 @@ culturefeed_udb3.user:
     _format: ld_json
     _method: GET
 
-culturefeed_udb3.user.keywords:
-  path: '/udb3/api/1.0/user/keywords'
+culturefeed_udb3.user.labels:
+  path: '/udb3/api/1.0/user/labels'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\UserRestController::keywords'
-    _title: 'User keywords'
+    _controller: '\Drupal\culturefeed_udb3\Controller\UserRestController::labels'
+    _title: 'User labels'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _format: json
@@ -409,6 +409,16 @@ culturefeed_udb3.location.autocomplete:
     _format: json
     _method: GET
 
+culturefeed_udb3.content:
+  path: '/udb3/api/1.0/udb3_content_current_user'
+  defaults:
+    _controller: 'Drupal\culturefeed_udb3\Controller\ContentController::contentForCurrentUser'
+    _title: 'User content'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
+
 culturefeed_udb3.export.jsonld:
   path: '/udb3/api/1.0/events/export/json'
   defaults:
@@ -429,12 +439,12 @@ culturefeed_udb3.export.ooxml:
     _format: json
     _method: POST
 
-culturefeed_udb3.content:
-  path: '/udb3/api/1.0/udb3_content_current_user'
+culturefeed_udb3.export.pdf:
+  path: '/udb3/api/1.0/events/export/pdf'
   defaults:
-    _controller: 'Drupal\culturefeed_udb3\Controller\ContentController::contentForCurrentUser'
-    _title: 'City suggest'
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsPDF'
+    _title: 'Export as PDF'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _access: 'TRUE'
     _format: json
-    _method: GET
+    _method: POST

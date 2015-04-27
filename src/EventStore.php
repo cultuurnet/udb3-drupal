@@ -7,15 +7,15 @@
 
 namespace Drupal\culturefeed_udb3;
 
+use Broadway\Domain\DateTime;
+use Broadway\Domain\DomainEventStream;
+use Broadway\Domain\DomainEventStreamInterface;
+use Broadway\Domain\DomainMessage;
 use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventStore\EventStreamNotFoundException;
+use Broadway\Serializer\SerializerInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\Query\QueryFactory;
-use Broadway\Domain\DomainEventStreamInterface;
-use Broadway\EventStore\EventStreamNotFoundException;
-use Broadway\Domain\DomainEventStream;
-use Broadway\Domain\DomainMessage;
-use Broadway\Serializer\SimpleInterfaceSerializer;
-use Broadway\Domain\DateTime;
 
 /**
  * Class EventStore.
@@ -41,14 +41,14 @@ class EventStore implements EventStoreInterface {
   /**
    * The payload serializer.
    *
-   * @var \Broadway\Serializer\SimpleInterfaceSerializer;
+   * @var \Broadway\Serializer\SerializerInterface;
    */
   protected $payloadSerializer;
 
   /**
    * The metadata serializer.
    *
-   * @var \Broadway\Serializer\SimpleInterfaceSerializer;
+   * @var \Broadway\Serializer\SerializerInterface
    */
   protected $metadataSerializer;
 
@@ -61,17 +61,17 @@ class EventStore implements EventStoreInterface {
    *   The entity manger.
    * @param QueryFactory $entity_query
    *   The query factory.
-   * @param SimpleInterfaceSerializer $payload_serializer
+   * @param SerializerInterface $payload_serializer
    *   The payload serializer.
-   * @param SimpleInterfaceSerializer $metadata_serializer
+   * @param SerializerInterface $metadata_serializer
    *   The metadata serializer.
    */
   public function __construct(
     $entity_type,
     EntityManagerInterface $entity_manager,
     QueryFactory $entity_query,
-    SimpleInterfaceSerializer $payload_serializer,
-    SimpleInterfaceSerializer $metadata_serializer
+    SerializerInterface $payload_serializer,
+    SerializerInterface $metadata_serializer
   ) {
     $this->entityManager = $entity_manager->getStorage($entity_type);
     $this->entityQuery = $entity_query->get($entity_type);

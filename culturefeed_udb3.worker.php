@@ -32,7 +32,6 @@ if (!file_exists($autoloader_path)) {
 
 chdir($root);
 $autoloader = require $autoloader_path;
-require $root . '/sites/all/vendor/autoload.php';
 
 $request = Request::createFromGlobals();
 $kernel = DrupalKernel::createFromRequest($request, $autoloader, 'prod');
