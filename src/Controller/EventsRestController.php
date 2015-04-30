@@ -74,11 +74,12 @@ class EventsRestController extends ControllerBase {
     $q = $request->query->get('query', '*.*');
     $limit = $request->query->get('limit', 30);
     $start = $request->query->get('start', 0);
+    $sort  = $request->query->get('sort', 'lastupdated desc');
 
-    $response = $this->searchService->search($q, $limit, $start);
+    $data = $this->searchService->search($q, $limit, $start, $sort);
 
     $response = JsonLdResponse::create()
-      ->setData($response)
+      ->setData($data)
       ->setPublic()
       ->setClientTtl(60 * 1)
       ->setTtl(60 * 5);
