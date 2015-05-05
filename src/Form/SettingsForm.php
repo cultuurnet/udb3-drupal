@@ -196,13 +196,4 @@ class SettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  protected function getEditableConfigNames() {
-    return [
-      'culturefeed_udb3.settings'
-    ];
-  }
-
 }
