@@ -270,6 +270,7 @@ services:
       - '@culturefeed_udb3.event_export'
       - '%culturefeed_udb3.prince_binary_location%'
       - '@culturefeed_udb3.event_export.uitpas_event_info'
+      - '@culturefeed_udb3.event_calendar_repository'
     tags:
       - { name: 'culturefeed_udb3.command_bus.subscriber' }
 
@@ -284,5 +285,16 @@ services:
   culturefeed_udb3.event_history_projector:
     class: CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector
     arguments: ['@culturefeed_udb3.event_history_repository']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+
+  # Event Calendar
+  culturefeed_udb3.event_calendar_repository:
+    class: Drupal\culturefeed_udb3\CalendarRepository
+    arguments: ['@entity.manager']
+
+  culturefeed_udb3.event_calendar.projector:
+    class: CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector
+    arguments: ['@culturefeed_udb3.event_calendar_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
