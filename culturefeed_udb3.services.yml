@@ -298,3 +298,46 @@ services:
     arguments: ['@culturefeed_udb3.event_calendar_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
+
+  # Saved Searches
+  culturefeed_udb3.saved_searches_repository:
+    class: CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository
+    arguments:
+      - '@culturefeed_udb3.fixed_saved_searches_repository'
+      - '@culturefeed_udb3.uitid_saved_searches_repository'
+
+  culturefeed_udb3.saved_searches_service_factory.factory:
+    class: Drupal\culturefeed_udb3\SavedSearchesServiceFactory
+    arguments:
+      - '@config.factory'
+      - '@culturefeed.consumer_credentials'
+
+  culturefeed_udb3.saved_searches_service_factory:
+    class: CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory
+    factory_service: culturefeed_udb3.saved_searches_service_factory.factory
+    factory_method: get
+
+  culturefeed_udb3.uitid_saved_searches.factory:
+    class: Drupal\culturefeed_udb3\UiTIDSavedSearchesFactory
+    arguments:
+    - '@culturefeed_udb3.saved_searches_service_factory'
+    - '@culturefeed.user_credentials'
+
+  culturefeed_udb3.uitid_saved_searches_repository:
+    class: CultuurNet\UDB3\SavedSearches\UiTIDSavedSearchRepository
+    factory_service: culturefeed_udb3.uitid_saved_searches.factory
+    factory_method: get
+    calls:
+      - [setLogger, ['@culturefeed_udb3.logger.command_bus']]
+
+  culturefeed_udb3.fixed_saved_searches_repository:
+    class: CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository
+    arguments: ['@culturefeed.current_user']
+
+  culturefeed_udb3.saved_searches_command_handler:
+    class: CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler
+    arguments: ['@culturefeed_udb3.saved_searches_service_factory']
+    tags:
+      - { name: 'culturefeed_udb3.command_bus.subscriber' }
+
+
