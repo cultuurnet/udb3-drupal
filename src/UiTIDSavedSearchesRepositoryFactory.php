@@ -17,7 +17,7 @@ use Drupal\culturefeed\UserCredentials;
  *
  * @package Drupal\culturefeed_udb3
  */
-class UiTIDSavedSearchesFactory {
+class UiTIDSavedSearchesRepositoryFactory {
 
   /**
    * @var UserCredentials
@@ -29,6 +29,10 @@ class UiTIDSavedSearchesFactory {
    */
   protected $serviceFactory;
 
+  /**
+   * @param SavedSearchesServiceFactoryInterface $serviceFactory
+   * @param UserCredentials $userCredentials
+   */
   public function __construct(
     SavedSearchesServiceFactoryInterface $serviceFactory,
     UserCredentials $userCredentials
@@ -37,6 +41,11 @@ class UiTIDSavedSearchesFactory {
     $this->userCredentials = $userCredentials;
   }
 
+  /**
+   * Get an instance of the UiTID saved search repository
+   *
+   * @return UiTIDSavedSearchRepository
+   */
   public function get() {
     $tokenCredentials = new TokenCredentials(
       $this->userCredentials->getToken(),

@@ -32,6 +32,10 @@ class SavedSearchesServiceFactory {
    */
   protected $consumerCredentials;
 
+  /**
+   * @param ConfigFactory $config_factory
+   * @param ConsumerCredentials $consumerCredentials
+   */
   public function __construct(
     ConfigFactory $config_factory,
     ConsumerCredentials $consumerCredentials
@@ -40,6 +44,11 @@ class SavedSearchesServiceFactory {
     $this->consumerCredentials = $consumerCredentials;
   }
 
+  /**
+   * Get a factory for creating saved searches service factories
+   *
+   * @return \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory
+   */
   public function get() {
     $config = $this->config;
     $api_location = $config->get('api_location');
