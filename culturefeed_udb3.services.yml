@@ -328,7 +328,7 @@ services:
     factory_service: culturefeed_udb3.uitid_saved_searches_repository.factory
     factory_method: get
     calls:
-      - [setLogger, ['@culturefeed_udb3.logger.command_bus']]
+      - ['setLogger', ['@culturefeed_udb3.logger.channel.udb2']]
 
   culturefeed_udb3.fixed_saved_searches_repository:
     class: CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository
