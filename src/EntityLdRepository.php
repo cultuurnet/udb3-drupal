@@ -8,8 +8,8 @@
 namespace Drupal\culturefeed_udb3;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
 use CultuurNet\UDB3\Event\ReadModel\JsonDocument;
+use Drupal\Core\Entity\EntityManagerInterface;
 
 /**
  * Class EntityLdRepository.
@@ -84,6 +84,16 @@ class EntityLdRepository implements DocumentRepositoryInterface {
       ));
     }
     $entity->save();
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function delete($id) {
+
+    $entity = $this->entityManager->load($id);
+    return $entity->delete();
 
   }
 

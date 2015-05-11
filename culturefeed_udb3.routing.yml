@@ -24,6 +24,16 @@ culturefeed_udb3.event:
     _format: ld_json
     _method: GET
 
+culturefeed_udb3.event.delete:
+  path: '/udb3/api/1.0/event/{cdbid}/delete'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteEvent'
+    _title: 'Event verwijderen'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+
 culturefeed_udb3.event.history:
   path: '/udb3/api/1.0/event/{cdbid}/history'
   defaults:
@@ -241,6 +251,26 @@ culturefeed_udb3.place:
     _culturefeed_current_user: 'TRUE'
     _format: ld_json
     _method: GET
+
+culturefeed_udb3.place.events:
+  path: '/udb3/api/1.0/place/{cdbid}/events'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::getEvents'
+    _title: 'Events for current place'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
+
+culturefeed_udb3.place.delete:
+  path: '/udb3/api/1.0/place/{cdbid}/delete'
+  defaults:
+    _title: 'Locatie verwijderen'
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deletePlace'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
 
 culturefeed_udb3.place.description:
   path: '/udb3/api/1.0/place/{cdbid}/{language}/description'

@@ -68,5 +68,12 @@ class PlaceRelationsRepository implements RepositoryInterface{
 
     return $query->execute();
   }
+
+  public function removeRelations($placeId) {
+    $query = $this->database->delete('culturefeed_udb3_place_relations')
+      ->condition('place', $placeId);
+
+    return $query->execute();
+  }
 }
 

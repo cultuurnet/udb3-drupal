@@ -67,6 +67,18 @@ class Udb3IndexRepository implements RepositoryInterface {
   }
 
   /**
+   * Delete the index for a place/event.
+   * @param type $id
+   */
+  public function deleteIndex($id) {
+    $query = $this->database->delete('culturefeed_udb3_index')
+      ->condition('id', $id);
+
+    return $query->execute();
+
+  }
+
+  /**
    * Search organizers that contain given title.
    */
   public function getOrganizersByTitle($title, $limit = 10) {

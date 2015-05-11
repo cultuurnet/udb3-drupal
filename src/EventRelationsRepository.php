@@ -66,4 +66,11 @@ class EventRelationsRepository implements RepositoryInterface{
 
     return $query->execute();
   }
+
+  public function removeRelations($eventId) {
+    $query = $this->database->delete('culturefeed_udb3_event_relations')
+      ->condition('event', $eventId);
+
+    return $query->execute();
+  }
 }

@@ -8,27 +8,20 @@
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
-use CultuurNet\UDB3\Address;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\EventServiceInterface;
-use CultuurNet\UDB3\Keyword;
+use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Location;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
-use CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService;
+use CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService;
 use Drupal\file\FileUsage\FileUsageInterface;
 use Exception;
+use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService;
-use CultureFeed_User;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -321,7 +314,7 @@ class EventRestController extends OfferRestBaseController {
     try {
 
       if (empty($body_content->name) || empty($body_content->type) || empty($body_content->location) || empty($body_content->calendarType)) {
-        throw new \InvalidArgumentException('Required fields are missing');
+        throw new InvalidArgumentException('Required fields are missing');
       }
 
       $calendar = $this->initCalendarForCreate($body_content);
@@ -359,6 +352,31 @@ class EventRestController extends OfferRestBaseController {
   }
 
   /**
+   * Remove an event.
+   */
+  public function deleteEvent(Request $request, $cdbid) {
+
+    $response = new JsonResponse();
+
+    try {
+
+      if (empty($cdbid)) {
+        throw new InvalidArgumentException('Required fields are missing');
+      }
+
+      $result = $this->editor->deleteEvent($cdbid);
+      $response->setData(['result' => $result]);
+
+    } catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
+    }
+
+    return $response;
+  }
+
+  /**
    * Update the major info of an item.
    */
   public function updateMajorInfo(Request $request, $cdbid) {
@@ -369,7 +387,7 @@ class EventRestController extends OfferRestBaseController {
     try {
 
       if (empty($body_content->name) || empty($body_content->type)) {
-        throw new \InvalidArgumentException('Required fields are missing');
+        throw new InvalidArgumentException('Required fields are missing');
       }
 
       $calendar = $this->initCalendarForCreate($body_content);
