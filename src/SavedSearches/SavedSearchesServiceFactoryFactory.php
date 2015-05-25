@@ -10,13 +10,14 @@ namespace Drupal\culturefeed_udb3\SavedSearches;
 use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\UDB3\UDB2\Consumer;
 use Drupal\Core\Config\ConfigFactory;
+use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory;
 
 /**
  * Class SavedSearchesFactory.
  *
  * @package Drupal\culturefeed_udb3
  */
-class SavedSearchesServiceFactory {
+class SavedSearchesServiceFactoryFactory {
 
   /**
    * The config factory.
@@ -54,7 +55,7 @@ class SavedSearchesServiceFactory {
     $api_location = $config->get('api_location');
 
     $consumer = new Consumer($api_location, $this->consumerCredentials);
-    return new \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory($consumer);
+    return new SavedSearchesServiceFactory($consumer);
   }
 
 }
