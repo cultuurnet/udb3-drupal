@@ -17,7 +17,7 @@ use Drupal\culturefeed\UserCredentials;
  *
  * @package Drupal\culturefeed_udb3
  */
-class UiTIDSavedSearchesRepositoryFactory {
+class UiTIDSavedSearchRepositoryFactory {
 
   /**
    * @var UserCredentials

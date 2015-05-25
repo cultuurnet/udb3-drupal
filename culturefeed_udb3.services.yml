@@ -318,7 +318,7 @@ services:
     factory_method: get
 
   culturefeed_udb3.uitid_saved_searches_repository.factory:
-    class: Drupal\culturefeed_udb3\SavedSearches\UiTIDSavedSearchesRepositoryFactory
+    class: Drupal\culturefeed_udb3\SavedSearches\UiTIDSavedSearchRepositoryFactory
     arguments:
     - '@culturefeed_udb3.saved_searches_service_factory'
     - '@culturefeed.user_credentials'
