@@ -5,7 +5,7 @@
  * Contains Drupal\culturefeed_udb3\UiTIDSavedSearchesFactory.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\SavedSearches;
 
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactoryInterface;

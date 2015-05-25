@@ -2,10 +2,10 @@
 
 /**
  * @file
-   * Contains Drupal\culturefeed_udb3\SavedSearchesServiceFactory.
+   * Contains Drupal\culturefeed_udb3\SavedSearches\SavedSearchesServiceFactory.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\SavedSearches;
 
 use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\UDB3\UDB2\Consumer;
