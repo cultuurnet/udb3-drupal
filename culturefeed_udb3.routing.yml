@@ -183,3 +183,34 @@ culturefeed_udb3.export.pdf:
     _access: 'TRUE'
     _format: json
     _method: POST
+
+culturefeed_udb3.saved_searches_controller_createSavedSearch:
+  path: '/udb3/api/1.0/saved-searches'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\SavedSearchesController::createSavedSearch'
+    _title: 'Save a search'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+
+culturefeed_udb3.saved_searches_controller_deleteSavedSearch:
+  path: '/udb3/api/1.0/saved-searches/{id}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\SavedSearchesController::deleteSavedSearch'
+    _title: 'delete a search'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+
+culturefeed_udb3.saved_searches_controller_listSavedSearches:
+  path: '/udb3/api/1.0/saved-searches'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\SavedSearchesController::listSavedSearches'
+    _title: 'delete a search'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
+
