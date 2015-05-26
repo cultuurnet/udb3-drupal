@@ -299,18 +299,18 @@ services:
     class: Drupal\culturefeed_udb3\EventExport\NotificationMailer
     arguments: ['@plugin.manager.mail']
 
-  culturefeed_udb3.event_export.command_handler:
-    class: CultuurNet\UDB3\EventExport\EventExportCommandHandler
-    arguments:
-      - '@culturefeed_udb3.event_export'
-      - '%culturefeed_udb3.prince_binary_location%'
-      - '@culturefeed_udb3.event_export.uitpas_event_info'
-    tags:
-      - { name: 'culturefeed_udb3.command_bus.subscriber' }
+#  culturefeed_udb3.event_export.command_handler:
+#    class: CultuurNet\UDB3\EventExport\EventExportCommandHandler
+#    arguments:
+#      - '@culturefeed_udb3.event_export'
+#      - '%culturefeed_udb3.prince_binary_location%'
+#      - '@culturefeed_udb3.event_export.uitpas_event_info'
+#    tags:
+#      - { name: 'culturefeed_udb3.command_bus.subscriber' }
 
-  culturefeed_udb3.event_export.uitpas_event_info:
-    class: CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService
-    arguments: [@culturefeed.uitpas]
+#  culturefeed_udb3.event_export.uitpas_event_info:
+#    class: CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService
+#    arguments: [@culturefeed.uitpas]
 
   culturefeed_udb3.event_history_repository:
     class: Drupal\culturefeed_udb3\EntityLdRepository

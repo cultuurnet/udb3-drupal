@@ -44,10 +44,13 @@ class EventHistoryController extends ControllerBase {
     $document = $this->documentRepository->get($cdbid);
 
     $response = JsonResponse::create()
-      ->setContent($document->getRawBody())
       ->setPublic()
       ->setClientTtl(60 * 5)
       ->setTtl(60 * 1);
+
+    if ($document) {
+      $response->setContent($document->getRawBody());
+    }
 
     $response->headers->set('Vary', 'Origin');
 
