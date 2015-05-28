@@ -11,11 +11,12 @@ use CultureFeed_User;
 use CultuurNet\UDB3\Address;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
-use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use Drupal;
 use Drupal\culturefeed_udb3\EventRelationsRepository;
 use Drupal\file\FileUsage\FileUsageInterface;
 use InvalidArgumentException;
@@ -311,7 +312,19 @@ class PlaceRestController extends OfferRestBaseController {
     // Load all event relations from the database.
     $events = $this->eventRelationsRepository->getEventsLocatedAtPlace($cdbid);
     if (!empty($events)) {
-      $response->setData(['events' => $events]);
+
+      $urlGenerator = Drupal::service('url_generator');
+      $iriGenerator = Drupal::service('culturefeed_udb3.iri_generator');
+
+      $data = ['events' => []];
+
+      foreach ($events as $eventId) {
+        $data['events'][] = [
+          '@id' => $iriGenerator->iri($eventId),
+        ];
+      }
+
+      $response->setData($data);
     }
 
     return $response;
