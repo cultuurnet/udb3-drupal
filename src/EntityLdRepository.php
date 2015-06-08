@@ -8,7 +8,7 @@
 namespace Drupal\culturefeed_udb3;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\Event\ReadModel\JsonDocument;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Drupal\Core\Entity\EntityManagerInterface;
 
 /**

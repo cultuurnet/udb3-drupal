@@ -40,7 +40,7 @@ class EventHistoryController extends ControllerBase {
    *   The event history as JSON.
    */
   public function history($cdbid) {
-    /** @var \CultuurNet\UDB3\Event\ReadModel\JsonDocument $document */
+    /** @var \CultuurNet\UDB3\ReadModel\JsonDocument $document */
     $document = $this->documentRepository->get($cdbid);
 
     $response = JsonResponse::create()

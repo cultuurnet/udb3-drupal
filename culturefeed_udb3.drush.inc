@@ -45,12 +45,13 @@ function drush_culturefeed_udb3_udb3_delete_data() {
   $entities = array(
     'event_document_repository',
     'event_store',
+    'event_relations',
     'organizer_document_repository',
     'organizer_store',
     'place_document_repository',
     'place_store',
+    'place_relations',
     'used_labels_memory_event_store',
-    'event_relations',
     'event_history',
     'udb3_index'
   );

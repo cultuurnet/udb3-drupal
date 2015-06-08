@@ -8,6 +8,7 @@
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
+use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
@@ -18,6 +19,8 @@ use CultuurNet\UDB3\Location;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService;
+use Drupal;
+use Drupal\culturefeed_udb3\UDB2EntryApiFactoryInterface;
 use Drupal\file\FileUsage\FileUsageInterface;
 use Exception;
 use InvalidArgumentException;
@@ -98,6 +101,7 @@ class EventRestController extends OfferRestBaseController {
     EventEditingServiceInterface $event_editor,
     DefaultUsedLabelsMemoryService $used_labels_memory,
     CultureFeed_User $user,
+    UDB2EntryApiFactoryInterface $entry_api,
     FileUsageInterface $fileUsage
   ) {
     $this->eventService = $event_service;
@@ -105,6 +109,7 @@ class EventRestController extends OfferRestBaseController {
     $this->usedLabelsMemory = $used_labels_memory;
     $this->user = $user;
     $this->fileUsage = $fileUsage;
+    $this->entryApi = $entry_api;
   }
 
   /**
@@ -409,6 +414,40 @@ class EventRestController extends OfferRestBaseController {
       $response->setData(['commandId' => $command_id]);
 
     } catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
+    }
+
+    return $response;
+
+  }
+
+  /**
+   * Check if the current user has edit access to the given item.
+   *
+   * @param string cdbid
+   *   Id of item to check.
+   */
+  public function hasPermission($cdbid) {
+
+    $improvedEntryApiFactory = Drupal::service('culturefeed_udb3.udb2_entry_api_improved_factory');
+    $userCredentials = Drupal::service('culturefeed.user_credentials');
+
+    $credentials = new TokenCredentials($userCredentials->getToken(), $userCredentials->getSecret());
+    $entryApi = $improvedEntryApiFactory->get()->withTokenCredentials($credentials);
+
+    $response = new JsonResponse();
+    try {
+      $result = $entryApi->checkPermission($this->user->id, $this->user->mbox, array($cdbid));
+      $has_permission = FALSE;
+      if (!empty($result->event)) {
+        $has_permission = (string)$result->event->editable == 'true';
+      }
+
+      $response->setData(['hasPermission' => $has_permission]);
+    }
+    catch (Exception $e) {
       $response->setStatusCode(400);
       $response->setData(['error' => $e->getMessage()]);
       watchdog_exception('udb3', $e);

@@ -56,14 +56,20 @@ class ContentController extends ControllerBase {
     // Get udb3 content for the current user.
     $user_id = $this->user->id;
     $content = array();
-    $results_query = db_select('culturefeed_udb3_index', 'i')
-        ->fields('i', array('id', 'type', 'created_on'))
-        ->condition('i.uid', $user_id)
-        ->condition('i.type', 'organizer', '!=')
-        ->orderBy('created_on', 'DESC')
-        ->range(0, 50);
+    $results_query = db_select('culturefeed_udb3_index', 'i');
+    $results_query->leftJoin('culturefeed_udb3_event_relations', 'r', 'r.event = i.id');
+    $results_query->fields('i', array('id', 'type', 'created_on'));
+    $results_query->fields('r', array('place'));
+    $results_query->condition('i.uid', $user_id);
+    $results_query->condition('i.type', 'organizer', '!=');
+    $results_query->orderBy('type', 'ASC');
+    $results_query->orderBy('created_on', 'DESC');
+    $results_query->range(0, 50);
     $results = $results_query->execute();
 
+    $grouped_results = array();
+    // Loop through results. Events come first, after that places.
+    // Places are listed first, then the events for that place.
     foreach ($results as $result) {
 
       $table = 'culturefeed_udb3_' . $result->type . '_document_repository';
@@ -75,11 +81,22 @@ class ContentController extends ControllerBase {
         $jsonLd = json_decode($details->body);
         $jsonLd->type = $result->type;
         $jsonLd->id = $result->id;
-        $content['content'][] = $jsonLd;
+
+        if ($result->type == 'event') {
+          $grouped_results[$result->place][] = $jsonLd;
+        }
+        else {
+          $content['content'][] = $jsonLd;
+          if (!empty($grouped_results[$result->id])) {
+            $content['content'] = array_merge($content['content'], $grouped_results[$result->id]);
+          }
+        }
+
       }
 
     }
 
     return new JsonResponse($content);
   }
+
 }
