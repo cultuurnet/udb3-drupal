@@ -333,3 +333,9 @@ services:
       arguments: ['@file.usage']
       tags:
         - { name: 'culturefeed_udb3.event_bus.subscriber' }
+
+  culturefeed_udb3.edit_access_check:
+      class: Drupal\culturefeed_udb3\Access\EditAccess
+      arguments: ['@culturefeed.current_user', '@culturefeed.user_credentials', '@culturefeed_udb3.udb2_entry_api_improved_factory']
+      tags:
+        - { name: access_check, applies_to: _udb3_edit_acces_check }
