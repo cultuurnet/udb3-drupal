@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService;
 use Drupal;
-use Drupal\culturefeed_udb3\UDB2EntryApiFactoryInterface;
 use Drupal\file\FileUsage\FileUsageInterface;
 use Exception;
 use InvalidArgumentException;
@@ -101,7 +100,6 @@ class EventRestController extends OfferRestBaseController {
     EventEditingServiceInterface $event_editor,
     DefaultUsedLabelsMemoryService $used_labels_memory,
     CultureFeed_User $user,
-    UDB2EntryApiFactoryInterface $entry_api,
     FileUsageInterface $fileUsage
   ) {
     $this->eventService = $event_service;
@@ -109,7 +107,6 @@ class EventRestController extends OfferRestBaseController {
     $this->usedLabelsMemory = $used_labels_memory;
     $this->user = $user;
     $this->fileUsage = $fileUsage;
-    $this->entryApi = $entry_api;
   }
 
   /**
