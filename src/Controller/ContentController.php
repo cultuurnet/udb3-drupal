@@ -89,11 +89,17 @@ class ContentController extends ControllerBase {
           $content['content'][] = $jsonLd;
           if (!empty($grouped_results[$result->id])) {
             $content['content'] = array_merge($content['content'], $grouped_results[$result->id]);
+            unset($grouped_results[$result->id]);
           }
         }
 
       }
 
+    }
+
+    // Also add events that don't belong to a place created by current user.
+    foreach ($grouped_results as $result) {
+      $content['content'] = array_merge($content['content'], $result);
     }
 
     return new JsonResponse($content);
