@@ -84,6 +84,16 @@ culturefeed_udb3.event.update_typical_age_range:
     _format: json
     _method: POST
 
+culturefeed_udb3.event.delete_typical_age_range:
+  path: '/udb3/api/1.0/event/{cdbid}/typicalAgeRange'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteTypicalAgeRange'
+    _title: 'Delete the typical age range for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+
 culturefeed_udb3.event.update_organizer:
   path: '/udb3/api/1.0/event/{cdbid}/organizer'
   defaults:
@@ -301,6 +311,16 @@ culturefeed_udb3.place.update_typical_age_range:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
+
+culturefeed_udb3.place.delete_typical_age_range:
+  path: '/udb3/api/1.0/place/{cdbid}/typicalAgeRange'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deleteTypicalAgeRange'
+    _title: 'Delete the typical age range for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
 
 culturefeed_udb3.place.update_organizer:
   path: '/udb3/api/1.0/place/{cdbid}/organizer'

@@ -93,6 +93,30 @@ abstract class OfferRestBaseController extends ControllerBase implements ImageUp
   }
 
   /**
+   * Delete the typicalAgeRange property.
+   *
+   * @param Request $request
+   * @param string $cdbid
+   * @return JsonResponse
+   */
+  public function deleteTypicalAgeRange(Request $request, $cdbid) {
+
+    $response = new JsonResponse();
+    try {
+      $command_id = $this->editor->deleteTypicalAgeRange($cdbid);
+      $response->setData(['commandId' => $command_id]);
+    }
+    catch (Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+      watchdog_exception('udb3', $e);
+    }
+
+    return $response;
+
+  }
+
+  /**
    * Update the organizer property.
    *
    * @param Request $request
