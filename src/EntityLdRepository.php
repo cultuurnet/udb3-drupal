@@ -90,7 +90,7 @@ class EntityLdRepository implements DocumentRepositoryInterface {
   /**
    * {@inheritdoc}
    */
-  public function delete($id) {
+  public function remove($id) {
 
     $entity = $this->entityManager->load($id);
     return $entity->delete();
