@@ -1,4 +1,5 @@
 sync_with_udb2: 1
+use_full_event_data_to_update_description: 0
 log:
   command_bus:
     hipchat: 0

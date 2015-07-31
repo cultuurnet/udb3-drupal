@@ -111,6 +111,10 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
       $udb2_repository_decorator->syncBackOn();
     }
 
+    if ($this->config->get('use_full_event_data_to_update_description')) {
+      $udb2_repository_decorator = $udb2_repository_decorator->withFullEventDataToUpdateDescription();
+    }
+
     return $udb2_repository_decorator;
 
   }
