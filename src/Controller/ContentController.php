@@ -64,7 +64,6 @@ class ContentController extends ControllerBase {
     $results_query->condition('i.type', 'organizer', '!=');
     $results_query->orderBy('type', 'ASC');
     $results_query->orderBy('created_on', 'DESC');
-    $results_query->range(0, 50);
     $results = $results_query->execute();
 
     $grouped_results = array();
