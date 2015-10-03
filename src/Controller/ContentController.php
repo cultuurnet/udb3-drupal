@@ -55,53 +55,54 @@ class ContentController extends ControllerBase {
 
     // Get udb3 content for the current user.
     $user_id = $this->user->id;
-    $content = array();
     $results_query = db_select('culturefeed_udb3_index', 'i');
-    $results_query->leftJoin('culturefeed_udb3_event_relations', 'r', 'r.event = i.id');
     $results_query->fields('i', array('id', 'type', 'created_on'));
-    $results_query->fields('r', array('place'));
     $results_query->condition('i.uid', $user_id);
-    $results_query->condition('i.type', 'organizer', '!=');
-    $results_query->orderBy('type', 'ASC');
+    //$results_query->condition('i.type', ['event', 'place'], 'IN');
+    // @todo: order on last updated time DESC
     $results_query->orderBy('created_on', 'DESC');
-    $results = $results_query->execute();
+    // @todo: introduce pagination
+    $results = $results_query->execute()->fetchAll();
 
-    $grouped_results = array();
-    // Loop through results. Events come first, after that places.
-    // Places are listed first, then the events for that place.
-    foreach ($results as $result) {
+    $lastUpdatedItems = array_map(
+        function ($result) {
+          $jsonLd = $this->fetchJSONLD($result);
 
-      $table = 'culturefeed_udb3_' . $result->type . '_document_repository';
-      $details_query = db_select($table, 'd')
-          ->fields('d', array('body'))
-          ->condition('d.id', $result->id);
-      $details = $details_query->execute()->fetch();
-      if ($details) {
-        $jsonLd = json_decode($details->body);
-        $jsonLd->type = $result->type;
-        $jsonLd->id = $result->id;
-
-        if ($result->type == 'event') {
-          $grouped_results[$result->place][] = $jsonLd;
-        }
-        else {
-          $content['content'][] = $jsonLd;
-          if (!empty($grouped_results[$result->id])) {
-            $content['content'] = array_merge($content['content'], $grouped_results[$result->id]);
-            unset($grouped_results[$result->id]);
+          if (!$jsonLd) {
+            return null;
           }
-        }
 
-      }
+          $jsonLd->type = $result->type;
+          $jsonLd->id = $result->id;
 
-    }
+          return $jsonLd;
+      },
+      $results
+    );
 
-    // Also add events that don't belong to a place created by current user.
-    foreach ($grouped_results as $result) {
-      $content['content'] = array_merge($content['content'], $result);
-    }
+    $lastUpdatedItems = array_filter($lastUpdatedItems);
 
-    return new JsonResponse($content);
+    // @todo Use Hydra
+    return new JsonResponse(['member' => $lastUpdatedItems]);
   }
 
+  private function fetchJSONLD($result)
+  {
+    $table = $this->documentRepositoryTable($result->type);
+    $details_query = db_select($table, 'd')
+        ->fields('d', array('body'))
+        ->condition('d.id', $result->id);
+    $details = $details_query->execute()->fetch();
+
+    if ($details) {
+      return json_decode($details->body);
+    }
+
+    return null;
+  }
+
+  private function documentRepositoryTable($type)
+  {
+      return 'culturefeed_udb3_' . $type . '_document_repository';
+  }
 }
