@@ -32,15 +32,15 @@ class EventRelations extends ContentEntityBase implements ContentEntityInterface
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
 
-    $fields['event'] = BaseFieldDefinition::create('string')
+    $fields['event'] = BaseFieldDefinition::create('uuid')
       ->setLabel(t('Event UUID'))
       ->setDescription(t('Event UUID.'));
 
-    $fields['organizer'] = BaseFieldDefinition::create('string')
+    $fields['organizer'] = BaseFieldDefinition::create('uuid')
       ->setLabel(t('Organizer UUID'))
       ->setDescription(t('Organizer UUID.'));
 
-    $fields['place'] = BaseFieldDefinition::create('string')
+    $fields['place'] = BaseFieldDefinition::create('uuid')
       ->setLabel(t('Place UUID'))
       ->setDescription(t('Place UUID.'));
 
