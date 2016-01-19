@@ -11,11 +11,12 @@ use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\SearchAPI2\DefaultSearchService;
 use CultuurNet\UDB3\UDB2\EntryAPIFactory;
 use CultuurNet\UDB3\UDB2\EntryAPIImprovedFactory;
-use CultuurNet\UDB3\UDB2\PlaceRepository as UDB2PlaceRepository;
+use CultuurNet\UDB3\UDB2\Place\PlaceImporterInterface;
+use CultuurNet\UDB3\UDB2\Place\PlaceRepository as UDB2PlaceRepository;
 use Drupal\Core\Config\ConfigFactory;
+
 
 /**
  * Class PlaceRepositoryFactory.
@@ -32,18 +33,25 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
   protected $localPlaceRepository;
 
   /**
-   * The search api.
-   *
-   * @var DefaultSearchService
-   */
-  protected $searchApi;
-
-  /**
    * The entry api.
    *
    * @var EntryAPIFactory
    */
-  protected $entryApi;
+  protected $improvedEntryApi;
+
+  /**
+   * The place importer.
+   *
+   * @var \CultuurNet\UDB3\UDB2\Place\PlaceImporterInterface
+   */
+  protected $placeImporter;
+
+  /**
+   * The organizer service.
+   *
+   * @var \CultuurNet\UDB3\OrganizerService
+   */
+  protected $organizerService;
 
   /**
    * The event stream metadata enricher.
@@ -51,11 +59,6 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
    * @var MetadataEnrichingEventStreamDecorator
    */
   protected $eventStreamMetadataEnricher;
-
-  /**
-   * @var OrganizerService
-   */
-  protected $organizerService;
 
   /**
    * The config factory.
@@ -69,10 +72,12 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
    *
    * @param EventSourcingRepository $local_place_repository
    *   The local place repository.
-   * @param DefaultSearchService $search_api
-   *   The search api.
    * @param EntryAPIImprovedFactory $improved_entry_api
    *   The improved entry api.
+   * @param PlaceImporterInterface $place_importer
+   *   The place importer.
+   * @param OrganizerService $organizer_service
+   *   The organizer service.
    * @param MetadataEnrichingEventStreamDecorator $event_stream_metadata_enricher
    *   The event stream metadata enricher.
    * @param ConfigFactory $config
@@ -80,17 +85,17 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
    */
   public function __construct(
     EventSourcingRepository $local_place_repository,
-    DefaultSearchService $search_api,
     EntryAPIImprovedFactory $improved_entry_api,
+    PlaceImporterInterface $place_importer,
     OrganizerService $organizer_service,
     MetadataEnrichingEventStreamDecorator $event_stream_metadata_enricher,
     ConfigFactory $config
   ) {
     $this->localPlaceRepository = $local_place_repository;
-    $this->searchApi = $search_api;
     $this->improvedEntryApi = $improved_entry_api;
-    $this->eventStreamMetadataEnricher = $event_stream_metadata_enricher;
+    $this->placeImporter = $place_importer;
     $this->organizerService = $organizer_service;
+    $this->eventStreamMetadataEnricher = $event_stream_metadata_enricher;
     $this->config = $config->get('culturefeed_udb3.settings');
   }
 
@@ -101,8 +106,8 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
 
     $udb2_repository_decorator = new UDB2PlaceRepository(
       $this->localPlaceRepository,
-      $this->searchApi,
       $this->improvedEntryApi,
+      $this->placeImporter,
       $this->organizerService,
       array($this->eventStreamMetadataEnricher)
     );
