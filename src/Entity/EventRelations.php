@@ -18,6 +18,9 @@ use Drupal\Core\Annotation\Translation;
  *  id = "event_relations",
  *  label = @Translation("Culturefeed udb3 event relations"),
  *  base_table = "culturefeed_udb3_event_relations",
+ *  handlers = {
+ *    "storage_schema" = "Drupal\culturefeed_udb3\Utf8StorageSchema",
+ *  },
  *  entity_keys = {
  *    "id" = "event",
  *  },
