@@ -7,9 +7,10 @@ namespace Drupal\culturefeed_udb3;
 
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\DependencyInjection\ServiceProviderInterface;
 
-class CulturefeedUdb3ServiceProvider implements ServiceProviderInterface
+class CulturefeedUdb3ServiceProvider extends ServiceProviderBase
 {
     /**
      * Registers services to the container.
@@ -20,6 +21,14 @@ class CulturefeedUdb3ServiceProvider implements ServiceProviderInterface
     public function register(ContainerBuilder $container)
     {
         $container->addCompilerPass(new RegisterEventBusSubscribersPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alter(ContainerBuilder $container) {
+        $definition = $container->getDefinition('redirect_response_subscriber');
+        $definition->setClass('Drupal\culturefeed_udb3\CulturefeedUdb3RedirectResponseSubscriber');
     }
 
 }
