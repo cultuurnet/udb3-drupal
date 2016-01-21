@@ -31,7 +31,6 @@ class DomainMessageEntity extends ContentEntityBase implements ContentEntityInte
 
     $fields['uuid'] = BaseFieldDefinition::create('string')
       ->setLabel(t('UUID'))
-      ->setSetting('max_length', 128)
       ->setDescription(t('UUID.'));
 
     $fields['playhead'] = BaseFieldDefinition::create('integer')
@@ -49,12 +48,10 @@ class DomainMessageEntity extends ContentEntityBase implements ContentEntityInte
 
     $fields['recorded_on'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Recorded on'))
-      ->setSetting('max_length', 128)
       ->setDescription(t('Recorded on.'));
 
     $fields['type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Type'))
-      ->setSetting('max_length', 128)
       ->setDescription(t('Type.'));
 
     return $fields;

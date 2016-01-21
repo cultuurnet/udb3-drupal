@@ -29,11 +29,11 @@ class PlaceRelations extends ContentEntityBase implements ContentEntityInterface
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
 
-    $fields['place'] = BaseFieldDefinition::create('uuid')
+    $fields['place'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Place UUID'))
       ->setDescription(t('Place UUID.'));
 
-    $fields['organizer'] = BaseFieldDefinition::create('uuid')
+    $fields['organizer'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Organizer UUID'))
       ->setDescription(t('Organizer UUID.'));
 
