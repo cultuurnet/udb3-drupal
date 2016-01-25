@@ -7,6 +7,10 @@ parameters:
 services:
 
   # General
+  culturefeed_udb3.format_setter:
+    class: Drupal\culturefeed_udb3\StackMiddleware\FormatSetter
+    tags:
+      - { name: http_middleware, priority: 201, responder: true }
   culturefeed_udb3.iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
     arguments: ['@url_generator']

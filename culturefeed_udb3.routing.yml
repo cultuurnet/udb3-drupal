@@ -249,7 +249,7 @@ culturefeed_udb3.user:
     _title: 'User info'
   requirements:
     _culturefeed_current_user: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: GET
 
 culturefeed_udb3.user.labels:
