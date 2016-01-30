@@ -23,7 +23,7 @@ if (!$root) {
   exit();
 }
 
-$autoloader_path = $root . '/core/vendor/autoload.php';
+$autoloader_path = $root . '/autoload.php';
 if (!file_exists($autoloader_path)) {
   print "Drupal root is invalid\n";
   print "No vendor autoload found at $autoloader_path\n";
