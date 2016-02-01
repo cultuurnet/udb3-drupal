@@ -7,6 +7,12 @@ parameters:
 services:
 
   # General
+  culturefeed_udb3.cache:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [culturefeed_udb3]
   culturefeed_udb3.format_setter:
     class: Drupal\culturefeed_udb3\StackMiddleware\FormatSetter
     tags:
@@ -23,15 +29,6 @@ services:
     class: CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus
   culturefeed_udb3.execution_context_metadata_enricher:
     class: CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher
-  culturefeed_udb3.search_api_2.factory:
-    class: Drupal\culturefeed_udb3\SearchApi2Factory
-    arguments: ['@config.factory']
-  culturefeed_udb3.search_api_2:
-    class: CultuurNet\UDB3\SearchAPI2\DefaultSearchService
-    factory: culturefeed_udb3.search_api_2.factory:create
-  culturefeed_udb3.search_service:
-    class: CultuurNet\UDB3\Search\PullParsingSearchService
-    arguments: ['@culturefeed_udb3.search_api_2', '@culturefeed_udb3.iri_generator', '@culturefeed_udb3.place.iri_generator']
   culturefeed_udb3.event_stream_metadata_enricher:
     class: Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator
     calls:

@@ -27,6 +27,7 @@ class CulturefeedUdb3ServiceProvider extends ServiceProviderBase
         $yaml_loader = new YamlFileLoader($container);
         $path = __DIR__ . DIRECTORY_SEPARATOR . '..';
         $yaml_loader->load($path . '/culturefeed_udb3.services.general.yml');
+        $yaml_loader->load($path . '/culturefeed_udb3.services.search.yml');
     }
 
     /**

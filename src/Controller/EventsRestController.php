@@ -61,48 +61,6 @@ class EventsRestController extends ControllerBase {
   }
 
   /**
-   * Executes a search and returns the results.
-   *
-   * @param Request $request
-   *   The request.
-   *
-   * @return JsonLdResponse
-   *   A response.
-   */
-  public function search(Request $request) {
-
-    $q = $request->query->get('query', '*.*');
-    $limit = $request->query->get('limit', 30);
-    $start = $request->query->get('start', 0);
-
-    $conditions = array();
-    $locationZip = $request->query->get('locationZip', 0);
-    if (!empty($locationZip)) {
-      $conditions['locationZip'] = $locationZip;
-    }
-
-    if ($request->query->has('place')) {
-      $conditions['place_only'] = TRUE;
-    }
-
-    $locationCdbId = $request->query->get('locationCdbId', 0);
-    if (!empty($locationCdbId)) {
-      $conditions['locationCdbId'] = $locationCdbId;
-    }
-
-    $results = $this->searchService->search($q, $limit, $start, NULL, $conditions);
-
-    $response = JsonLdResponse::create()
-      ->setData($results)
-      ->setPublic()
-      ->setClientTtl(60 * 1)
-      ->setTtl(60 * 5);
-
-    return $response;
-
-  }
-
-  /**
    * Label culturefeed events.
    *
    * @param Request $request
