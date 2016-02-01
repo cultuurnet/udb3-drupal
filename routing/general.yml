@@ -212,16 +212,6 @@ culturefeed_udb3.event.labels_delete:
     _format: json
     _method: DELETE
 
-culturefeed_udb3.events.search:
-  path: '/udb3/api/1.0/search'
-  defaults:
-    _controller: 'culturefeed_udb3.search_controller:search'
-    _title: 'Search'
-  requirements:
-    _access: 'TRUE'
-    _format: ld_json
-    _method: GET
-
 culturefeed_udb3.events.label:
   path: '/udb3/api/1.0/events/label'
   defaults:
