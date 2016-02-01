@@ -5,10 +5,6 @@
  * Contains culturefeed_udb3.drush.inc.
  */
 
-use Drupal\Core\DrupalKernel;
-use Drupal\Core\Site\Settings;
-use Symfony\Component\HttpFoundation\Request;
-
 /**
  * Implements hook_drush_command().
  */
@@ -53,7 +49,7 @@ function drush_culturefeed_udb3_udb3_delete_data() {
     'place_relations',
     'used_labels_memory_event_store',
     'event_history',
-    'udb3_index'
+    'udb3_index',
   );
 
   foreach ($entities as $entity_type) {
