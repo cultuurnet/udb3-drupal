@@ -259,10 +259,6 @@ services:
     class: CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService
     arguments: ['@culturefeed_udb3.event.used_labels_memory_repository']
 
-  culturefeed_udb3.json_ld_subscriber:
-    class: Drupal\culturefeed_udb3\JsonLdSubscriber
-    tags:
-      - { name: event_subscriber }
   culturefeed_udb3.event_command_bus_subscriber:
     class: Drupal\culturefeed_udb3\EventCommandBusSubscriber
     arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed.current_user', '@culturefeed.user_credentials']
