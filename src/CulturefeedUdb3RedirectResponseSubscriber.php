@@ -21,7 +21,7 @@ class CulturefeedUdb3RedirectResponseSubscriber extends RedirectResponseSubscrib
    * @return array
    *   An array of event listener definitions.
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     // Unsubscribe the checkRedirectUrl and sanitizeDestination subscriptions.
     $subscribed_events = parent::getSubscribedEvents();
     $subscribed_events[KernelEvents::RESPONSE] = array_filter($subscribed_events[KernelEvents::RESPONSE], function($subscriber) {
@@ -40,4 +40,5 @@ class CulturefeedUdb3RedirectResponseSubscriber extends RedirectResponseSubscrib
 
     return $subscribed_events;
   }
+
 }

@@ -5,6 +5,19 @@
  */
 
 /**
+ * Implements hook_install().
+ */
+function culturefeed_udb3_install() {
+  $export_location = \Drupal::getContainer()
+    ->getParameter('culturefeed_udb3.export_folder_location');
+
+  /** @var \Drupal\Core\File\FileSystem $fileSystem */
+  $file_system = \Drupal::service('file_system');
+
+  $file_system->mkdir($export_location);
+}
+
+/**
  * Register the event history entity type.
  */
 function culturefeed_udb3_update_8001() {
@@ -17,17 +30,16 @@ function culturefeed_udb3_update_8001() {
 }
 
 /**
-<<<<<<< HEAD
  * Register the newly added entity types.
  */
 function culturefeed_udb3_update_8002() {
 
   $entity_manager = \Drupal::entityManager();
-   foreach ($entity_manager->getDefinitions() as $entity_type) {
-     if ($entity_type->getLabel() == 'Culturefeed udb3 index') {
-       $entity_manager->onEntityTypeCreate($entity_type);
-     }
-   }
+  foreach ($entity_manager->getDefinitions() as $entity_type) {
+    if ($entity_type->getLabel() == 'Culturefeed udb3 index') {
+      $entity_manager->onEntityTypeCreate($entity_type);
+    }
+  }
 
 }
 
@@ -37,11 +49,11 @@ function culturefeed_udb3_update_8002() {
 function culturefeed_udb3_update_8003() {
 
   $entity_manager = \Drupal::entityManager();
-   foreach ($entity_manager->getDefinitions() as $entity_type) {
-     if ($entity_type->getLabel() == 'Culturefeed udb3 place relations') {
-       $entity_manager->onEntityTypeCreate($entity_type);
-     }
-   }
+  foreach ($entity_manager->getDefinitions() as $entity_type) {
+    if ($entity_type->getLabel() == 'Culturefeed udb3 place relations') {
+      $entity_manager->onEntityTypeCreate($entity_type);
+    }
+  }
 
 }
 
@@ -67,10 +79,10 @@ function culturefeed_udb3_update_8007() {
     $event = json_decode($row->body);
 
     if (!empty($event->mediaObject)) {
-      foreach ($event->mediaObject as $key => $mediaObject) {
-        $mediaLd = array('@type' => 'ImageObject');
-        $mediaLd += (array)$event->mediaObject[$key];
-        $event->mediaObject[$key] = $mediaLd;
+      foreach ($event->mediaObject as $key => $media_object) {
+        $media_ld = array('@type' => 'ImageObject');
+        $media_ld += (array) $event->mediaObject[$key];
+        $event->mediaObject[$key] = $media_ld;
       }
       db_update('culturefeed_udb3_event_document_repository')
         ->condition('id', $row->id)
@@ -84,10 +96,10 @@ function culturefeed_udb3_update_8007() {
   foreach ($result as $row) {
     $place = json_decode($row->body);
     if (!empty($place->mediaObject)) {
-      foreach ($place->mediaObject as $key => $mediaObject) {
-        $mediaLd = array('@type' => 'ImageObject');
-        $mediaLd += (array)$place->mediaObject[$key];
-        $place->mediaObject[$key] = $mediaLd;
+      foreach ($place->mediaObject as $key => $media_object) {
+        $media_ld = array('@type' => 'ImageObject');
+        $media_ld += (array) $place->mediaObject[$key];
+        $place->mediaObject[$key] = $media_ld;
       }
       db_update('culturefeed_udb3_place_document_repository')
         ->condition('id', $row->id)
@@ -97,14 +109,14 @@ function culturefeed_udb3_update_8007() {
   }
 }
 
-  /*
+/**
  * Register the used labels entity type.
  */
 function culturefeed_udb3_update_8008() {
-    $entity_manager = \Drupal::entityManager();
-    foreach ($entity_manager->getDefinitions() as $entity_type) {
-        if ($entity_type->id() == 'used_labels_memory_event_store') {
-            $entity_manager->onEntityTypeCreate($entity_type);
-        }
+  $entity_manager = \Drupal::entityManager();
+  foreach ($entity_manager->getDefinitions() as $entity_type) {
+    if ($entity_type->id() == 'used_labels_memory_event_store') {
+      $entity_manager->onEntityTypeCreate($entity_type);
     }
+  }
 }

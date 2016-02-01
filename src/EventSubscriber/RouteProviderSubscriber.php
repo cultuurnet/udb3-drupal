@@ -28,6 +28,7 @@ class RouteProviderSubscriber implements EventSubscriberInterface {
 
   /**
    * RouteProviderSubscriber constructor.
+   *
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
    */

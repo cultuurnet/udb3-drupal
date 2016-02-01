@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * Contains \Drupal\culturefeed_udb3\StackMiddleware\FormatSetter.php
+ * Contains \Drupal\culturefeed_udb3\StackMiddleware\FormatSetter.
  */
 
 namespace Drupal\culturefeed_udb3\StackMiddleware;
@@ -10,13 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * Class which extracts accept headers and sets Request formats accordingly to
- * at least allow for accept header variation when needed. This class respects
- * core's usage of request format and attempts to communicate it generically.
- * It should leave the Request format NULL when an unrecognized header is
- * submitted. Drupal core will later set a default of html. If a recognized
- * format comes through, it's set at this point to allow the PageCache
- * http_middleware to properly cache by format.
+ * Class FormatSetter.
+ *
+ * @package Drupal\culturefeed_udb3\StackMiddleware
  */
 class FormatSetter implements HttpKernelInterface {
 
