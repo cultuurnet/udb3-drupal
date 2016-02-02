@@ -38,6 +38,34 @@ class EventRelationsRepository implements RepositoryInterface{
     $this->queryFactory = $query_factory;
   }
 
+  public function removeOrganizer($eventId) {
+    // For optimal performance we use a merge query here
+    // instead of the entity API.
+    $query = $this->database->merge('culturefeed_udb3_event_relations')
+      ->key(array('event' => $eventId))
+      ->fields(
+        array(
+          'organizer' => NULL,
+        )
+      );
+
+    $query->execute();
+  }
+
+  public function storeOrganizer($eventId, $organizerId) {
+    // For optimal performance we use a merge query here
+    // instead of the entity API.
+    $query = $this->database->merge('culturefeed_udb3_event_relations')
+      ->key(array('event' => $eventId))
+      ->fields(
+        array(
+          'organizer' => $organizerId
+        )
+      );
+
+    $query->execute();
+  }
+
   public function storeRelations($eventId, $placeId, $organizerId) {
     // For optimal performance we use a merge query here
     // instead of the entity API.
