@@ -28,6 +28,8 @@ class CulturefeedUdb3ServiceProvider extends ServiceProviderBase {
     $container->addCompilerPass(new RegisterEventBusSubscribersPass());
 
     // Load separated service files.
+    // Can't use file_scan_directory() here because Drupal isn't fully
+    // bootstrapped yet at this point.
     $modules = $container->getParameter('container.modules');
     $pathname = isset($modules['culturefeed_udb3']['pathname']) ? $modules['culturefeed_udb3']['pathname'] : NULL;
     if ($pathname) {
