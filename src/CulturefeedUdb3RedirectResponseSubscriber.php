@@ -27,16 +27,15 @@ class CulturefeedUdb3RedirectResponseSubscriber extends RedirectResponseSubscrib
     $subscribed_events[KernelEvents::RESPONSE] = array_filter($subscribed_events[KernelEvents::RESPONSE], function($subscriber) {
       return $subscriber[0] != 'checkRedirectUrl';
     });
-    if (!count($subscribed_events[KernelEvents::RESPONSE])) {
-      unset($subscribed_events[KernelEvents::RESPONSE]);
-    }
 
     $subscribed_events[KernelEvents::REQUEST] = array_filter($subscribed_events[KernelEvents::REQUEST], function($subscriber) {
       return $subscriber[0] != 'sanitizeDestination';
     });
-    if (!count($subscribed_events[KernelEvents::REQUEST])) {
-      unset($subscribed_events[KernelEvents::REQUEST]);
-    }
+    
+    // Remove empty arrays completely.
+    $subscribed_events = array_filter($subscribed_events, function($subscribers) {
+      return !empty($subscribers);
+    });
 
     return $subscribed_events;
   }
