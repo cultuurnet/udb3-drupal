@@ -56,6 +56,7 @@ class RouteProviderSubscriber implements EventSubscriberInterface {
 
     foreach ($routes as $route_name => $route_info) {
 
+      // Copied from Drupal\Core\Routing\RouteBuilder::rebuild().
       $route_info += array(
         'defaults' => array(),
         'requirements' => array(),
@@ -79,6 +80,9 @@ class RouteProviderSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
+    // See Drupal\Core\Routing\RouteBuilder:
+    // "DYNAMIC is supposed to be used to add new routes based upon all the
+    // static defined ones."
     $events[RoutingEvents::DYNAMIC][] = ['onDynamicRouteEvent'];
     return $events;
   }
