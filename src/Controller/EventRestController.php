@@ -122,29 +122,6 @@ class EventRestController extends OfferRestBaseController {
   }
 
   /**
-   * Returns an event.
-   *
-   * @param string $cdbid
-   *   The event id.
-   *
-   * @return JsonLdResponse
-   *   The response.
-   */
-  public function details($cdbid) {
-
-    $event = $this->getItem($cdbid);
-
-    $response = JsonResponse::create()
-      ->setContent($event)
-      ->setPublic()
-      ->setClientTtl(60 * 30)
-      ->setTtl(60 * 5);
-
-    return $response;
-
-  }
-
-  /**
    * Modifies the event tile.
    *
    * @param Request $request
