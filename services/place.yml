@@ -1,0 +1,11 @@
+services:
+
+  # Default
+  culturefeed_udb3.place_ld_projector:
+    class: CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector
+    arguments: ['@culturefeed_udb3.place.ld_repository', '@culturefeed_udb3.place.iri_generator', '@culturefeed_udb3.organizer_service', '@culturefeed_udb3.media_object_serializer']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.place_service:
+    class: CultuurNet\UDB3\PlaceService
+    arguments: ['@culturefeed_udb3.place.ld_repository', '@culturefeed_udb3.place.repository', '@culturefeed_udb3.place.iri_generator']

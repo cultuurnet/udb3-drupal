@@ -1,11 +1,14 @@
 <?php
+
 /**
  * @file
- * Contains Drupal\culturefeed_udb3\OrganizerIndexRepository.
+ * Contains Drupal\culturefeed_udb3\Repository\Udb3IndexRepository.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Repository;
 
+use DateTimeInterface;
+use CultuurNet\UDB3\ReadModel\Index\EntityType;
 use CultuurNet\UDB3\ReadModel\Index\RepositoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\Query\QueryFactory;
@@ -42,15 +45,15 @@ class Udb3IndexRepository implements RepositoryInterface {
   }
 
   /**
-   * Update the index.
+   * {@inheritdoc}
    */
-  public function updateIndex($id, $type, $userId, $title, $zip, $creationDate = null) {
+  public function updateIndex($id, EntityType $entity_type, $user_id, $name, $postal_code, DateTimeInterface $created = null) {
 
     $fields_to_insert = array(
-      'type' => $type,
-      'uid' => $userId,
-      'title' => $title,
-      'zip' => $zip,
+      'type' => $entity_type->toNative(),
+      'uid' => $user_id,
+      'title' => $name,
+      'zip' => $postal_code,
     );
 
     if (!empty($creationDate)) {
@@ -67,12 +70,12 @@ class Udb3IndexRepository implements RepositoryInterface {
   }
 
   /**
-   * Delete the index for a place/event.
-   * @param type $id
+   * {@inheritdoc}
    */
-  public function deleteIndex($id) {
+  public function deleteIndex($id, EntityType $entity_type) {
     $query = $this->database->delete('culturefeed_udb3_index')
-      ->condition('id', $id);
+      ->condition('id', $id)
+      ->condition('type', $entity_type->toNative());
 
     return $query->execute();
 

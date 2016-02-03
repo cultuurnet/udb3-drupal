@@ -35,6 +35,12 @@ class Udb2EventCdbxmlFactory {
     $this->eventCdbxmlProvider = $event_cdbxml_provider;
   }
 
+  /**
+   * Get the decorated event cdbxml.
+   *
+   * @return \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml
+   *   The decorated event cdbxml.
+   */
   public function get() {
     $labeledAsUDB3Place = new LabeledAsUDB3Place();
 

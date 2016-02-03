@@ -1,0 +1,11 @@
+services:
+
+  # Default
+  culturefeed_udb3.media_object_iri_generator:
+    class: CultuurNet\UDB3\Iri\CallableIriGenerator
+    factory: culturefeed_udb3.media_object_iri_generator.factory:get
+  culturefeed_udb3.media_object_iri_generator.factory:
+    class: Drupal\culturefeed_udb3\Factory\CallableIriGeneratorFactory
+  culturefeed_udb3.media_object_serializer:
+    class: CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer
+    arguments: ['@culturefeed_udb3.media_object_iri_generator']

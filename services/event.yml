@@ -9,6 +9,20 @@ services:
   culturefeed_udb3.event_jsonld_repository:
     class: Drupal\culturefeed_udb3\EntityLdRepository
     arguments: ['event_document_repository', '@entity.manager']
+  culturefeed_udb3.event_jsonld_projector:
+    class: CultuurNet\UDB3\Event\EventLDProjector
+    arguments:
+      - '@culturefeed_udb3.event_jsonld_repository'
+      - '@culturefeed_udb3.iri_generator'
+      - '@culturefeed_udb3.event_service'
+      - '@culturefeed_udb3.place_service'
+      - '@culturefeed_udb3.organizer_service'
+      - '@culturefeed_udb3.media_object_serializer'
+    calls:
+      - [addDescriptionFilter, ['@culturefeed_udb3.description_filter.tidy']]
+      - [addDescriptionFilter, ['@culturefeed_udb3.description_filter.strip_source']]
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.event_history_cache:
     class: Drupal\culturefeed_udb3\DoctrineCache
     arguments: ['@culturefeed_udb3.cache']
