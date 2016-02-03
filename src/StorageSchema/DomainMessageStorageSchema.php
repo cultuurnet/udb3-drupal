@@ -2,18 +2,17 @@
 
 /**
  * @file
- * Contains \Drupal\culturefeed_udb3\Utf8StorageSchema.
+ * Contains \Drupal\culturefeed_udb3\StorageSchema\DomainMessageStorageSchema.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\StorageSchema;
 
-use Drupal\Core\Entity\Sql\SqlContentEntityStorageSchema;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
 
 /**
  * Defines the domain message schema handler.
  */
-class Utf8StorageSchema extends SqlContentEntityStorageSchema {
+class DomainMessageStorageSchema extends Utf8StorageSchema {
 
   /**
    * {@inheritdoc}
@@ -21,9 +20,12 @@ class Utf8StorageSchema extends SqlContentEntityStorageSchema {
   protected function getEntitySchema(ContentEntityTypeInterface $entity_type, $reset = FALSE) {
 
     $schema = parent::getEntitySchema($entity_type, $reset);
-    $schema[$entity_type->getBaseTable()]['mysql_character_set'] = 'utf8';
-    return $schema;
 
+    $schema[$entity_type->getBaseTable()]['unique keys'] += array(
+      'id' => array('uuid', 'playhead'),
+    );
+
+    return $schema;
   }
 
 }

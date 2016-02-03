@@ -75,9 +75,9 @@ class EventRestController extends OfferRestBaseController {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('culturefeed_udb3.event.service'),
-      $container->get('culturefeed_udb3.event.editor'),
-      $container->get('culturefeed_udb3.event.used_labels_memory'),
+      $container->get('culturefeed_udb3.event_service'),
+      $container->get('culturefeed_udb3.event_editor'),
+      $container->get('culturefeed_udb3.used_labels_memory'),
       $container->get('culturefeed.current_user'),
       $container->get('file.usage')
     );

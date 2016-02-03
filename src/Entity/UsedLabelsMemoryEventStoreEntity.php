@@ -17,7 +17,7 @@ use Drupal\culturefeed_udb3\DomainMessageEntity;
  *   label = @Translation("Culturefeed udb3 used labels memory event store"),
  *   base_table = "culturefeed_udb3_used_labels_memory_event_store",
  *   handlers = {
- *     "storage_schema" = "Drupal\culturefeed_udb3\DomainMessageStorageSchema",
+ *     "storage_schema" = "Drupal\culturefeed_udb3\StorageSchema\DomainMessageStorageSchema",
  *   },
  *   entity_keys = {
  *     "id" = "dmid",

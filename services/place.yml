@@ -9,3 +9,6 @@ services:
   culturefeed_udb3.place_service:
     class: CultuurNet\UDB3\PlaceService
     arguments: ['@culturefeed_udb3.place.ld_repository', '@culturefeed_udb3.place.repository', '@culturefeed_udb3.place.iri_generator']
+  culturefeed_udb3.place_store:
+    class: Drupal\culturefeed_udb3\Store\EventStore
+    arguments: ['place_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']

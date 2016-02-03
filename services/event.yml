@@ -4,8 +4,26 @@ services:
   culturefeed_udb3.event_controller:
     class: CultuurNet\UDB3\Symfony\Event\EventRestController
     arguments: ['@culturefeed_udb3.event_service', '@culturefeed_udb3.event_history_repository']
+  culturefeed_udb3.event_editing_controller:
+    class: CultuurNet\UDB3\Symfony\Event\EventEditingRestController
+    arguments:
+      - '@culturefeed_udb3.event_service'
+      - '@culturefeed_udb3.event_editor'
+      - '@culturefeed_udb3.used_labels_memory'
+      - '@culturefeed.current_user'
+      - '@culturefeed_udb3.media_manager'
+      - '@culturefeed_udb3.iri_generator'
+      - '@culturefeed_udb3.event.security'
 
   # Default
+  culturefeed_udb3.event_editor:
+    class: CultuurNet\UDB3\Event\DefaultEventEditingService
+    arguments:
+      - '@culturefeed_udb3.event_service'
+      - '@culturefeed_udb3.event_command_bus'
+      - '@culturefeed_udb3.uuid_generator'
+      - '@culturefeed_udb3.event_repository'
+      - '@culturefeed_udb3.place_service'
   culturefeed_udb3.event_jsonld_repository:
     class: Drupal\culturefeed_udb3\EntityLdRepository
     arguments: ['event_document_repository', '@entity.manager']
@@ -36,7 +54,7 @@ services:
     class: CultuurNet\UDB3\UDB2\EventRepository
     factory: culturefeed_udb3.event_repository.factory:get
   culturefeed_udb3.event_repository.factory:
-    class: Drupal\culturefeed_udb3\EventRepositoryFactory
+    class: Drupal\culturefeed_udb3\Factory\EventRepositoryFactory
     arguments:
     - '@culturefeed_udb3.real_event_repository'
     - '@culturefeed_udb3.udb2_entry_api_improved'

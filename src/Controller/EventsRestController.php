@@ -31,7 +31,7 @@ class EventsRestController extends ControllerBase {
     return new static(
       $container->get('culturefeed_udb3.search_service'),
       $container->get('culturefeed_udb3.event.labeller'),
-      $container->get('culturefeed_udb3.event.used_labels_memory'),
+      $container->get('culturefeed_udb3.used_labels_memory'),
       $container->get('culturefeed.current_user')
     );
   }

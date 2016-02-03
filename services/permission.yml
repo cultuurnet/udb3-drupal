@@ -1,0 +1,11 @@
+services:
+
+  # Default
+  culturefeed_udb3.event.security:
+    class: CultuurNet\UDB3\Event\Security
+    arguments: ['@culturefeed_udb3.security.token_storage', '@culturefeed_udb3.event_permission.repository']
+  culturefeed_udb3.event_permission.repository:
+    class: Drupal\culturefeed_udb3\Repository\EventPermissionRepository
+    arguments: ['@entity.query', '@database']
+  culturefeed_udb3.security.token_storage:
+    class: Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage
