@@ -11,11 +11,11 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use Drupal\Core\StreamWrapper\PublicStream;
 
 /**
- * Class CallableIriGeneratorFactory
+ * Class CallableIriGeneratorFactory.
+ *
  * @package Drupal\culturefeed_udb3\Factory
  */
 class CallableIriGeneratorFactory {
-
 
   /**
    * Get the callable iri generator.
@@ -27,8 +27,8 @@ class CallableIriGeneratorFactory {
     $file_system = PublicStream::baseUrl();
     return new CallableIriGenerator(
 
-      function ($filePath) use ($file_system) {
-        return $file_system . '/culturefeed/media/' . $filePath;
+      function ($file_path) use ($file_system) {
+        return $file_system . '/culturefeed/media/' . $file_path;
       }
     );
   }

@@ -33,8 +33,12 @@ class Udb3IndexRepository implements RepositoryInterface {
   protected $database;
 
   /**
-   * @param QueryFactory $query_factory
-   * @param Connection $database
+   * Udb3IndexRepository constructor.
+   *
+   * @param \Drupal\Core\Entity\Query\QueryFactory $query_factory
+   *   The query factory.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
    */
   public function __construct(
     QueryFactory $query_factory,
@@ -47,7 +51,7 @@ class Udb3IndexRepository implements RepositoryInterface {
   /**
    * {@inheritdoc}
    */
-  public function updateIndex($id, EntityType $entity_type, $user_id, $name, $postal_code, DateTimeInterface $created = null) {
+  public function updateIndex($id, EntityType $entity_type, $user_id, $name, $postal_code, DateTimeInterface $created = NULL) {
 
     $fields_to_insert = array(
       'type' => $entity_type->toNative(),
@@ -56,8 +60,8 @@ class Udb3IndexRepository implements RepositoryInterface {
       'zip' => $postal_code,
     );
 
-    if (!empty($creationDate)) {
-      $fields_to_insert['created_on'] = $creationDate->getTimestamp();
+    if (!empty($created)) {
+      $fields_to_insert['created_on'] = $created->getTimestamp();
     }
 
     // For optimal performance we use a merge query here

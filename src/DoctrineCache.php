@@ -7,10 +7,15 @@
 
 namespace Drupal\culturefeed_udb3;
 
+use Doctrine\Common\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 
-class DoctrineCache implements \Doctrine\Common\Cache\Cache
-{
+/**
+ * Class DoctrineCache.
+ *
+ * @package Drupal\culturefeed_udb3
+ */
+class DoctrineCache implements Cache {
 
   /**
    * The cache backend.
@@ -32,35 +37,35 @@ class DoctrineCache implements \Doctrine\Common\Cache\Cache
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function fetch($id) {
     $this->cache->get($id);
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
-  public function save($id, $data, $lifeTime = 0) {
+  public function save($id, $data, $life_time = 0) {
     $this->cache->set($id, $data);
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function delete($id) {
     $this->cache->delete($id);
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function contains($id) {
     return $this->cache->get($id);
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function getStats() {
     return NULL;

@@ -13,15 +13,16 @@ use CultuurNet\UDB3\UDB2\LabeledAsUDB3Place;
 use CultuurNet\UDB3\Cdb\Event\Not;
 
 /**
- * Class Udb2EventCdbxmlFactory
+ * Class Udb2EventCdbxmlFactory.
+ *
  * @package Drupal\culturefeed_udb3\Factory
  */
 class Udb2EventCdbxmlFactory {
 
   /**
-   * @var \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI
-   *
    * The event cdbxml provider.
+   *
+   * @var \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI
    */
   private $eventCdbxmlProvider;
 
@@ -42,11 +43,11 @@ class Udb2EventCdbxmlFactory {
    *   The decorated event cdbxml.
    */
   public function get() {
-    $labeledAsUDB3Place = new LabeledAsUDB3Place();
+    $labeled_as_udb3_place = new LabeledAsUDB3Place();
 
     return new SpecificationDecoratedEventCdbXml(
       $this->eventCdbxmlProvider,
-      new Not($labeledAsUDB3Place)
+      new Not($labeled_as_udb3_place)
     );
   }
 

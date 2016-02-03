@@ -81,8 +81,8 @@ class RouteProviderSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     // See Drupal\Core\Routing\RouteBuilder:
-    // "DYNAMIC is supposed to be used to add new routes based upon all the
-    // static defined ones."
+    // DYNAMIC is supposed to be used to add new routes based upon all the
+    // static defined ones.
     $events[RoutingEvents::DYNAMIC][] = ['onDynamicRouteEvent'];
     return $events;
   }
