@@ -24,8 +24,7 @@ class LocalFileSystemAdapterFactory {
    *   The local file system adapter.
    */
   public function get() {
-    $file_system = PublicStream::baseUrl();
-    return new Local($file_system);
+    return new Local(__DIR__);
   }
 
 }

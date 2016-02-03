@@ -10,7 +10,8 @@
         "monolog/monolog": "~1.11",
         "chrisboulton/php-resque": "~1.2",
         "predis/predis": "~1.0",
-        "rase/socket.io-emitter": "0.6.1"
+        "rase/socket.io-emitter": "0.6.1",
+        "symfony/security": "~2.3|3.0.*"
     },
     "preferred-install": "source",
     "provide": {
