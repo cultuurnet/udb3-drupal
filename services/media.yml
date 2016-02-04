@@ -17,8 +17,6 @@ services:
       - '@culturefeed_udb3.media_object_repository'
       - '@culturefeed_udb3.local_file_system'
       - 'culturefeed/media'
-    tags:
-      - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.media_object_iri_generator:
     class: CultuurNet\UDB3\Iri\CallableIriGenerator
     factory: culturefeed_udb3.media_object_iri_generator.factory:get

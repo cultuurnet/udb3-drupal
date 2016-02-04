@@ -67,7 +67,7 @@ services:
   # Allows for subscribing Drupal services to the event bus on first publication
   # of an event.
   culturefeed_udb3.event_bus_factory:
-    class: Drupal\culturefeed_udb3\EventBusFactory
+    class: Drupal\culturefeed_udb3\Factory\EventBusFactory
 
   # Place
   # Place: ld repository
@@ -185,6 +185,7 @@ services:
       - [setLogger, ['@culturefeed_udb3.logger.command_bus']]
       - [subscribe, ['@culturefeed_udb3.event_command_handler']]
       - [subscribe, ['@culturefeed_udb3.place_command_handler']]
+      - [subscribe, ['@culturefeed_udb3.media_manager']]
     tags:
       - { name: 'service_collector', tag: 'culturefeed_udb3.command_bus.subscriber', call: 'subscribe' }
 
