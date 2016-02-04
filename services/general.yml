@@ -70,48 +70,16 @@ services:
     class: Drupal\culturefeed_udb3\Factory\EventBusFactory
 
   # Place
-  # Place: ld repository
-  culturefeed_udb3.place.ld_repository:
-    class: Drupal\culturefeed_udb3\EntityLdRepository
-    arguments: ['place_document_repository', '@entity.manager']
   # Place: repository
-  culturefeed_udb3.udb2_place_importer:
-    class: CultuurNet\UDB3\UDB2\Place\PlaceCdbXmlImporter
-    arguments: ['@culturefeed_udb3.place.local_repository', '@culturefeed_udb3.udb2_actor_cdbxml_provider', '@culturefeed_udb3.udb2_place_event_cdbxml']
-    calls:
-      - ['setLogger', ['@culturefeed_udb3.logger.channel.udb2']]
-  culturefeed_udb3.udb2_labeled_as_udb3_place:
-    class: CultuurNet\UDB3\UDB2\LabeledAsUDB3Place
-  culturefeed_udb3.udb2_not_labeled_as_udb3_place:
-    class: CultuurNet\UDB3\Cdb\Event\Not
-    arguments: ['@culturefeed_udb3.udb2_labeled_as_udb3_place']
-  culturefeed_udb3.udb2_place_event_cdbxml:
-    class: CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml
-    arguments: ['@culturefeed_udb3.udb2_event_cdbxml_provider', '@culturefeed_udb3.udb2_not_labeled_as_udb3_place']
-  culturefeed_udb3.place_store:
-    class: Drupal\culturefeed_udb3\Store\EventStore
-    arguments: ['place_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
-  culturefeed_udb3.place.iri_generator:
-    class: Drupal\culturefeed_udb3\IriGenerator
-    arguments: ['@url_generator', 'culturefeed_udb3.place']
-  culturefeed_udb3.place.local_repository:
-    class: CultuurNet\UDB3\Place\PlaceRepository
-    arguments: ['@culturefeed_udb3.place_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
-  culturefeed_udb3.place.repository_factory:
-    class: Drupal\culturefeed_udb3\PlaceRepositoryFactory
-    arguments: ['@culturefeed_udb3.place.local_repository', '@culturefeed_udb3.udb2_entry_api_improved', '@culturefeed_udb3.udb2_place_importer', '@culturefeed_udb3.organizer_service', '@culturefeed_udb3.event_stream_metadata_enricher', '@config.factory']
-  culturefeed_udb3.place.repository:
-    class: CultuurNet\UDB3\UDB2\PlaceRepository
-    factory: culturefeed_udb3.place.repository_factory:get
   # Place: service
   culturefeed_udb3.place.editor:
     class: CultuurNet\UDB3\Place\DefaultPlaceEditingService
-    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuid_generator', '@culturefeed_udb3.place.repository']
+    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuid_generator', '@culturefeed_udb3.place_repository']
 
   # Organizer
   # Organizer: ld repository
   culturefeed_udb3.organizer.ld_repository:
-    class: Drupal\culturefeed_udb3\EntityLdRepository
+    class: Drupal\culturefeed_udb3\Repository\EntityLdRepository
     arguments: ['organizer_document_repository', '@entity.manager']
   # Organizer: repository
   culturefeed_udb3.udb2_organizer_importer:
@@ -170,7 +138,7 @@ services:
 
   culturefeed_udb3.place_command_handler:
     class: CultuurNet\UDB3\Place\CommandHandler
-    arguments: ['@culturefeed_udb3.place.repository']
+    arguments: ['@culturefeed_udb3.place_repository']
 
   culturefeed_udb3.logger.command_bus.factory:
     class: Drupal\culturefeed_udb3\LoggerCommandBusFactory
@@ -272,7 +240,7 @@ services:
 #    arguments: [@culturefeed.uitpas]
 
   culturefeed_udb3.event_history_repository:
-    class: Drupal\culturefeed_udb3\EntityLdRepository
+    class: Drupal\culturefeed_udb3\Repository\EntityLdRepository
     arguments: ['event_history', '@entity.manager']
 
   culturefeed_udb3.event_history_projector:

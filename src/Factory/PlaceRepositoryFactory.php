@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains Drupal\culturefeed_udb3\PlaceRepositoryFactory.
+ * Contains Drupal\culturefeed_udb3\Factory\PlaceRepositoryFactory.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Factory;
 
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
@@ -17,20 +17,19 @@ use CultuurNet\UDB3\UDB2\Place\PlaceImporterInterface;
 use CultuurNet\UDB3\UDB2\Place\PlaceRepository as UDB2PlaceRepository;
 use Drupal\Core\Config\ConfigFactory;
 
-
 /**
  * Class PlaceRepositoryFactory.
  *
- * @package Drupal\culturefeed_udb3
+ * @package Drupal\culturefeed_udb3\Factory
  */
 class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
 
   /**
-   * The local place repository.
+   * The real place repository.
    *
    * @var PlaceRepository
    */
-  protected $localPlaceRepository;
+  protected $realPlaceRepository;
 
   /**
    * The entry api.
@@ -70,8 +69,8 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
   /**
    * Constructs an event repository factory.
    *
-   * @param EventSourcingRepository $local_place_repository
-   *   The local place repository.
+   * @param EventSourcingRepository $real_place_repository
+   *   The real place repository.
    * @param EntryAPIImprovedFactory $improved_entry_api
    *   The improved entry api.
    * @param PlaceImporterInterface $place_importer
@@ -84,14 +83,14 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
    *   The config factory.
    */
   public function __construct(
-    EventSourcingRepository $local_place_repository,
+    EventSourcingRepository $real_place_repository,
     EntryAPIImprovedFactory $improved_entry_api,
     PlaceImporterInterface $place_importer,
     OrganizerService $organizer_service,
     MetadataEnrichingEventStreamDecorator $event_stream_metadata_enricher,
     ConfigFactory $config
   ) {
-    $this->localPlaceRepository = $local_place_repository;
+    $this->realPlaceRepository = $real_place_repository;
     $this->improvedEntryApi = $improved_entry_api;
     $this->placeImporter = $place_importer;
     $this->organizerService = $organizer_service;
@@ -105,7 +104,7 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
   public function get() {
 
     $udb2_repository_decorator = new UDB2PlaceRepository(
-      $this->localPlaceRepository,
+      $this->realPlaceRepository,
       $this->improvedEntryApi,
       $this->placeImporter,
       $this->organizerService,
@@ -114,10 +113,6 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
 
     if ($this->config->get('sync_with_udb2')) {
       $udb2_repository_decorator->syncBackOn();
-    }
-
-    if ($this->config->get('use_full_event_data_to_update_description')) {
-      $udb2_repository_decorator = $udb2_repository_decorator->withFullEventDataToUpdateDescription();
     }
 
     return $udb2_repository_decorator;
