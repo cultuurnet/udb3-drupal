@@ -14,16 +14,6 @@ culturefeed_udb3.event_context:
   requirements:
     _access: 'TRUE'
 
-culturefeed_udb3.place_create:
-  path: '/udb3/api/1.0/place'
-  defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::createPlace'
-    _title: 'Create place'
-  requirements:
-    _culturefeed_current_user: 'TRUE'
-    _format: json
-    _method: POST
-
 culturefeed_udb3.query.label:
   path: '/udb3/api/1.0/query/label'
   defaults:

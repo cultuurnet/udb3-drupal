@@ -9,8 +9,16 @@ culturefeed_udb3.place:
 culturefeed_udb3.place_add_image:
   path: '/udb3/api/1.0/place/{cdbid}/image'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::addImage'
+    _controller: 'culturefeed_udb3.place_editing_controller:addImage'
     _title: 'Add new images to the place'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _method: POST
+culturefeed_udb3.place_create:
+  path: '/udb3/api/1.0/place'
+  defaults:
+    _controller: 'culturefeed_udb3.place_editing_controller:createPlace'
+    _title: 'Add new place'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _method: POST
@@ -34,7 +42,7 @@ culturefeed_udb3.place_delete_image:
 culturefeed_udb3.place_delete_organizer:
   path: '/udb3/api/1.0/place/{cdbid}/organizer/{organizerId}'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deleteOrganizer'
+    _controller: 'culturefeed_udb3.place_editing_controller:deleteOrganizer'
     _title: 'Delete the organizer for this place'
   requirements:
     _culturefeed_current_user: 'TRUE'
@@ -43,21 +51,12 @@ culturefeed_udb3.place_delete_organizer:
 culturefeed_udb3.place_delete_typical_age_range:
   path: '/udb3/api/1.0/place/{cdbid}/typicalAgeRange'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deleteTypicalAgeRange'
-    _title: 'Delete the typical age range for this event'
+    _controller: 'culturefeed_udb3.place_editing_controller:deleteTypicalAgeRange'
+    _title: 'Delete the typical age range for this place'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: DELETE
-culturefeed_udb3.place_description:
-  path: '/udb3/api/1.0/place/{cdbid}/{language}/description'
-  defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateDescription'
-    _title: 'Place description'
-  requirements:
-    _culturefeed_current_user: 'TRUE'
-    _format: json
-    _method: POST
 culturefeed_udb3.place_events:
   path: '/udb3/api/1.0/place/{cdbid}/events'
   defaults:
@@ -70,7 +69,7 @@ culturefeed_udb3.place_events:
 culturefeed_udb3.place_update:
   path: '/udb3/api/1.0/place/{cdbid}/major-info'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateMajorInfo'
+    _controller: 'culturefeed_udb3.place_editing_controller:updateMajorInfo'
     _title: 'Update major info'
   requirements:
     _culturefeed_current_user: 'TRUE'
@@ -79,7 +78,7 @@ culturefeed_udb3.place_update:
 culturefeed_udb3.place_update_bookinginfo:
   path: '/udb3/api/1.0/place/{cdbid}/bookingInfo'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateBookingInfo'
+    _controller: 'culturefeed_udb3.place_editing_controller:updateBookingInfo'
     _title: 'Update the booking info for this place'
   requirements:
     _culturefeed_current_user: 'TRUE'
@@ -88,8 +87,17 @@ culturefeed_udb3.place_update_bookinginfo:
 culturefeed_udb3.place_update_contactpoint:
   path: '/udb3/api/1.0/place/{cdbid}/contactPoint'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateContactPoint'
+    _controller: 'culturefeed_udb3.place_editing_controller:updateContactPoint'
     _title: 'Update the contact info for this place'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.place_update_description:
+  path: '/udb3/api/1.0/place/{cdbid}/{language}/description'
+  defaults:
+    _controller: 'culturefeed_udb3.place_editing_controller:updateDescription'
+    _title: 'Update place description'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _format: json
@@ -105,7 +113,7 @@ culturefeed_udb3.place_update_image:
 culturefeed_udb3.place_update_facilities:
   path: '/udb3/api/1.0/place/{cdbid}/facilities'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateFacilities'
+    _controller: 'culturefeed_udb3.place_editing_controller:updateFacilities'
     _title: 'Update facilities'
   requirements:
     _culturefeed_current_user: 'TRUE'
@@ -114,7 +122,7 @@ culturefeed_udb3.place_update_facilities:
 culturefeed_udb3.place_update_organizer:
   path: '/udb3/api/1.0/place/{cdbid}/organizer'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateOrganizer'
+    _controller: 'culturefeed_udb3.place_editing_controller:updateOrganizer'
     _title: 'Update the organizer for this place'
   requirements:
     _culturefeed_current_user: 'TRUE'
@@ -123,9 +131,17 @@ culturefeed_udb3.place_update_organizer:
 culturefeed_udb3.place_update_typical_age_range:
   path: '/udb3/api/1.0/place/{cdbid}/typicalAgeRange'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateTypicalAgeRange'
+    _controller: 'culturefeed_udb3.place_editing_controller:updateTypicalAgeRange'
     _title: 'Update typical age range'
   requirements:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
+culturefeed_udb3.places:
+  path: '/udb3/api/1.0/places'
+  defaults:
+    _controller: 'culturefeed_udb3.place_controller:getByPostalCode'
+    _title: 'Place detail'
+  requirements:
+    _access: 'TRUE'
+    _method: GET
