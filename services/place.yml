@@ -41,7 +41,7 @@ services:
     arguments: ['@culturefeed_udb3.udb2_labeled_as_udb3_place']
   culturefeed_udb3.udb2_place_event_cdbxml:
     class: CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml
-    arguments: ['@culturefeed_udb3.udb2_event_cdbxml_provider', '@culturefeed_udb3.udb2_not_labeled_as_udb3_place']
+    arguments: ['@culturefeed_udb3.udb2_event_cdbxml_provider', '@culturefeed_udb3.udb2_labeled_as_udb3_place']
   culturefeed_udb3.udb2_place_importer:
     class: CultuurNet\UDB3\UDB2\Place\PlaceCdbXmlImporter
     arguments: ['@culturefeed_udb3.place_real_repository', '@culturefeed_udb3.udb2_actor_cdbxml_provider', '@culturefeed_udb3.udb2_place_event_cdbxml']

@@ -10,13 +10,14 @@ namespace Drupal\culturefeed_udb3\Repository;
 use DateTimeInterface;
 use CultuurNet\UDB3\ReadModel\Index\EntityType;
 use CultuurNet\UDB3\ReadModel\Index\RepositoryInterface;
+use CultuurNet\UDB3\Place\ReadModel\Lookup\PlaceLookupServiceInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\Query\QueryFactory;
 
 /**
  * Repository for the udb3 index.
  */
-class Udb3IndexRepository implements RepositoryInterface {
+class Udb3IndexRepository implements RepositoryInterface, PlaceLookupServiceInterface  {
 
   /**
    * The query factory.
@@ -83,6 +84,17 @@ class Udb3IndexRepository implements RepositoryInterface {
 
     return $query->execute();
 
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function findPlacesByPostalCode($postal_code) {
+    $query = $this->queryFactory->get('udb3_index');
+    $query->condition('zip', $postal_code);
+    $query->condition('type', EntityType::PLACE()->toNative());
+
+    return $query->execute();
   }
 
   /**

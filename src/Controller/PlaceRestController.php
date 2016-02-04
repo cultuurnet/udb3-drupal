@@ -112,29 +112,6 @@ class PlaceRestController extends OfferRestBaseController {
   }
 
   /**
-   * Returns a place.
-   *
-   * @param string $cdbid
-   *   The place id.
-   *
-   * @return JsonLdResponse
-   *   The response.
-   */
-  public function details($cdbid) {
-
-    $place = $this->getItem($cdbid);
-
-    $response = JsonResponse::create()
-      ->setContent($place)
-      ->setPublic()
-      ->setClientTtl(60 * 30)
-      ->setTtl(60 * 5);
-
-    return $response;
-
-  }
-
-  /**
    * Create a new place.
    */
   public function createPlace(Request $request) {
