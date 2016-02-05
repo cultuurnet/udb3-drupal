@@ -13,7 +13,7 @@ services:
       - '@culturefeed.current_user'
       - '@culturefeed_udb3.media_manager'
       - '@culturefeed_udb3.iri_generator'
-      - '@culturefeed_udb3.event.security'
+      - '@culturefeed_udb3.event_security'
 
   # Default
   culturefeed_udb3.event_editor:
@@ -63,6 +63,12 @@ services:
     - '@culturefeed_udb3.organizer_service'
     - '@culturefeed_udb3.event_stream_metadata_enricher'
     - '@config.factory'
+  culturefeed_udb3.event_security:
+    class: CultuurNet\UDB3\Offer\Security
+    arguments: ['@culturefeed_udb3.security.token_storage', '@culturefeed_udb3.event_permission_repository']
+  culturefeed_udb3.event_permission_repository:
+    class: Drupal\culturefeed_udb3\Repository\EventPermissionRepository
+    arguments: ['@entity.query', '@database']
   culturefeed_udb3.event_service:
     class: CultuurNet\UDB3\LocalEventService
     arguments: ['@culturefeed_udb3.event_jsonld_repository', '@culturefeed_udb3.event_repository', '@culturefeed_udb3.event_relations_repository', '@culturefeed_udb3.iri_generator']
