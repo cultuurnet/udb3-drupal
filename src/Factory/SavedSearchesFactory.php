@@ -8,15 +8,23 @@
 namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\Auth\ConsumerCredentials;
+use CultuurNet\Auth\TokenCredentials;
+use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactoryInterface;
 use Drupal\Core\Config\ConfigFactory;
-use Drupal\culturefeed\UserCredentials;
 
 /**
  * Class SavedSearchesFactory.
  *
  * @package Drupal\culturefeed_udb3\Factory
  */
-class SavedSearchesFactory {
+class SavedSearchesFactory implements SavedSearchesServiceFactoryInterface {
+
+  /**
+   * The config factory.
+   *
+   * @var ConfigFactory
+   */
+  protected $config;
 
   /**
    * The consumer credentials.
@@ -26,41 +34,28 @@ class SavedSearchesFactory {
   private $consumerCredentials;
 
   /**
-   * The user credentials.
-   *
-   * @var \Drupal\culturefeed\UserCredentials
-   */
-  private $userCredentials;
-
-  /**
    * SavedSearchesFactory constructor.
    *
    * @param \CultuurNet\Auth\ConsumerCredentials $consumer_credentials
    *   The consumer credentials.
-   * @param \Drupal\culturefeed\UserCredentials $user_credentials
-   *   The user credentials.
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   The config factory.
    */
-  public function __construct(ConsumerCredentials $consumer_credentials, UserCredentials $user_credentials, ConfigFactory $config_factory) {
+  public function __construct(ConsumerCredentials $consumer_credentials, ConfigFactory $config_factory) {
     $this->consumerCredentials = $consumer_credentials;
-    $this->userCredentials = $user_credentials;
     $this->config = $config_factory->get('culturefeed.api');
   }
 
   /**
-   * Get the saved searches service.
-   *
-   * @return \CultuurNet\UDB3\SimpleEventBus
-   *   The saved searches service.
+   * {@inheritdoc}
    */
-  public function get() {
+  public function withTokenCredentials(TokenCredentials $token_credentials) {
 
     $oauth_client = new \CultureFeed_DefaultOAuthClient(
       $this->consumerCredentials->getKey(),
       $this->consumerCredentials->getSecret(),
-      $this->userCredentials->getToken(),
-      $this->userCredentials->getSecret()
+      $token_credentials->getToken(),
+      $token_credentials->getSecret()
     );
 
     $oauth_client->setEndpoint($this->config->get('api_location'));

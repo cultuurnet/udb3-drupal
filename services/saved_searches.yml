@@ -11,10 +11,11 @@ services:
     arguments: ['saved_searches']
   culturefeed_udb3.saved_searches:
     class: CultureFeed_SavedSearches_Default
-    arguments: ['@culturefeed']
+    factory: culturefeed_udb3.saved_searches.factory:withTokenCredentials
+    arguments: ['@culturefeed.token_credentials']
   culturefeed_udb3.saved_searches.factory:
-    class: Drupal\culturefeed_udb3\Factory\SavedSearchesServiceFactory
-    arguments: ['@culturefeed.consumer_credentials']
+    class: Drupal\culturefeed_udb3\Factory\SavedSearchesFactory
+    arguments: ['@culturefeed.consumer_credentials', '@config.factory']
   culturefeed_udb3.saved_searches_command_handler:
     class: CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler
     arguments: ['@culturefeed_udb3.saved_searches.factory']
