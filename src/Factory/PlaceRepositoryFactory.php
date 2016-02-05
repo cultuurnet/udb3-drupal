@@ -10,8 +10,6 @@ namespace Drupal\culturefeed_udb3\Factory;
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\OrganizerService;
-use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\UDB2\EntryAPIFactory;
 use CultuurNet\UDB3\UDB2\EntryAPIImprovedFactory;
 use CultuurNet\UDB3\UDB2\Place\PlaceImporterInterface;
 use CultuurNet\UDB3\UDB2\Place\PlaceRepository as UDB2PlaceRepository;
@@ -27,14 +25,14 @@ class PlaceRepositoryFactory implements PlaceRepositoryFactoryInterface {
   /**
    * The real place repository.
    *
-   * @var PlaceRepository
+   * @var \CultuurNet\UDB3\Place\PlaceRepository
    */
   protected $realPlaceRepository;
 
   /**
    * The entry api.
    *
-   * @var EntryAPIFactory
+   * @var \CultuurNet\UDB3\UDB2\EntryAPIFactory
    */
   protected $improvedEntryApi;
 
