@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\culturefeed_udb3\Factory\SavedSearchesFactory.
+ * Contains Drupal\culturefeed_udb3\Factory\SavedSearchesServiceFactory.
  */
 
 namespace Drupal\culturefeed_udb3\Factory;
@@ -13,7 +13,7 @@ use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactoryInterface;
 use Drupal\Core\Config\ConfigFactory;
 
 /**
- * Class SavedSearchesFactory.
+ * Class SavedSearchesServiceFactory.
  *
  * @package Drupal\culturefeed_udb3\Factory
  */
