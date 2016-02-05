@@ -17,7 +17,7 @@ use Drupal\Core\Config\ConfigFactory;
  *
  * @package Drupal\culturefeed_udb3\Factory
  */
-class SavedSearchesFactory implements SavedSearchesServiceFactoryInterface {
+class SavedSearchesServiceFactory implements SavedSearchesServiceFactoryInterface {
 
   /**
    * The config factory.

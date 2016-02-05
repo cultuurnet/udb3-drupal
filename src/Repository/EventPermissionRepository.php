@@ -7,8 +7,8 @@
 
 namespace Drupal\culturefeed_udb3\Repository;
 
-use CultuurNet\UDB3\Event\ReadModel\Permission\PermissionQueryInterface;
-use CultuurNet\UDB3\Event\ReadModel\Permission\PermissionRepositoryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\Query\QueryFactory;
 use ValueObjects\String\String;
@@ -51,7 +51,7 @@ class EventPermissionRepository implements PermissionRepositoryInterface, Permis
   /**
    * {@inheritdoc}
    */
-  public function markEventEditableByUser(String $event_id, String $uit_id) {
+  public function markOfferEditableByUser(String $event_id, String $uit_id) {
     $query = $this->database->merge('culturefeed_udb3_event_permission')
       ->key(array('id' => $uit_id->toNative()))
       ->fields(array('event_id' => $event_id->toNative()));
@@ -61,7 +61,7 @@ class EventPermissionRepository implements PermissionRepositoryInterface, Permis
   /**
    * {@inheritdoc}
    */
-  public function getEditableEvents(String $uit_id) {
+  public function getEditableOffers(String $uit_id) {
     $query = $this->queryFactory->get('culturefeed_udb3_event_permission');
     $query->condition('user_id', $uit_id->toNative());
     $result = $query->execute();
