@@ -1,0 +1,18 @@
+culturefeed_udb3.images:
+  path: '/udb3/api/1.0/images'
+  defaults:
+    _controller: 'culturefeed_udb3.media_controller:upload'
+    _title: 'Upload images'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.media:
+  path: '/udb3/api/1.0/media/{id}'
+  defaults:
+    _controller: 'culturefeed_udb3.media_controller:get'
+    _title: 'Get media'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
