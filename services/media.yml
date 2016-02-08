@@ -1,5 +1,7 @@
 parameters:
-  culturefeed_udb3.media_upload_directory: '/var/www/udb3-drupal/sites/default/files/culturefeed/media'
+
+  culturefeed_udb3.media_directory: 'culturefeed/udb3/media'
+  culturefeed_udb3.media_upload_directory: 'culturefeed/udb3/upload'
 
 services:
 
@@ -27,6 +29,7 @@ services:
     factory: culturefeed_udb3.local_file_system_adapter.factory:get
   culturefeed_udb3.local_file_system_adapter.factory:
     class: Drupal\culturefeed_udb3\Factory\LocalFileSystemAdapterFactory
+    arguments: ['@stream_wrapper.public']
   culturefeed_udb3.media_manager:
     class: CultuurNet\UDB3\Media\MediaManager
     arguments:
@@ -34,7 +37,7 @@ services:
       - '@culturefeed_udb3.simple_path_generator'
       - '@culturefeed_udb3.media_object_repository'
       - '@culturefeed_udb3.local_file_system'
-      - '%culturefeed_udb3.media_upload_directory%'
+      - '%culturefeed_udb3.media_directory%'
   culturefeed_udb3.media_object_iri_generator:
     class: CultuurNet\UDB3\Iri\CallableIriGenerator
     factory: culturefeed_udb3.media_object_iri_generator.factory:get
@@ -49,3 +52,7 @@ services:
   culturefeed_udb3.media_object_store:
     class: Drupal\culturefeed_udb3\Store\EventStore
     arguments: ['media_object_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
+  culturefeed_udb3.mime_type.guesser.file_info:
+    class: Symfony\Component\HttpFoundation\File\MimeType\FileinfoMimeTypeGuesser
+    tags:
+      - { name: mime_type_guesser, priority: 1 }
