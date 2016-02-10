@@ -1,8 +1,6 @@
 services:
 
   # Controller
-  culturefeed_udb3_event_command_factory:
-    class: CultuurNet\UDB3\Event\Commands\EventCommandFactory
   culturefeed_udb3.event_controller:
     class: CultuurNet\UDB3\Symfony\Event\EventRestController
     arguments: ['@culturefeed_udb3.event_service', '@culturefeed_udb3.event_history_repository']
@@ -21,6 +19,8 @@ services:
   culturefeed_udb3.event_cache_document_repositroy:
     class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
     arguments: ['@culturefeed_udb3.event_jsonld_cache']
+  culturefeed_udb3_event_command_factory:
+    class: CultuurNet\UDB3\Event\Commands\EventCommandFactory
   culturefeed_udb3.event_editor:
     class: CultuurNet\UDB3\Event\DefaultEventEditingService
     arguments:
@@ -43,7 +43,7 @@ services:
     class: Drupal\culturefeed_udb3\Factory\EventJsonLdRepositoryFactory
     arguments: ['@culturefeed_udb3.event_bus', '@culturefeed_udb3.event_cache_document_repositroy']
   culturefeed_udb3.event_jsonld_projector:
-    class: CultuurNet\UDB3\Event\EventLDProjector
+    class: CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector
     arguments:
       - '@culturefeed_udb3.event_jsonld_repository'
       - '@culturefeed_udb3.iri_generator'
