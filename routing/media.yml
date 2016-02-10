@@ -13,6 +13,6 @@ culturefeed_udb3.media:
     _controller: 'culturefeed_udb3.media_controller:get'
     _title: 'Get media'
   requirements:
-    _culturefeed_current_user: 'TRUE'
-    _format: json
+    _access: 'TRUE'
+    _format: ld_json
     _method: GET
