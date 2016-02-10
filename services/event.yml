@@ -18,6 +18,9 @@ services:
       - '@culturefeed_udb3.event.security'
 
   # Default
+  culturefeed_udb3.event_cache_document_repositroy:
+    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
+    arguments: ['@culturefeed_udb3.event_jsonld_cache']
   culturefeed_udb3.event_editor:
     class: CultuurNet\UDB3\Event\DefaultEventEditingService
     arguments:
@@ -27,9 +30,18 @@ services:
       - '@culturefeed_udb3.event_jsonld_repository'
       - '@culturefeed_udb3.place_service'
       - '@culturefeed_udb3_event_command_factory'
+  culturefeed_udb3.event_jsonld_cache:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [culturefeed_udb3_event_jsonld]
   culturefeed_udb3.event_jsonld_repository:
-    class: Drupal\culturefeed_udb3\EntityLdRepository
-    arguments: ['event_document_repository', '@entity.manager']
+    class: CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
+    factory: culturefeed_udb3.event_jsonld_repository.factory:get
+  culturefeed_udb3.event_jsonld_repository.factory:
+    class: Drupal\culturefeed_udb3\Factory\EventJsonLdRepositoryFactory
+    arguments: ['@culturefeed_udb3.event_bus', '@culturefeed_udb3.event_cache_document_repositroy']
   culturefeed_udb3.event_jsonld_projector:
     class: CultuurNet\UDB3\Event\EventLDProjector
     arguments:
