@@ -46,7 +46,7 @@ class CacheDocumentRepository implements DocumentRepositoryInterface {
       throw new DocumentGoneException();
     }
 
-    if (FALSE === $value) {
+    if (empty($value)) {
       return NULL;
     }
 
