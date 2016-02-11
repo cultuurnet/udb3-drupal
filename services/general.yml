@@ -69,45 +69,6 @@ services:
   culturefeed_udb3.event_bus_factory:
     class: Drupal\culturefeed_udb3\Factory\EventBusFactory
 
-  # Organizer
-  # Organizer: ld repository
-  culturefeed_udb3.organizer.ld_repository:
-    class: Drupal\culturefeed_udb3\Repository\EntityLdRepository
-    arguments: ['organizer_document_repository', '@entity.manager']
-  # Organizer: repository
-  culturefeed_udb3.udb2_organizer_importer:
-    class: CultuurNet\UDB3\UDB2\Organizer\OrganizerCdbXmlImporter
-    arguments: ['@culturefeed_udb3.udb2_actor_cdbxml_provider', '@culturefeed_udb3.organizer.local_repository']
-    calls:
-      - ['setLogger', ['@culturefeed_udb3.logger.channel.udb2']]
-  culturefeed_udb3.organizer.store:
-    class: Drupal\culturefeed_udb3\Store\EventStore
-    arguments: ['organizer_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
-  culturefeed_udb3.organizer.iri_generator:
-    class: Drupal\culturefeed_udb3\IriGenerator
-    arguments: ['@url_generator', 'culturefeed_udb3.organizer']
-  culturefeed_udb3.organizer.ld_projector:
-    class: CultuurNet\UDB3\Organizer\OrganizerLDProjector
-    arguments: ['@culturefeed_udb3.organizer.ld_repository', '@culturefeed_udb3.organizer.iri_generator', '@culturefeed_udb3.event_bus']
-    tags:
-      - { name: 'culturefeed_udb3.event_bus.subscriber' }
-  culturefeed_udb3.organizer.local_repository:
-    class: CultuurNet\UDB3\Organizer\OrganizerRepository
-    arguments: ['@culturefeed_udb3.organizer.store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
-  culturefeed_udb3.organizer.repository_factory:
-    class: Drupal\culturefeed_udb3\OrganizerRepositoryFactory
-    arguments: ['@culturefeed_udb3.organizer.local_repository', '@culturefeed_udb3.udb2_entry_api_improved', '@culturefeed_udb3.udb2_organizer_importer', '@culturefeed_udb3.event_stream_metadata_enricher', '@config.factory']
-  culturefeed_udb3.organizer.repository:
-    class: CultuurNet\UDB3\UDB2\Organizer\OrganizerRepository
-    factory: culturefeed_udb3.organizer.repository_factory:get
-  # Organizer: service
-  culturefeed_udb3.organizer_service:
-    class: CultuurNet\UDB3\OrganizerService
-    arguments: ['@culturefeed_udb3.organizer.ld_repository', '@culturefeed_udb3.organizer.repository', '@culturefeed_udb3.organizer.iri_generator']
-  culturefeed_udb3.organizer.editor:
-    class: CultuurNet\UDB3\Organizer\DefaultOrganizerEditingService
-    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuid_generator', '@culturefeed_udb3.organizer.repository']
-
   # Event
   culturefeed_udb3.description_filter.tidy:
     class: CultuurNet\UDB3\StringFilter\TidyStringFilter

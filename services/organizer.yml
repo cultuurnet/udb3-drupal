@@ -1,0 +1,65 @@
+services:
+
+  # Controller
+  culturefeed_udb3.organizer_controller:
+    class: CultuurNet\UDB3\Symfony\Organizer\ReadOrganizerRestController
+    arguments:
+      - '@culturefeed_udb3.organizer_service'
+      - '@culturefeed_udb3.udb3_index_repository'
+      - '@culturefeed_udb3.organizer_editing_service'
+      - '@culturefeed_udb3.organizer_iri_generator'
+  culturefeed_udb3.organizer_edit_controller:
+    class: CultuurNet\UDB3\Symfony\Organizer\EditOrganizerRestController
+    arguments:
+      - '@culturefeed_udb3.organizer_editing_service'
+      - '@culturefeed_udb3.organizer_iri_generator'
+
+  # Default
+  culturefeed_udb3.organizer_cache_document_repositroy:
+    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
+    arguments: ['@culturefeed_udb3.organizer_jsonld_cache']
+  culturefeed_udb3.organizer_editing_service:
+    class: CultuurNet\UDB3\Organizer\DefaultOrganizerEditingService
+    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuid_generator', '@culturefeed_udb3.organizer_repository']
+  culturefeed_udb3.organizer_iri_generator:
+    class: Drupal\culturefeed_udb3\IriGenerator
+    arguments: ['@url_generator', 'culturefeed_udb3.organizer']
+  culturefeed_udb3.organizer_jsonld_cache:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [culturefeed_udb3_place_jsonld]
+  culturefeed_udb3.organizer_jsonld_projector:
+    class: CultuurNet\UDB3\Organizer\OrganizerLDProjector
+    arguments: ['@culturefeed_udb3.organizer_jsonld_repository', '@culturefeed_udb3.organizer_iri_generator', '@culturefeed_udb3.event_bus']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.organizer_jsonld_repository:
+    class: CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
+    factory: culturefeed_udb3.organizer_jsonld_repository.factory:get
+  culturefeed_udb3.organizer_jsonld_repository.factory:
+    class: Drupal\culturefeed_udb3\Factory\OrganizerJsonLdRepositoryFactory
+    arguments: ['@culturefeed_udb3.event_bus', '@culturefeed_udb3.organizer_cache_document_repositroy']
+  culturefeed_udb3.organizer_real_repository:
+    class: \CultuurNet\UDB3\Organizer\OrganizerRepository
+    arguments: ['@culturefeed_udb3.organizer_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
+  culturefeed_udb3.organizer_repository:
+    class: CultuurNet\UDB3\UDB2\Organizer\OrganizerRepository
+    factory: culturefeed_udb3.organizer_repository.factory:get
+  culturefeed_udb3.organizer_repository.factory:
+    class: Drupal\culturefeed_udb3\Factory\OrganizerRepositoryFactory
+    arguments: ['@culturefeed_udb3.organizer_real_repository', '@culturefeed_udb3.udb2_entry_api_improved', '@culturefeed_udb3.udb2_organizer_importer', '@culturefeed_udb3.event_stream_metadata_enricher', '@config.factory']
+  culturefeed_udb3.organizer_service:
+    class: CultuurNet\UDB3\OrganizerService
+    arguments: ['@culturefeed_udb3.organizer_jsonld_repository', '@culturefeed_udb3.organizer_repository', '@culturefeed_udb3.organizer_iri_generator']
+  culturefeed_udb3.organizer_store:
+    class: Drupal\culturefeed_udb3\Store\EventStore
+    arguments: ['organizer_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
+
+  # UDB2
+  culturefeed_udb3.udb2_organizer_importer:
+    class: CultuurNet\UDB3\UDB2\Organizer\OrganizerCdbXmlImporter
+    arguments: ['@culturefeed_udb3.udb2_actor_cdbxml_provider', '@culturefeed_udb3.organizer_real_repository']
+    calls:
+      - ['setLogger', ['@culturefeed_udb3.logger.channel.udb2']]

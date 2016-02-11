@@ -8,16 +8,17 @@
 namespace Drupal\culturefeed_udb3\Repository;
 
 use DateTimeInterface;
+use CultuurNet\UDB3\Organizer\ReadModel\Lookup\OrganizerLookupServiceInterface;
+use CultuurNet\UDB3\Place\ReadModel\Lookup\PlaceLookupServiceInterface;
 use CultuurNet\UDB3\ReadModel\Index\EntityType;
 use CultuurNet\UDB3\ReadModel\Index\RepositoryInterface;
-use CultuurNet\UDB3\Place\ReadModel\Lookup\PlaceLookupServiceInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\Query\QueryFactory;
 
 /**
  * Repository for the udb3 index.
  */
-class Udb3IndexRepository implements RepositoryInterface, PlaceLookupServiceInterface  {
+class Udb3IndexRepository implements RepositoryInterface, PlaceLookupServiceInterface, OrganizerLookupServiceInterface {
 
   /**
    * The query factory.
@@ -98,9 +99,9 @@ class Udb3IndexRepository implements RepositoryInterface, PlaceLookupServiceInte
   }
 
   /**
-   * Search organizers that contain given title.
+   * {@inheritdoc}
    */
-  public function getOrganizersByTitle($title, $limit = 10) {
+  public function findOrganizersByPartOfTitle($title, $limit = 10) {
 
     $query = $this->queryFactory->get('udb3_index');
     $query->condition('title', '%' . db_like($title) . '%', 'LIKE');

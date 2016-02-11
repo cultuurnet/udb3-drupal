@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains Drupal\culturefeed_udb3\OrganizerRepositoryFactory.
+ * Contains Drupal\culturefeed_udb3\Factory\OrganizerRepositoryFactory.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Factory;
 
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
@@ -22,11 +22,18 @@ use CultuurNet\UDB3\UDB2\Organizer\OrganizerRepository as UDB2OrganizeRepository
 class OrganizerRepositoryFactory implements OrganizerRepositoryFactoryInterface {
 
   /**
-   * The local organizer repository.
+   * The config factory.
    *
-   * @var \CultuurNet\UDB3\Organizer\OrganizerRepository
+   * @var \Drupal\Core\Config\ConfigFactory
    */
-  protected $localOrganizerRepository;
+  protected $config;
+
+  /**
+   * The event stream metadata enricher.
+   *
+   * @var \Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator
+   */
+  protected $eventStreamMetadataEnricher;
 
   /**
    * The entry api.
@@ -42,23 +49,17 @@ class OrganizerRepositoryFactory implements OrganizerRepositoryFactoryInterface 
    */
   protected $organizerImporter;
 
-  /**   * The event stream metadata enricher.
-   *
-   * @var \Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator
-   */
-  protected $eventStreamMetadataEnricher;
-
   /**
-   * The config factory.
+   * The real organizer repository.
    *
-   * @var \Drupal\Core\Config\ConfigFactory
+   * @var \CultuurNet\UDB3\Organizer\OrganizerRepository
    */
-  protected $config;
+  protected $realOrganizerRepository;
 
   /**
    * Constructs an event repository factory.
    *
-   * @param EventSourcingRepository $local_organizer_repository
+   * @param EventSourcingRepository $real_organizer_repository
    *   The local organizer repository.
    * @param EntryAPIImprovedFactory $improved_entry_api
    *   The improved entry api.
@@ -70,13 +71,13 @@ class OrganizerRepositoryFactory implements OrganizerRepositoryFactoryInterface 
    *   The config factory.
    */
   public function __construct(
-    EventSourcingRepository $local_organizer_repository,
+    EventSourcingRepository $real_organizer_repository,
     EntryAPIImprovedFactory $improved_entry_api,
     OrganizerImporterInterface $organizer_importer,
     MetadataEnrichingEventStreamDecorator $event_stream_metadata_enricher,
     ConfigFactory $config
   ) {
-    $this->localOrganizerRepository = $local_organizer_repository;
+    $this->realOrganizerRepository = $real_organizer_repository;
     $this->improvedEntryApi = $improved_entry_api;
     $this->organizerImporter = $organizer_importer;
     $this->eventStreamMetadataEnricher = $event_stream_metadata_enricher;
@@ -89,7 +90,7 @@ class OrganizerRepositoryFactory implements OrganizerRepositoryFactoryInterface 
   public function get() {
 
     $udb2_repository_decorator = new UDB2OrganizeRepository(
-      $this->localOrganizerRepository,
+      $this->realOrganizerRepository,
       $this->improvedEntryApi,
       $this->organizerImporter,
       array($this->eventStreamMetadataEnricher)

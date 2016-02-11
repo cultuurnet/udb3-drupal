@@ -2,12 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\culturefeed_udb3\OrganizerRepositoryFactoryInterface.
+ * Contains \...\Factory\OrganizerRepositoryFactoryInterface.
  */
 
-namespace Drupal\culturefeed_udb3;
-
-use CultuurNet\UDB3\UDB2\OrganizerRepository;
+namespace Drupal\culturefeed_udb3\Factory;
 
 /**
  * The interface for creating an organizer repository factory.
@@ -17,7 +15,7 @@ interface OrganizerRepositoryFactoryInterface {
   /**
    * Returns organizer repository factory.
    *
-   * @return OrganizerRepository
+   * @return \CultuurNet\UDB3\UDB2\Organizer\OrganizerRepository
    *   The organizer repository.
    */
   public function get();
