@@ -14,12 +14,29 @@ services:
       - '@culturefeed_udb3.place_security'
 
   # Default
+  culturefeed_udb3.place_cache_document_repositroy:
+    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
+    arguments: ['@culturefeed_udb3.place_jsonld_cache']
+  culturefeed_udb3.place_command_factory:
+    class: CultuurNet\UDB3\Place\Commands\PlaceCommandFactory
   culturefeed_udb3.place_editing_service:
     class: CultuurNet\UDB3\Place\DefaultPlaceEditingService
-    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuid_generator', '@culturefeed_udb3.place_repository']
+    arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuid_generator', '@culturefeed_udb3.place_jsonld_repository', '@culturefeed_udb3.place_command_factory']
   culturefeed_udb3.place_iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
     arguments: ['@url_generator', 'culturefeed_udb3.place']
+  culturefeed_udb3.place_jsonld_cache:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [culturefeed_udb3_place_jsonld]
+  culturefeed_udb3.place_jsonld_repository:
+    class: CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
+    factory: culturefeed_udb3.place_jsonld_repository.factory:get
+  culturefeed_udb3.place_jsonld_repository.factory:
+    class: Drupal\culturefeed_udb3\Factory\PlaceJsonLdRepositoryFactory
+    arguments: ['@culturefeed_udb3.event_bus', '@culturefeed_udb3.place_cache_document_repositroy']
   culturefeed_udb3.place_ld_projector:
     class: CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector
     arguments: ['@culturefeed_udb3.place_ld_repository', '@culturefeed_udb3.place_iri_generator', '@culturefeed_udb3.organizer_service', '@culturefeed_udb3.media_object_serializer']
