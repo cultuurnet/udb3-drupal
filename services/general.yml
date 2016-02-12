@@ -132,9 +132,9 @@ services:
     tags:
       - { name: event_subscriber }
 
-  culturefeed_udb3.event_relations_projector:
+  culturefeed_udb3.relations_projector:
     class: CultuurNet\UDB3\Event\ReadModel\Relations\Projector
-    arguments: ['@culturefeed_udb3.event_relations_repository', '@culturefeed_udb3.event_service']
+    arguments: ['@culturefeed_udb3.event_relations_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
 
@@ -194,15 +194,7 @@ services:
 #    class: CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService
 #    arguments: [@culturefeed.uitpas]
 
-  culturefeed_udb3.event_history_repository:
-    class: Drupal\culturefeed_udb3\Repository\EntityLdRepository
-    arguments: ['event_history', '@entity.manager']
 
-  culturefeed_udb3.event_history_projector:
-    class: CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector
-    arguments: ['@culturefeed_udb3.event_history_repository']
-    tags:
-      - { name: 'culturefeed_udb3.event_bus.subscriber' }
 
   culturefeed_udb3.drupal_udb3_event_event_listener:
     class: Drupal\culturefeed_udb3\Udb3EventEventListener
@@ -221,3 +213,10 @@ services:
       arguments: ['@culturefeed.current_user', '@culturefeed.user_credentials', '@culturefeed_udb3.udb2_entry_api_improved_factory']
       tags:
         - { name: access_check, applies_to: _udb3_edit_acces_check }
+
+  culturefeed_udb3.uitid_users:
+    class: CultuurNet\UDB3\UiTID\CultureFeedUsers
+    factory: culturefeed_udb3.uitid_users.factory:get
+  culturefeed_udb3.uitid_users.factory:
+    class: Drupal\culturefeed_udb3\Factory\UitidUsersFactory
+    arguments: ['@culturefeed']
