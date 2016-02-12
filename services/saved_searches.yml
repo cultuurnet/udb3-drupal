@@ -1,0 +1,32 @@
+services:
+
+  # Controller
+  culturefeed_udb3.saved_searches_controller:
+    class: CultuurNet\UDB3\Symfony\SavedSearches\SavedSearchesRestController
+    arguments: ['@culturefeed_udb3.saved_searches_repository', '@culturefeed.current_user', '@culturefeed_udb3.event_command_bus']
+
+  # Default
+  culturefeed_udb3.logger.channel.saved_searches:
+    parent: logger.channel_base
+    arguments: ['saved_searches']
+  culturefeed_udb3.saved_searches_service:
+    class: CultureFeed_SavedSearches_Default
+    factory: culturefeed_udb3.saved_searches_service.factory:withTokenCredentials
+    arguments: ['@culturefeed.token_credentials']
+  culturefeed_udb3.saved_searches_service.factory:
+    class: Drupal\culturefeed_udb3\Factory\SavedSearchesServiceFactory
+    arguments: ['@culturefeed.consumer_credentials', '@config.factory']
+  culturefeed_udb3.saved_searches_command_handler:
+    class: CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler
+    arguments: ['@culturefeed_udb3.saved_searches_service.factory']
+  culturefeed_udb3.saved_searches_fixed_repository:
+    class: CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository
+    arguments: ['@culturefeed.current_user']
+  culturefeed_udb3.saved_searches_repository:
+    class: CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository
+    arguments: ['@culturefeed_udb3.saved_searches_fixed_repository', '@culturefeed_udb3.saved_searches_uitid_repository']
+  culturefeed_udb3.saved_searches_uitid_repository:
+    class: CultuurNet\UDB3\SavedSearches\UiTIDSavedSearchRepository
+    arguments: ['@culturefeed_udb3.saved_searches_service']
+    calls:
+      - ['setLogger', ['@culturefeed_udb3.logger.channel.saved_searches']]
