@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\culturefeed_udb3\EntityLdRepository.
+ * Contains \Drupal\culturefeed_udb3\Repository\EntityLdRepository.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Repository;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -14,7 +14,7 @@ use Drupal\Core\Entity\EntityManagerInterface;
 /**
  * Class EntityLdRepository.
  *
- * @package Drupal\culturefeed_udb3
+ * @package Drupal\culturefeed_udb3\Repository
  */
 class EntityLdRepository implements DocumentRepositoryInterface {
 
