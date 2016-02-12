@@ -49,7 +49,7 @@ services:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.place_permission_projector.factory:
     class: Drupal\culturefeed_udb3\Factory\PlacePermissionProjectorFactory
-    arguments: ['culturefeed_udb3.place_permission_repository', '@culturefeed_udb3.uitid_users']
+    arguments: ['@culturefeed_udb3.place_permission_repository', '@culturefeed_udb3.uitid_users']
   culturefeed_udb3.place_permission_repository:
     class: Drupal\culturefeed_udb3\Repository\PlacePermissionRepository
     arguments: ['@entity.query', '@database']

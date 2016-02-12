@@ -105,7 +105,7 @@ class EventRelationsRepository implements RepositoryInterface {
    * {@inheritdoc}
    */
   public function getEventsLocatedAtPlace($place_id) {
-    $query = $this->queryFactory->get('culturefeed_udb3_event_relations');
+    $query = $this->queryFactory->get('event_relations');
     $query->condition('place', $place_id);
 
     return $query->execute();
@@ -115,7 +115,7 @@ class EventRelationsRepository implements RepositoryInterface {
    * {@inheritdoc}
    */
   public function getEventsOrganizedByOrganizer($organizer_id) {
-    $query = $this->queryFactory->get('culturefeed_udb3_event_relations');
+    $query = $this->queryFactory->get('event_relations');
     $query->condition('organizer', $organizer_id);
 
     return $query->execute();
