@@ -17,7 +17,7 @@ use League\Flysystem\Adapter\Local;
 class LocalFileSystemAdapterFactory {
 
   /**
-   * Get the callable iri generator.
+   * Get the local filesystem adapter.
    *
    * @return \League\Flysystem\Adapter\Local
    *   The local file system adapter.
