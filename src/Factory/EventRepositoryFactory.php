@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains Drupal\culturefeed_udb3\EventRepositoryFactory.
+ * Contains Drupal\culturefeed_udb3\Factory\EventRepositoryFactory.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Factory;
 
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\Event\EventRepository;
@@ -24,11 +24,18 @@ use Drupal\Core\Config\ConfigFactory;
 class EventRepositoryFactory implements EventRepositoryFactoryInterface {
 
   /**
-   * The local event repository.
+   * The config factory.
    *
-   * @var EventRepository
+   * @var ConfigFactory
    */
-  protected $localEventRepository;
+  protected $config;
+
+  /**
+   * The event importer.
+   *
+   * @var \CultuurNet\UDB3\UDB2\EventImporterInterface
+   */
+  protected $eventImporter;
 
   /**
    * The event stream metadata enricher.
@@ -38,18 +45,29 @@ class EventRepositoryFactory implements EventRepositoryFactoryInterface {
   protected $eventStreamMetadataEnricher;
 
   /**
-   * The config factory.
+   * The improved entry api.
    *
-   * @var ConfigFactory
+   * @var \CultuurNet\UDB3\UDB2\EntryAPIImprovedFactory
    */
-  protected $config;
+  protected $improvedEntryApi;
 
   /**
+   * The local event repository.
+   *
+   * @var EventRepository
+   */
+  protected $localEventRepository;
+
+  /**
+   * The organizer service.
+   *
    * @var OrganizerService
    */
   protected $organizerService;
 
   /**
+   * The place service.
+   *
    * @var PlaceService
    */
   protected $placeService;
@@ -62,6 +80,11 @@ class EventRepositoryFactory implements EventRepositoryFactoryInterface {
    * @param EntryAPIImprovedFactory $improved_entry_api
    *   The improved entry api.
    * @param EventImporterInterface $event_importer
+   *   The event importer.
+   * @param PlaceService $place_service
+   *   The place service.
+   * @param OrganizerService $organizer_service
+   *   The organizer service.
    * @param MetadataEnrichingEventStreamDecorator $event_stream_metadata_enricher
    *   The event stream metadata enricher.
    * @param ConfigFactory $config
@@ -89,7 +112,6 @@ class EventRepositoryFactory implements EventRepositoryFactoryInterface {
    * {@inheritdoc}
    */
   public function get() {
-
     $udb2_repository_decorator = new EventRepository2(
       $this->localEventRepository,
       $this->improvedEntryApi,
@@ -101,11 +123,6 @@ class EventRepositoryFactory implements EventRepositoryFactoryInterface {
 
     if ($this->config->get('sync_with_udb2')) {
       $udb2_repository_decorator->syncBackOn();
-    }
-
-
-    if ($this->config->get('use_full_event_data_to_update_description')) {
-        $udb2_repository_decorator = $udb2_repository_decorator->withFullEventDataToUpdateDescription();
     }
 
     return $udb2_repository_decorator;

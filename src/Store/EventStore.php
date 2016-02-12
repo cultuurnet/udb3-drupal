@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains Drupal\culturefeed_udb3\EventStore.
+ * Contains Drupal\culturefeed_udb3\Store\EventStore.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Store;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
@@ -157,6 +157,5 @@ class EventStore implements EventStoreInterface {
     );
 
   }
-
 
 }

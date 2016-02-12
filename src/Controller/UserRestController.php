@@ -34,7 +34,7 @@ class UserRestController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('culturefeed.current_user'),
-      $container->get('culturefeed_udb3.event.used_labels_memory')
+      $container->get('culturefeed_udb3.used_labels_memory')
     );
   }
 

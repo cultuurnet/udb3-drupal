@@ -58,7 +58,14 @@ class EventCdbXmlFromEntryAPIFactory implements EventCdbXmlFromEntryAPIFactoryIn
     $config = $this->configFactory->get('culturefeed_udb3.settings');
     $user_id = new String($config->get('impersonation_user_id'));
 
-    return new EventCdbXmlFromEntryAPI($base_url, $this->credentials, $user_id);
+    return new EventCdbXmlFromEntryAPI(
+      $base_url,
+      $this->credentials,
+      $user_id,
+      // @todo Move the cdbxml version to configuration file. Use the same
+      // setting when instantiating the ImprovedEntryApiFactory.
+      'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+    );
   }
 
 }

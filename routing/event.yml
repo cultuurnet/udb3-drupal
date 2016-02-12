@@ -1,0 +1,197 @@
+culturefeed_udb3.event:
+  path: '/udb3/api/1.0/event/{cdbid}'
+  defaults:
+    _controller: 'culturefeed_udb3.event_controller:get'
+    _title: 'Event detail'
+  requirements:
+    _access: 'TRUE'
+    _format: ld_json
+    _method: GET
+culturefeed_udb3.event_add_image:
+  path: '/udb3/api/1.0/event/{cdbid}/images'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:addImage'
+    _title: 'Add new images to the event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_create:
+  path: '/udb3/api/1.0/event'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:createEvent'
+    _title: 'Create event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_delete:
+  path: '/udb3/api/1.0/event/{cdbid}/delete'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteEvent'
+    _title: 'Event verwijderen'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+culturefeed_udb3.event_delete_image:
+  path: '/udb3/api/1.0/event/{cdbid}/image/{index}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteImage'
+    _title: 'Delete an image'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _method: DELETE
+culturefeed_udb3.event_delete_organizer:
+  path: '/udb3/api/1.0/event/{cdbid}/organizer/{organizerId}'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:deleteOrganizer'
+    _title: 'Delete the organizer for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+culturefeed_udb3.event_delete_typical_age_range:
+  path: '/udb3/api/1.0/event/{cdbid}/typicalAgeRange'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:deleteTypicalAgeRange'
+    _title: 'Delete the typical age range for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+culturefeed_udb3.event_history:
+  path: '/udb3/api/1.0/event/{cdbid}/history'
+  defaults:
+    _controller: 'culturefeed_udb3.event_controller:history'
+    _title: 'Event history'
+  requirements:
+    _access: 'TRUE'
+    _format: json
+    _method: GET
+culturefeed_udb3.event_labels:
+  path: '/udb3/api/1.0/event/{cdbid}/labels'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::addLabel'
+    _title: 'Add event label'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_labels_delete:
+  path: '/udb3/api/1.0/event/{cdbid}/labels/{label}'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteLabel'
+    _title: 'Delete event label'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+culturefeed_udb3.event_permission:
+  path: '/udb3/api/1.0/event/{cdbid}/permission'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:hasPermission'
+    _title: 'Event permission'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
+culturefeed_udb3.event_title:
+  path: '/udb3/api/1.0/event/{cdbid}/{language}/title'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::title'
+    _title: 'Event title'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_translate_description:
+  path: '/udb3/api/1.0/event/{cdbid}/{lang}/description'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::translateDescription'
+    _title: 'Translate event description'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_update:
+  path: '/udb3/api/1.0/event/{cdbid}/major-info'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:updateMajorInfo'
+    _title: 'Update major info'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_update_bookinginfo:
+  path: '/udb3/api/1.0/event/{cdbid}/bookingInfo'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:updateBookingInfo'
+    _title: 'Update the booking info for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_update_contact_point:
+  path: '/udb3/api/1.0/event/{cdbid}/contactPoint'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:updateContactPoint'
+    _title: 'Update the contact info for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_update_description:
+  path: '/udb3/api/1.0/event/{cdbid}/nl/description'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:updateDescription'
+    _title: 'Event description'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_update_facilities:
+  path: '/udb3/api/1.0/event/{cdbid}/facilities'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:updateFacilities'
+    _title: 'Update the facilities for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_update_image:
+  path: '/udb3/api/1.0/event/{cdbid}/image/{mediaObjectId}'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:updateImage'
+    _title: 'Update an image'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _method: POST
+culturefeed_udb3.event_update_organizer:
+  path: '/udb3/api/1.0/event/{cdbid}/organizer'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:updateOrganizer'
+    _title: 'Update the organizer for this event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.event_update_typical_age_range:
+  path: '/udb3/api/1.0/event/{cdbid}/typicalAgeRange'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:updateTypicalAgeRange'
+    _title: 'Update typical age range'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+
+culturefeed_udb3.events_label:
+  path: '/udb3/api/1.0/events/label'
+  defaults:
+    _controller: '\Drupal\culturefeed_udb3\Controller\EventsRestController::labelEvents'
+    _title: 'Events labeller'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST

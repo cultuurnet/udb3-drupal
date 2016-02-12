@@ -40,16 +40,18 @@ function drush_culturefeed_udb3_udb3_delete_data() {
   // Delete the domain message implementations.
   $entities = array(
     'event_document_repository',
-    'event_store',
+    'event_history',
+    'event_permission',
     'event_relations',
+    'event_store',
+    'media_object_store',
     'organizer_document_repository',
     'organizer_store',
     'place_document_repository',
-    'place_store',
     'place_relations',
-    'used_labels_memory_event_store',
-    'event_history',
+    'place_store',
     'udb3_index',
+    'used_labels_memory_event_store',
   );
 
   foreach ($entities as $entity_type) {

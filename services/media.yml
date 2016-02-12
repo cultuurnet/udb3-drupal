@@ -1,0 +1,33 @@
+services:
+
+  # Default
+  culturefeed_udb3.local_file_system:
+    class: League\Flysystem\Filesystem
+    arguments: ['@culturefeed_udb3.local_file_system_adapter']
+  culturefeed_udb3.local_file_system_adapter:
+    class: League\Flysystem\Adapter\Local
+    factory: culturefeed_udb3.local_file_system_adapter.factory:get
+  culturefeed_udb3.local_file_system_adapter.factory:
+    class: Drupal\culturefeed_udb3\Factory\LocalFileSystemAdapterFactory
+  culturefeed_udb3.media_manager:
+    class: CultuurNet\UDB3\Media\MediaManager
+    arguments:
+      - '@culturefeed_udb3.media_object_iri_generator'
+      - '@culturefeed_udb3.simple_path_generator'
+      - '@culturefeed_udb3.media_object_repository'
+      - '@culturefeed_udb3.local_file_system'
+      - 'culturefeed/media'
+  culturefeed_udb3.media_object_iri_generator:
+    class: CultuurNet\UDB3\Iri\CallableIriGenerator
+    factory: culturefeed_udb3.media_object_iri_generator.factory:get
+  culturefeed_udb3.media_object_iri_generator.factory:
+    class: Drupal\culturefeed_udb3\Factory\CallableIriGeneratorFactory
+  culturefeed_udb3.media_object_repository:
+    class: CultuurNet\UDB3\Media\MediaObjectRepository
+    arguments: ['@culturefeed_udb3.media_object_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
+  culturefeed_udb3.media_object_serializer:
+    class: CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer
+    arguments: ['@culturefeed_udb3.media_object_iri_generator']
+  culturefeed_udb3.media_object_store:
+    class: Drupal\culturefeed_udb3\Store\EventStore
+    arguments: ['media_object_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']

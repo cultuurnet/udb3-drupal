@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\culturefeed_udb3\Entity\PlaceStoreEntity.
+ * Contains \Drupal\culturefeed_udb3\Entity\MediaObjectStoreEntity.
  */
 
 namespace Drupal\culturefeed_udb3\Entity;
@@ -10,12 +10,12 @@ namespace Drupal\culturefeed_udb3\Entity;
 use Drupal\culturefeed_udb3\DomainMessageEntity;
 
 /**
- * Defines the culturefeed udb3 place store.
+ * Defines the culturefeed udb3 media object store.
  *
  * @ContentEntityType(
- *   id = "place_store",
- *   label = @Translation("Culturefeed udb3 place store"),
- *   base_table = "culturefeed_udb3_place_store",
+ *   id = "media_object_store",
+ *   label = @Translation("Culturefeed udb3 media object store"),
+ *   base_table = "culturefeed_udb3_media_object_store",
  *   handlers = {
  *     "storage_schema" = "Drupal\culturefeed_udb3\StorageSchema\DomainMessageStorageSchema",
  *   },
@@ -25,5 +25,5 @@ use Drupal\culturefeed_udb3\DomainMessageEntity;
  *   fieldable = FALSE,
  * )
  */
-class PlaceStoreEntity extends DomainMessageEntity {
+class MediaObjectStoreEntity extends DomainMessageEntity {
 }

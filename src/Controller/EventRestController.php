@@ -71,13 +71,20 @@ class EventRestController extends OfferRestBaseController {
   protected $fileUsage;
 
   /**
+   * The used labels memory.
+   *
+   * @var DefaultUsedLabelsMemoryService
+   */
+  protected $usedLabelsMemory;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('culturefeed_udb3.event.service'),
-      $container->get('culturefeed_udb3.event.editor'),
-      $container->get('culturefeed_udb3.event.used_labels_memory'),
+      $container->get('culturefeed_udb3.event_service'),
+      $container->get('culturefeed_udb3.event_editor'),
+      $container->get('culturefeed_udb3.used_labels_memory'),
       $container->get('culturefeed.current_user'),
       $container->get('file.usage')
     );
@@ -94,6 +101,8 @@ class EventRestController extends OfferRestBaseController {
    *   The event labeller.
    * @param CultureFeed_User $user
    *   The culturefeed user.
+   * @param FileUsageInterface $fileUsage
+   *   The file usage.
    */
   public function __construct(
     EventServiceInterface $event_service,
@@ -119,29 +128,6 @@ class EventRestController extends OfferRestBaseController {
     $response = new BinaryFileResponse('/udb3/api/1.0/event.jsonld');
     $response->headers->set('Content-Type', 'application/ld+json');
     return $response;
-  }
-
-  /**
-   * Returns an event.
-   *
-   * @param string $cdbid
-   *   The event id.
-   *
-   * @return JsonLdResponse
-   *   The response.
-   */
-  public function details($cdbid) {
-
-    $event = $this->getItem($cdbid);
-
-    $response = JsonResponse::create()
-      ->setContent($event)
-      ->setPublic()
-      ->setClientTtl(60 * 30)
-      ->setTtl(60 * 5);
-
-    return $response;
-
   }
 
   /**
@@ -306,54 +292,6 @@ class EventRestController extends OfferRestBaseController {
   }
 
   /**
-   * Create a new event.
-   */
-  public function createEvent(Request $request) {
-
-    $response = new JsonResponse();
-    $body_content = json_decode($request->getContent());
-
-    try {
-
-      if (empty($body_content->name) || empty($body_content->type) || empty($body_content->location) || empty($body_content->calendarType)) {
-        throw new InvalidArgumentException('Required fields are missing');
-      }
-
-      $calendar = $this->initCalendarForCreate($body_content);
-
-      $theme = null;
-      if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
-        $theme = new Theme($body_content->theme->id, $body_content->theme->label);
-      }
-
-      $event_id = $this->editor->createEvent(
-        new Title($body_content->name->nl),
-        new EventType($body_content->type->id, $body_content->type->label),
-        new Location($body_content->location->id, $body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
-        $calendar,
-        $theme
-      );
-
-      $response->setData(
-        [
-          'eventId' => $event_id,
-          'url' => $this->getUrlGenerator()->generateFromRoute(
-            'culturefeed_udb3.event',
-            ['cdbid' => $event_id],
-            ['absolute' => TRUE]
-          ),
-        ]
-      );
-    } catch (Exception $e) {
-      $response->setStatusCode(400);
-      $response->setData(['error' => $e->getMessage()]);
-      watchdog_exception('udb3', $e);
-    }
-
-    return $response;
-  }
-
-  /**
    * Remove an event.
    */
   public function deleteEvent(Request $request, $cdbid) {
@@ -378,83 +316,7 @@ class EventRestController extends OfferRestBaseController {
     return $response;
   }
 
-  /**
-   * Update the major info of an item.
-   */
-  public function updateMajorInfo(Request $request, $cdbid) {
-
-    $response = new JsonResponse();
-    $body_content = json_decode($request->getContent());
-
-    try {
-
-      if (empty($body_content->name) || empty($body_content->type)) {
-        throw new InvalidArgumentException('Required fields are missing');
-      }
-
-      $calendar = $this->initCalendarForCreate($body_content);
-
-      $theme = null;
-      if (!empty($body_content->theme) && !empty($body_content->theme->id)) {
-        $theme = new Theme($body_content->theme->id, $body_content->theme->label);
-      }
-
-      $command_id = $this->editor->updateMajorInfo(
-        $cdbid,
-        new Title($body_content->name->nl),
-        new EventType($body_content->type->id, $body_content->type->label),
-        new Location($body_content->location->id, $body_content->location->name, $body_content->location->address->addressCountry, $body_content->location->address->addressLocality, $body_content->location->address->postalCode, $body_content->location->address->streetAddress),
-        $calendar,
-        $theme
-      );
-
-      $response->setData(['commandId' => $command_id]);
-
-    } catch (Exception $e) {
-      $response->setStatusCode(400);
-      $response->setData(['error' => $e->getMessage()]);
-      watchdog_exception('udb3', $e);
-    }
-
-    return $response;
-
-  }
-
-  /**
-   * Check if the current user has edit access to the given item.
-   *
-   * @param string cdbid
-   *   Id of item to check.
-   */
-  public function hasPermission($cdbid) {
-
-    $improvedEntryApiFactory = Drupal::service('culturefeed_udb3.udb2_entry_api_improved_factory');
-    $userCredentials = Drupal::service('culturefeed.user_credentials');
-
-    $credentials = new TokenCredentials($userCredentials->getToken(), $userCredentials->getSecret());
-    $entryApi = $improvedEntryApiFactory->get()->withTokenCredentials($credentials);
-
-    $response = new JsonResponse();
-    try {
-      $result = $entryApi->checkPermission($this->user->id, $this->user->mbox, array($cdbid));
-      $has_permission = FALSE;
-      if (!empty($result->event)) {
-        $has_permission = (string)$result->event->editable == 'true';
-      }
-
-      $response->setData(['hasPermission' => $has_permission]);
-    }
-    catch (Exception $e) {
-      $response->setStatusCode(400);
-      $response->setData(['error' => $e->getMessage()]);
-      watchdog_exception('udb3', $e);
-    }
-
-    return $response;
-
-  }
-
-  /**
+   /**
    * Get the image destination.
    */
   public function getImageDestination($id) {
@@ -466,6 +328,49 @@ class EventRestController extends OfferRestBaseController {
    */
   public function getItem($id) {
     return $this->eventService->getEvent($id);
+  }
+
+  /**
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request.
+   * @param string $cdbid
+   *   The event id.
+   * @param string $lang
+   *   The language.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The response.
+   *
+   * @throws \Exception
+   *   The exception.
+   */
+  public function translateDescription(Request $request, $cdbid, $lang) {
+
+    /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+    $service = $this->editor;
+
+    $response = new JsonResponse();
+
+    $description = $request->request->get('description');
+    if (!$description) {
+      return new JsonResponse(['error' => "description required"], 400);
+    }
+
+    try {
+      $commandId = $service->translateDescription(
+        $cdbid,
+        new Language($lang),
+        $request->get('description')
+      );
+
+      $response->setData(['commandId' => $commandId]);
+    } catch (\Exception $e) {
+      $response->setStatusCode(400);
+      $response->setData(['error' => $e->getMessage()]);
+    }
+
+    return $response;
+
   }
 
 }

@@ -16,7 +16,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *  label = @Translation("Culturefeed udb3 place relations"),
  *  base_table = "culturefeed_udb3_place_relations",
  *  handlers = {
- *    "storage_schema" = "Drupal\culturefeed_udb3\Utf8StorageSchema",
+ *    "storage_schema" = "Drupal\culturefeed_udb3\StorageSchema\Utf8StorageSchema",
  *  },
  *  entity_keys = {
  *    "id" = "place",

@@ -31,7 +31,7 @@ class CulturefeedUdb3RedirectResponseSubscriber extends RedirectResponseSubscrib
     $subscribed_events[KernelEvents::REQUEST] = array_filter($subscribed_events[KernelEvents::REQUEST], function($subscriber) {
       return $subscriber[0] != 'sanitizeDestination';
     });
-    
+
     // Remove empty arrays completely.
     $subscribed_events = array_filter($subscribed_events, function($subscribers) {
       return !empty($subscribers);
