@@ -52,7 +52,7 @@ services:
     arguments: ['@culturefeed_udb3.place_permission_repository', '@culturefeed_udb3.uitid_users']
   culturefeed_udb3.place_permission_repository:
     class: Drupal\culturefeed_udb3\Repository\PlacePermissionRepository
-    arguments: ['@entity.query', '@database']
+    arguments: ['@entity.query', '@database', '@entity.manager']
   culturefeed_udb3.place_real_repository:
     class: CultuurNet\UDB3\Place\PlaceRepository
     arguments: ['@culturefeed_udb3.place_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
@@ -63,8 +63,8 @@ services:
     class: Drupal\culturefeed_udb3\Factory\PlaceRepositoryFactory
     arguments: ['@culturefeed_udb3.place_real_repository', '@culturefeed_udb3.udb2_entry_api_improved', '@culturefeed_udb3.udb2_place_importer', '@culturefeed_udb3.organizer_service', '@culturefeed_udb3.event_stream_metadata_enricher', '@config.factory']
   culturefeed_udb3.place_security:
-    class: CultuurNet\UDB3\Offer\Security
-    arguments: ['@culturefeed_udb3.security.token_storage', '@culturefeed_udb3.place_permission_repository']
+    class: Drupal\culturefeed_udb3\Security
+    arguments: ['@culturefeed_udb3.place_permission_repository', '@culturefeed.current_user']
   culturefeed_udb3.place_service:
     class: CultuurNet\UDB3\PlaceService
     arguments: ['@culturefeed_udb3.place_jsonld_repository', '@culturefeed_udb3.place_repository', '@culturefeed_udb3.place_iri_generator']

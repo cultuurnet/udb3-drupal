@@ -218,5 +218,5 @@ services:
     class: CultuurNet\UDB3\UiTID\CultureFeedUsers
     factory: culturefeed_udb3.uitid_users.factory:get
   culturefeed_udb3.uitid_users.factory:
-    class: Drupal\culturefeed_udb3\Factory\UitidUsersFactory
+    class: Drupal\culturefeed_udb3\Factory\UitIdUsersFactory
     arguments: ['@culturefeed']
