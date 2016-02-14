@@ -10,6 +10,7 @@ namespace Drupal\culturefeed_udb3\Repository;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\IntegrityConstraintViolationException;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\Query\QueryFactory;
 use ValueObjects\String\String;
@@ -64,10 +65,20 @@ class EventPermissionRepository implements PermissionRepositoryInterface, Permis
    * {@inheritdoc}
    */
   public function markOfferEditableByUser(String $event_id, String $uit_id) {
-    $query = $this->database->merge('culturefeed_udb3_event_permission')
-      ->key(array('user_id' => $uit_id->toNative()))
-      ->fields(array('event_id' => $event_id->toNative()));
-    $query->execute();
+
+    $permission = $this->storage->create(array(
+      'user_id' => $uit_id->toNative(),
+      'event_id' => $event_id->toNative(),
+    ));
+
+    try {
+      $this->storage->save($permission);
+    }
+    catch (IntegrityConstraintViolationException $e) {
+      // Intentionally catching database exception occurring when the
+      // permission record is already in place.
+    }
+
   }
 
   /**

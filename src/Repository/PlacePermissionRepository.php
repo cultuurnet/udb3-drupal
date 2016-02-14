@@ -10,6 +10,7 @@ namespace Drupal\culturefeed_udb3\Repository;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\IntegrityConstraintViolationException;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\Query\QueryFactory;
 use ValueObjects\String\String;
@@ -63,11 +64,21 @@ class PlacePermissionRepository implements PermissionRepositoryInterface, Permis
   /**
    * {@inheritdoc}
    */
-  public function markOfferEditableByUser(String $event_id, String $uit_id) {
-    $query = $this->database->merge('culturefeed_udb3_place_permission')
-      ->key(array('user_id' => $uit_id->toNative()))
-      ->fields(array('place_id' => $event_id->toNative()));
-    $query->execute();
+  public function markOfferEditableByUser(String $place_id, String $uit_id) {
+
+    $permission = $this->storage->create(array(
+      'user_id' => $uit_id->toNative(),
+      'place_id' => $place_id->toNative(),
+    ));
+
+    try {
+      $this->storage->save($permission);
+    }
+    catch (IntegrityConstraintViolationException $e) {
+      // Intentionally catching database exception occurring when the
+      // permission record is already in place.
+    }
+
   }
 
   /**
@@ -78,13 +89,13 @@ class PlacePermissionRepository implements PermissionRepositoryInterface, Permis
     $query->condition('user_id', $uit_id->toNative());
     $result = $query->execute();
 
-    $events = array();
+    $places = array();
     foreach ($result as $item) {
       $permission = $this->storage->load($item);
       $place_id = $permission->get('place_id')->value;
-      $events[] = new String($place_id);
+      $places[] = new String($place_id);
     }
-    return $events;
+    return $places;
   }
 
 }
