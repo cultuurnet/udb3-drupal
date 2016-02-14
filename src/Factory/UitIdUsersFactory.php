@@ -43,14 +43,7 @@ class UitIdUsersFactory {
    *   The uitid users.
    */
   public function get() {
-
-    if ('cli' === php_sapi_name()) {
-      return function (UsersInterface $users) {
-        return new InMemoryCacheDecoratedUsers($users);
-      };
-    }
     return new CultureFeedUsers($this->culturefeed);
-
   }
 
 }
