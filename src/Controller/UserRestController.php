@@ -7,12 +7,11 @@
 
 namespace Drupal\culturefeed_udb3\Controller;
 
+use CultureFeed_User;
+use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use CultureFeed_User;
-use CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryServiceInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class UserRestController.
@@ -67,6 +66,17 @@ class UserRestController extends ControllerBase {
 
     return $response;
 
+  }
+
+  /**
+   * Logs the current user out.
+   *
+   * @return Response
+   *   A response.
+   */
+  public function logout() {
+    user_logout();
+    return new Response();
   }
 
 }

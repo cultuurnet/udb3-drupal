@@ -19,6 +19,6 @@ culturefeed_udb3.user_labels:
 culturefeed_udb3.user_logout:
   path: '/udb3/api/1.0/uitid/logout'
   defaults:
-    _controller: '\Drupal\user\Controller\UserController::logout'
+    _controller: '\Drupal\culturefeed_udb3\Controller\UserRestController::logout'
   requirements:
     _user_is_logged_in: 'TRUE'
