@@ -40,7 +40,9 @@ class CacheDocumentRepository implements DocumentRepositoryInterface {
    * {@inheritdoc}
    */
   public function get($id) {
-    $value = $this->cache->get($id)->data;
+
+    $cache = $this->cache->get($id);
+    $value = ($cache) ? $cache->data : NULL;
 
     if ('GONE' === $value) {
       throw new DocumentGoneException();

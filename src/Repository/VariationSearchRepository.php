@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\Repository\VariationSearchRepository.
- */
-
 namespace Drupal\culturefeed_udb3\Repository;
 
 use CultuurNet\UDB3\Variations\Model\Properties\Id;
@@ -47,7 +42,7 @@ class VariationSearchRepository implements RepositoryInterface {
   protected $storage;
 
   /**
-   * The table name
+   * The table name.
    *
    * @var string
    */
@@ -148,8 +143,8 @@ class VariationSearchRepository implements RepositoryInterface {
     $results = $q->execute();
 
     $ids = [];
-    while ($variationId = $results->fetchColumn(0)) {
-      $ids[] = $variationId;
+    while ($variation_id = $results->fetchColumn(0)) {
+      $ids[] = $variation_id;
     }
 
     return $ids;

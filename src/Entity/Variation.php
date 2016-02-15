@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Entity\Variation.
- */
-
 namespace Drupal\culturefeed_udb3\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
@@ -13,6 +8,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
+ * Class Variation.
+ *
  * @ContentEntityType(
  *  id = "variation",
  *  label = @Translation("Culturefeed udb3 variation"),
@@ -25,6 +22,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *  },
  *  fieldable = FALSE,
  * )
+ *
  * @package Drupal\culturefeed_udb3\Entity
  */
 class Variation extends ContentEntityBase implements ContentEntityInterface {
@@ -38,7 +36,7 @@ class Variation extends ContentEntityBase implements ContentEntityInterface {
       ->setLabel(t('Variation UUID'))
       ->setDescription(t('Variation UUID.'));
 
-    $fields['id'] = BaseFieldDefinition::create('string')
+    $fields['event'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Event UUID'))
       ->setDescription(t('Event UUID.'));
 
@@ -56,4 +54,5 @@ class Variation extends ContentEntityBase implements ContentEntityInterface {
 
     return $fields;
   }
+
 }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\Factory\DBALConnectionFactory.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 use Doctrine\Common\EventManager;
@@ -12,6 +7,11 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Event\Listeners\SQLSessionInit;
 use Drupal\Core\Database\Connection;
 
+/**
+ * Class DBALConnectionFactory.
+ *
+ * @package Drupal\culturefeed_udb3\Factory
+ */
 class DBALConnectionFactory {
 
   /**
@@ -34,23 +34,37 @@ class DBALConnectionFactory {
   }
 
 
+  /**
+   * Get the dbal connection.
+   *
+   * @return \Doctrine\DBAL\Connection
+   *   The dbal connection.
+   *
+   * @throws \Doctrine\DBAL\DBALException
+   */
   public function get() {
 
-    $eventManager = new EventManager();
-    $sqlMode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
-    $query = "SET SESSION sql_mode = '{$sqlMode}'";
-    $eventManager->addEventSubscriber(
+    $event_manager = new EventManager();
+    $sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
+    $query = "SET SESSION sql_mode = '{$sql_mode}'";
+    $event_manager->addEventSubscriber(
       new SQLSessionInit($query)
     );
 
-    $options = $this->database->getConnectionOptions();
-    $options['driver'] = 'mysqli';
-    unset($options['pdo']);
+    // @TODO
+    // Improve !!! (more generic, ...).
+    $drupal_options = $this->database->getConnectionOptions();
+    $dbal_options = array(
+      'dbname' => 'udb3-drupal',
+      'driver' => 'pdo_mysql',
+      'password' => $drupal_options['password'],
+      'user' => $drupal_options['username'],
+    );
 
     $connection = DriverManager::getConnection(
-      $options,
-      null,
-      $eventManager
+      $dbal_options,
+      NULL,
+      $event_manager
     );
 
     return $connection;

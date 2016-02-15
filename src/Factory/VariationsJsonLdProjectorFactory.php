@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Factory\VariationsJsonLdProjectorFactory
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator;
@@ -14,6 +9,11 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\culturefeed_udb3\Repository\CacheDocumentRepository;
 use Drupal\culturefeed_udb3\Repository\VariationSearchRepository;
 
+/**
+ * Class VariationsJsonLdProjectorFactory.
+ *
+ * @package Drupal\culturefeed_udb3\Factory
+ */
 class VariationsJsonLdProjectorFactory {
 
   /**
@@ -69,10 +69,16 @@ class VariationsJsonLdProjectorFactory {
 
   }
 
+  /**
+   * Get the variations json ld projector.
+   *
+   * @return \CultuurNet\UDB3\Variations\ReadModel\JSONLD\Projector
+   *   The json ld projector.
+   */
   public function get() {
 
     $url = $this->url;
-    $iriGenerator = new CallableIriGenerator(
+    $iri_generator = new CallableIriGenerator(
       function ($id) use ($url) {
         return $url . '/udb3/api/1.0/variations/' . $id;
       }
@@ -82,8 +88,9 @@ class VariationsJsonLdProjectorFactory {
       $this->variationsJsonLdRepository,
       $this->eventJsonLdRepository,
       $this->variationsSearchRepository,
-      $iriGenerator
+      $iri_generator
     );
 
   }
+
 }

@@ -4,8 +4,9 @@ culturefeed_udb3.variations:
     _controller: 'culturefeed_udb3.variations_read_controller:search'
     _title: 'Variations detail'
   requirements:
-    _culturefeed_current_user: 'TRUE'
-    _format: ld_json
+    _access: 'TRUE'
+    #_culturefeed_current_user: 'TRUE'
+    #_format: json
     _method: GET
 culturefeed_udb3.variations_create:
   path: '/udb3/api/1.0/variations'
@@ -14,7 +15,7 @@ culturefeed_udb3.variations_create:
     _title: 'Variations detail'
   requirements:
     _culturefeed_current_user: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: POST
 culturefeed_udb3.variations_delete:
   path: '/udb3/api/1.0/variations/{id}'
@@ -23,7 +24,7 @@ culturefeed_udb3.variations_delete:
     _title: 'Variations detail'
   requirements:
     _culturefeed_current_user: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: DELETE
 culturefeed_udb3.variations_details:
   path: '/udb3/api/1.0/variations/{id}'
@@ -32,7 +33,7 @@ culturefeed_udb3.variations_details:
     _title: 'Variations detail'
   requirements:
     _culturefeed_current_user: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: GET
 culturefeed_udb3.variations_update:
   path: '/udb3/api/1.0/variations/{id}'
@@ -41,5 +42,5 @@ culturefeed_udb3.variations_update:
     _title: 'Variations update'
   requirements:
     _culturefeed_current_user: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: PATCH
