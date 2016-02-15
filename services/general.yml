@@ -203,3 +203,10 @@ services:
       arguments: ['@culturefeed.current_user', '@culturefeed.user_credentials', '@culturefeed_udb3.udb2_entry_api_improved_factory']
       tags:
         - { name: access_check, applies_to: _udb3_edit_acces_check }
+
+  culturefeed_udb3.symfony_url_generator:
+    class: Symfony\Component\Routing\Generator\UrlGenerator
+    factory: culturefeed_udb3.symfony_url_generator.factory:get
+  culturefeed_udb3.symfony_url_generator.factory:
+    class: Drupal\culturefeed_udb3\Factory\SymfonyUrlGeneratorFactory
+    arguments: ['@router']

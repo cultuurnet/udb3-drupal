@@ -1,0 +1,9 @@
+services:
+
+  # Default
+  culturefeed_udb3.dbal_connection:
+    class: Doctrine\DBAL\Connection
+    factory: culturefeed_udb3.dbal_connection.factory:get
+  culturefeed_udb3.dbal_connection.factory:
+    class: Drupal\culturefeed_udb3\Factory\DBALConnectionFactory
+    arguments: ['@database']
