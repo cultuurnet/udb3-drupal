@@ -33,8 +33,7 @@ class UserRestController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('culturefeed.current_user'),
-      $container->get('culturefeed_udb3.used_labels_memory')
+      $container->get('culturefeed.current_user')
     );
   }
 
@@ -44,9 +43,8 @@ class UserRestController extends ControllerBase {
    * @param CultureFeed_User $user
    *   A culturefeed user object.
    */
-  public function __construct(CultureFeed_User $user, UsedLabelsMemoryServiceInterface $memory) {
+  public function __construct(CultureFeed_User $user) {
     $this->user = $user;
-    $this->memory = $memory;
   }
 
   /**
@@ -66,24 +64,6 @@ class UserRestController extends ControllerBase {
       ->setPublic()
       ->setClientTtl(60 * 30)
       ->setTtl(60 * 5);
-
-    return $response;
-
-  }
-
-  /**
-   * Returns udb3 labels.
-   *
-   * @return JsonLdResponse
-   *   A json response.
-   */
-  public function labels() {
-
-    $memory = $this->memory;
-    $user = $this->user;
-    $memory = $memory->getMemory($user->id);
-
-    $response = JsonResponse::create($memory);
 
     return $response;
 
