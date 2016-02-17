@@ -59,7 +59,7 @@ class CacheDocumentRepository implements DocumentRepositoryInterface {
    * {@inheritdoc}
    */
   public function save(JsonDocument $document) {
-    $this->cache->set($document->getId(), $document->getRawBody(), CacheBackendInterface::CACHE_PERMANENT);
+    $this->cache->set((string) $document->getId(), $document->getRawBody(), CacheBackendInterface::CACHE_PERMANENT);
   }
 
   /**

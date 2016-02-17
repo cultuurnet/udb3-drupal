@@ -5,7 +5,6 @@ namespace Drupal\culturefeed_udb3\Factory;
 use Drupal\Core\Routing\AccessAwareRouter;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -44,16 +43,16 @@ class SymfonyUrlGeneratorFactory {
    *
    * @param \Drupal\Core\Routing\AccessAwareRouter $router
    *   The router.
-   * @param string
+   * @param string $drupal_path
    *   The drupal path.
-   * @param string
+   * @param string $external_route_name
    *   The external route name.
    */
   public function __construct(
     AccessAwareRouter $router,
     $drupal_path,
-    $external_route_name)
-  {
+    $external_route_name
+  ) {
     $this->router = $router;
     $this->drupalPath = $drupal_path;
     $this->externalRouteName = $external_route_name;
