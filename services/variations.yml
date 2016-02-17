@@ -28,7 +28,7 @@ services:
       - { name: 'culturefeed_udb3.command_bus.subscriber' }
   culturefeed_udb3.variations_event_store:
     class: Drupal\culturefeed_udb3\Store\EventStore
-    arguments: ['variation', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
+    arguments: ['variation_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
   culturefeed_udb3.variations_expression_factory:
     class: CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\ExpressionFactory
   culturefeed_udb3.variations_jsonld_cache:
