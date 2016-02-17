@@ -4,9 +4,7 @@ culturefeed_udb3.variations:
     _controller: 'culturefeed_udb3.variations_read_controller:search'
     _title: 'Variations detail'
   requirements:
-    _access: 'TRUE'
-    #_culturefeed_current_user: 'TRUE'
-    #_format: json
+    _culturefeed_current_user: 'TRUE'
     _method: GET
 culturefeed_udb3.variations_create:
   path: '/udb3/api/1.0/variations'

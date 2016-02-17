@@ -5,7 +5,7 @@ culturefeed_udb3.event:
     _title: 'Event detail'
   requirements:
     _access: 'TRUE'
-    #_format: ld_json
+    _format: ld_json
     _method: GET
 culturefeed_udb3.event_add_image:
   path: '/udb3/api/1.0/event/{eventId}/images'
