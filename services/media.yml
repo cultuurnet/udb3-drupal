@@ -1,6 +1,26 @@
+parameters:
+
+  culturefeed_udb3.media_directory: 'culturefeed/udb3/media'
+  culturefeed_udb3.media_upload_directory: 'culturefeed/udb3/upload'
+
 services:
 
+  # Controller
+  culturefeed_udb3.media_controller:
+    class: CultuurNet\UDB3\Symfony\MediaController
+    arguments:
+      - '@culturefeed_udb3.image_uploader'
+      - '@culturefeed_udb3.media_manager'
+      - '@culturefeed_udb3.media_object_serializer'
+
   # Default
+  culturefeed_udb3.image_uploader:
+    class: CultuurNet\UDB3\Media\ImageUploaderService
+    arguments:
+      - '@culturefeed_udb3.uuid_generator'
+      - '@culturefeed_udb3.event_command_bus'
+      - '@culturefeed_udb3.local_file_system'
+      - '%culturefeed_udb3.media_upload_directory%'
   culturefeed_udb3.local_file_system:
     class: League\Flysystem\Filesystem
     arguments: ['@culturefeed_udb3.local_file_system_adapter']
@@ -9,6 +29,7 @@ services:
     factory: culturefeed_udb3.local_file_system_adapter.factory:get
   culturefeed_udb3.local_file_system_adapter.factory:
     class: Drupal\culturefeed_udb3\Factory\LocalFileSystemAdapterFactory
+    arguments: ['@stream_wrapper.public']
   culturefeed_udb3.media_manager:
     class: CultuurNet\UDB3\Media\MediaManager
     arguments:
@@ -16,12 +37,13 @@ services:
       - '@culturefeed_udb3.simple_path_generator'
       - '@culturefeed_udb3.media_object_repository'
       - '@culturefeed_udb3.local_file_system'
-      - 'culturefeed/media'
+      - '%culturefeed_udb3.media_directory%'
   culturefeed_udb3.media_object_iri_generator:
     class: CultuurNet\UDB3\Iri\CallableIriGenerator
     factory: culturefeed_udb3.media_object_iri_generator.factory:get
   culturefeed_udb3.media_object_iri_generator.factory:
     class: Drupal\culturefeed_udb3\Factory\CallableIriGeneratorFactory
+    arguments: ['@config.factory', '@stream_wrapper.public', '%culturefeed_udb3.media_directory%']
   culturefeed_udb3.media_object_repository:
     class: CultuurNet\UDB3\Media\MediaObjectRepository
     arguments: ['@culturefeed_udb3.media_object_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
@@ -31,3 +53,7 @@ services:
   culturefeed_udb3.media_object_store:
     class: Drupal\culturefeed_udb3\Store\EventStore
     arguments: ['media_object_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
+  culturefeed_udb3.mime_type.guesser.file_info:
+    class: Symfony\Component\HttpFoundation\File\MimeType\FileinfoMimeTypeGuesser
+    tags:
+      - { name: mime_type_guesser, priority: 1 }
