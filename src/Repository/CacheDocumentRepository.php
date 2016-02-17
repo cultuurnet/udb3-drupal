@@ -41,7 +41,7 @@ class CacheDocumentRepository implements DocumentRepositoryInterface {
    */
   public function get($id) {
 
-    $cache = $this->cache->get($id);
+    $cache = $this->cache->get((string) $id);
     $value = ($cache) ? $cache->data : NULL;
 
     if ('GONE' === $value) {
@@ -52,7 +52,7 @@ class CacheDocumentRepository implements DocumentRepositoryInterface {
       return NULL;
     }
 
-    return new JsonDocument($id, $value);
+    return new JsonDocument((string) $id, $value);
   }
 
   /**
@@ -66,7 +66,7 @@ class CacheDocumentRepository implements DocumentRepositoryInterface {
    * {@inheritdoc}
    */
   public function remove($id) {
-    $this->cache->set($id, 'GONE', CacheBackendInterface::CACHE_PERMANENT);
+    $this->cache->set((string) $id, 'GONE', CacheBackendInterface::CACHE_PERMANENT);
   }
 
 }
