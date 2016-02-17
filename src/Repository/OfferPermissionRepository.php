@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Repository\PlacePermissionRepository.
- */
-
 namespace Drupal\culturefeed_udb3\Repository;
 
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
@@ -16,21 +11,23 @@ use Drupal\Core\Entity\Query\QueryFactory;
 use ValueObjects\String\String;
 
 /**
- * Repository for the udb3 index.
+ * Class OfferPermissionRepository.
+ *
+ * @package Drupal\culturefeed_udb3\Repository
  */
-class PlacePermissionRepository implements PermissionRepositoryInterface, PermissionQueryInterface {
+class OfferPermissionRepository implements PermissionRepositoryInterface, PermissionQueryInterface {
 
   /**
    * The database connection.
    *
-   * @var Connection
+   * @var \Drupal\Core\Database\Connection
    */
   protected $database;
 
   /**
    * The query factory.
    *
-   * @var QueryFactory;
+   * @var \Drupal\Core\Entity\Query\QueryFactory
    */
   protected $queryFactory;
 
@@ -42,7 +39,14 @@ class PlacePermissionRepository implements PermissionRepositoryInterface, Permis
   protected $storage;
 
   /**
-   * PlacePermissionRepository constructor.
+   * The offer type.
+   *
+   * @var string
+   */
+  protected $type;
+
+  /**
+   * OfferPermissionRepository constructor.
    *
    * @param \Drupal\Core\Entity\Query\QueryFactory $query_factory
    *   The query factory.
@@ -50,25 +54,29 @@ class PlacePermissionRepository implements PermissionRepositoryInterface, Permis
    *   The database connection.
    * @param \Drupal\Core\Entity\EntityManagerInterface $manager
    *   The entity manager.
+   * @param string $type
+   *   The offer type.
    */
   public function __construct(
     QueryFactory $query_factory,
     Connection $database,
-    EntityManagerInterface $manager
+    EntityManagerInterface $manager,
+    $type
   ) {
     $this->database = $database;
     $this->queryFactory = $query_factory;
-    $this->storage = $manager->getStorage('place_permission');
+    $this->storage = $manager->getStorage($type . '_permission');
+    $this->type = $type;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function markOfferEditableByUser(String $place_id, String $uit_id) {
+  public function markOfferEditableByUser(String $offer_id, String $uit_id) {
 
     $permission = $this->storage->create(array(
       'user_id' => $uit_id->toNative(),
-      'place_id' => $place_id->toNative(),
+      $this->type . '_id' => $offer_id->toNative(),
     ));
 
     try {
@@ -85,17 +93,17 @@ class PlacePermissionRepository implements PermissionRepositoryInterface, Permis
    * {@inheritdoc}
    */
   public function getEditableOffers(String $uit_id) {
-    $query = $this->queryFactory->get('place_permission');
+    $query = $this->queryFactory->get($this->type . '_permission');
     $query->condition('user_id', $uit_id->toNative());
     $result = $query->execute();
 
-    $places = array();
+    $offers = array();
     foreach ($result as $item) {
       $permission = $this->storage->load($item);
-      $place_id = $permission->get('place_id')->value;
-      $places[] = new String($place_id);
+      $offer_id = $permission->get($this->type . '_id')->value;
+      $offers[] = new String($offer_id);
     }
-    return $places;
+    return $offers;
   }
 
 }

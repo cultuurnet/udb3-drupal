@@ -51,8 +51,8 @@ services:
     class: Drupal\culturefeed_udb3\Factory\PlacePermissionProjectorFactory
     arguments: ['@culturefeed_udb3.place_permission_repository', '@culturefeed_udb3.uitid_users']
   culturefeed_udb3.place_permission_repository:
-    class: Drupal\culturefeed_udb3\Repository\PlacePermissionRepository
-    arguments: ['@entity.query', '@database', '@entity.manager']
+    class: Drupal\culturefeed_udb3\Repository\OfferPermissionRepository
+    arguments: ['@entity.query', '@database', '@entity.manager', 'place']
   culturefeed_udb3.place_real_repository:
     class: CultuurNet\UDB3\Place\PlaceRepository
     arguments: ['@culturefeed_udb3.place_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]

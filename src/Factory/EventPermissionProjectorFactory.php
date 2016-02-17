@@ -9,7 +9,7 @@ namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\UDB3\Event\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
-use Drupal\culturefeed_udb3\Repository\EventPermissionRepository;
+use Drupal\culturefeed_udb3\Repository\OfferPermissionRepository;
 use CultuurNet\UDB3\UiTID\UsersInterface;
 
 /**
@@ -22,7 +22,7 @@ class EventPermissionProjectorFactory {
   /**
    * The event permission repository.
    *
-   * @var \Drupal\culturefeed_udb3\Repository\EventPermissionRepository
+   * @var \Drupal\culturefeed_udb3\Repository\OfferPermissionRepository
    */
   protected $eventPermissionRepository;
 
@@ -36,12 +36,12 @@ class EventPermissionProjectorFactory {
   /**
    * EventPermissionProjectorFactory constructor.
    *
-   * @param \Drupal\culturefeed_udb3\Repository\EventPermissionRepository $event_permission_repository
+   * @param \Drupal\culturefeed_udb3\Repository\OfferPermissionRepository $event_permission_repository
    *   The event permission repository.
    * @param \CultuurNet\UDB3\UiTID\UsersInterface $uitid_users
    *   The uitid users.
    */
-  public function __construct(EventPermissionRepository $event_permission_repository, UsersInterface $uitid_users) {
+  public function __construct(OfferPermissionRepository $event_permission_repository, UsersInterface $uitid_users) {
     $this->eventPermissionRepository = $event_permission_repository;
     $this->uitidUsers = $uitid_users;
   }
