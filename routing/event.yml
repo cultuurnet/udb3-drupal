@@ -150,15 +150,6 @@ culturefeed_udb3.event_update_description:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
-culturefeed_udb3.event_update_facilities:
-  path: '/udb3/api/1.0/event/{cdbid}/facilities'
-  defaults:
-    _controller: 'culturefeed_udb3.event_editing_controller:updateFacilities'
-    _title: 'Update the facilities for this event'
-  requirements:
-    _culturefeed_current_user: 'TRUE'
-    _format: json
-    _method: POST
 culturefeed_udb3.event_update_image:
   path: '/udb3/api/1.0/event/{eventId}/images/{mediaObjectId}'
   defaults:
