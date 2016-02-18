@@ -43,7 +43,7 @@ class OfferPermissionRepository implements PermissionRepositoryInterface, Permis
    *
    * @var string
    */
-  protected $type;
+  protected $offerType;
 
   /**
    * OfferPermissionRepository constructor.
@@ -54,19 +54,19 @@ class OfferPermissionRepository implements PermissionRepositoryInterface, Permis
    *   The database connection.
    * @param \Drupal\Core\Entity\EntityManagerInterface $manager
    *   The entity manager.
-   * @param string $type
-   *   The offer type.
+   * @param string $offer_type
+   *   The offer type. Eg. "place", "event"
    */
   public function __construct(
     QueryFactory $query_factory,
     Connection $database,
     EntityManagerInterface $manager,
-    $type
+    $offer_type
   ) {
     $this->database = $database;
     $this->queryFactory = $query_factory;
-    $this->storage = $manager->getStorage($type . '_permission');
-    $this->type = $type;
+    $this->storage = $manager->getStorage($offer_type . '_permission');
+    $this->offerType = $offer_type;
   }
 
   /**
@@ -76,7 +76,7 @@ class OfferPermissionRepository implements PermissionRepositoryInterface, Permis
 
     $permission = $this->storage->create(array(
       'user_id' => $uit_id->toNative(),
-      $this->type . '_id' => $offer_id->toNative(),
+      $this->offerType . '_id' => $offer_id->toNative(),
     ));
 
     try {
@@ -93,14 +93,14 @@ class OfferPermissionRepository implements PermissionRepositoryInterface, Permis
    * {@inheritdoc}
    */
   public function getEditableOffers(String $uit_id) {
-    $query = $this->queryFactory->get($this->type . '_permission');
+    $query = $this->queryFactory->get($this->offerType . '_permission');
     $query->condition('user_id', $uit_id->toNative());
     $result = $query->execute();
 
     $offers = array();
     foreach ($result as $item) {
       $permission = $this->storage->load($item);
-      $offer_id = $permission->get($this->type . '_id')->value;
+      $offer_id = $permission->get($this->offerType . '_id')->value;
       $offers[] = new String($offer_id);
     }
     return $offers;
