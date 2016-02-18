@@ -66,6 +66,15 @@ culturefeed_udb3.place_events:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: GET
+culturefeed_udb3.place_permission:
+  path: '/udb3/api/1.0/place/{cdbid}/permission'
+  defaults:
+    _controller: 'culturefeed_udb3.place_editing_controller:hasPermission'
+    _title: 'Place permission'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
 culturefeed_udb3.place_update:
   path: '/udb3/api/1.0/place/{cdbid}/major-info'
   defaults:

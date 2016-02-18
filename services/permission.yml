@@ -1,5 +1,0 @@
-services:
-
-  # Default
-  culturefeed_udb3.security.token_storage:
-    class: Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage
