@@ -84,7 +84,8 @@ class OfferPermissionRepository implements PermissionRepositoryInterface, Permis
     }
     catch (IntegrityConstraintViolationException $e) {
       // Intentionally catching database exception occurring when the
-      // permission record is already in place.
+      // permission record is already in place, which means that the
+      // offer is already editable by the user.
     }
 
   }
