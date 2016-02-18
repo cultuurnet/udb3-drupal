@@ -7,12 +7,11 @@
 
 namespace Drupal\culturefeed_udb3\Controller;
 
+use CultureFeed_User;
+use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use CultureFeed_User;
-use CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryServiceInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class UserRestController.
@@ -33,8 +32,7 @@ class UserRestController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('culturefeed.current_user'),
-      $container->get('culturefeed_udb3.used_labels_memory')
+      $container->get('culturefeed.current_user')
     );
   }
 
@@ -44,9 +42,8 @@ class UserRestController extends ControllerBase {
    * @param CultureFeed_User $user
    *   A culturefeed user object.
    */
-  public function __construct(CultureFeed_User $user, UsedLabelsMemoryServiceInterface $memory) {
+  public function __construct(CultureFeed_User $user) {
     $this->user = $user;
-    $this->memory = $memory;
   }
 
   /**
@@ -72,21 +69,14 @@ class UserRestController extends ControllerBase {
   }
 
   /**
-   * Returns udb3 labels.
+   * Logs the current user out.
    *
-   * @return JsonLdResponse
-   *   A json response.
+   * @return Response
+   *   A response.
    */
-  public function labels() {
-
-    $memory = $this->memory;
-    $user = $this->user;
-    $memory = $memory->getMemory($user->id);
-
-    $response = JsonResponse::create($memory);
-
-    return $response;
-
+  public function logout() {
+    user_logout();
+    return new Response();
   }
 
 }
