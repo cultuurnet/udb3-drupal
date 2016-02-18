@@ -44,46 +44,6 @@ culturefeed_udb3.user.labels:
     _format: json
     _method: GET
 
-culturefeed_udb3.organizer:
-  path: '/udb3/api/1.0/organizer/{cdbid}'
-  defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\OrganizerRestController::details'
-    _title: 'Organizer detail'
-  requirements:
-    _culturefeed_current_user: 'TRUE'
-    _format: ld_json
-    _method: GET
-
-culturefeed_udb3.organizer.suggest:
-  path: '/udb3/api/1.0/organizer/suggest/{title}'
-  defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\OrganizerRestController::suggest'
-    _title: 'Organizer suggest'
-  requirements:
-    _access: 'TRUE'
-    _format: json
-    _method: GET
-
-culturefeed_udb3.organizer.duplicates:
-  path: '/udb3/api/1.0/organizer/search-duplicates/{title}'
-  defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\OrganizerRestController::searchDuplicates'
-    _title: 'Organizer search for duplicates'
-  requirements:
-    _access: 'TRUE'
-    _format: json
-    _method: GET
-
-culturefeed_udb3.organizer_create:
-  path: '/udb3/api/1.0/organizer'
-  defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\OrganizerRestController::createOrganizer'
-    _title: 'Create organizer'
-  requirements:
-    _culturefeed_current_user: 'TRUE'
-    _format: json
-    _method: POST
-
 culturefeed_udb3.city.autocomplete:
   path: '/udb3/api/1.0/city/suggest/{search_string}'
   defaults:

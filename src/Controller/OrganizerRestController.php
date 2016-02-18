@@ -58,8 +58,8 @@ class OrganizerRestController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('culturefeed_udb3.organizer.service'),
-      $container->get('culturefeed_udb3.organizer.editor'),
+      $container->get('culturefeed_udb3.organizer_service'),
+      $container->get('culturefeed_udb3.organizer_editing_service'),
       $container->get('culturefeed_udb3.udb3_index_repository'),
       $container->get('culturefeed.current_user')
     );
@@ -100,61 +100,6 @@ class OrganizerRestController extends ControllerBase {
   }
 
   /**
-   * Returns an organizer.
-   *
-   * @param string $cdbid
-   *   The place id.
-   *
-   * @return JsonLdResponse
-   *   The response.
-   */
-  public function details($cdbid) {
-
-    $organizer = $this->entityService->getEntity($cdbid);
-
-    $response = JsonResponse::create()
-      ->setContent($organizer)
-      ->setPublic()
-      ->setClientTtl(60 * 30)
-      ->setTtl(60 * 5);
-
-    return $response;
-
-  }
-
-  /**
-   * Suggest organizers based on a search value.
-   * @param string $title
-   *
-   * @return JsonResponse
-   *   The response.
-   */
-  public function suggest($title) {
-
-    $query = db_select('culturefeed_udb3_index', 'i');
-    $query->condition('title', '%' . db_like($title) . '%', 'LIKE');
-    $query->condition('type', 'organizer');
-    $query->range(0, 10);
-    $query->fields('i', array('id', 'title'));
-    $result = $query->execute();
-
-    $matches = array();
-    foreach ($result as $row) {
-      $organizer = new \stdClass();
-      $organizer->id = $row->id;
-      $organizer->name = $row->title;
-      $matches[] = $organizer;
-    }
-
-    return JsonResponse::create()
-      ->setContent(json_encode($matches))
-      ->setPublic()
-      ->setClientTtl(60 * 30)
-      ->setTtl(60 * 5);
-
-  }
-
-  /**
    * Search for duplicates organizers.
    */
   public function searchDuplicates(Request $request, $title) {
@@ -180,68 +125,6 @@ class OrganizerRestController extends ControllerBase {
       ->setClientTtl(60 * 30)
       ->setTtl(60 * 5);
 
-  }
-
-  /**
-   * Create a new organizer.
-   */
-  public function createOrganizer(Request $request) {
-
-    $response = new JsonResponse();
-    $body_content = json_decode($request->getContent());
-
-    try {
-
-      if (empty($body_content->name)) {
-        throw new \InvalidArgumentException('Required fields are missing');
-      }
-
-      $addresses = array();
-      if (!empty($body_content->address->streetAddress) && !empty($body_content->address->locality) && !empty($body_content->address->postalCode) && !empty($body_content->address->country)) {
-        $addresses[] = new Address($body_content->address->streetAddress, $body_content->address->postalCode, $body_content->address->locality, $body_content->address->country);
-      }
-
-      $phones = array();
-      $emails = array();
-      $urls = array();
-      if (!empty($body_content->contact)) {
-        foreach ($body_content->contact as $contactInfo) {
-          if ($contactInfo->type == 'phone') {
-            $phones[] = $contactInfo->value;
-          }
-          elseif ($contactInfo->type == 'email') {
-            $emails[] = $contactInfo->value;
-          }
-          elseif ($contactInfo->type == 'url') {
-            $urls[] = $contactInfo->value;
-          }
-        }
-      }
-
-      $organizer_id = $this->organizerEditor->createOrganizer(
-        new Title($body_content->name),
-        $addresses,
-        $phones,
-        $emails,
-        $urls
-      );
-
-      $response->setData(
-        [
-          'organizerId' => $organizer_id,
-          'url' => $this->getUrlGenerator()->generateFromRoute(
-            'culturefeed_udb3.organizer',
-            ['cdbid' => $organizer_id],
-            ['absolute' => TRUE]
-          ),
-        ]
-      );
-    } catch (Exception $e) {
-      $response->setStatusCode(400);
-      $response->setData(['error' => $e->getMessage()]);
-    }
-
-    return $response;
   }
 
 }

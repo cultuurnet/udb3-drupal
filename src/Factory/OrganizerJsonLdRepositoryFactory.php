@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\culturefeed_udb3\Factory\PlaceJsonLdRepositoryFactory.
+ * Contains Drupal\culturefeed_udb3\Factory\OrganizerJsonLdRepositoryFactory.
  */
 
 namespace Drupal\culturefeed_udb3\Factory;
@@ -13,11 +13,11 @@ use CultuurNet\UDB3\SimpleEventBus;
 use Drupal\culturefeed_udb3\Repository\CacheDocumentRepository;
 
 /**
- * Class PlaceJsonLdRepositoryFactory.
+ * Class OrganizerJsonLdRepositoryFactory.
  *
  * @package Drupal\culturefeed_udb3\Factory
  */
-class PlaceJsonLdRepositoryFactory {
+class OrganizerJsonLdRepositoryFactory {
 
   /**
    * The event bus.
@@ -27,35 +27,35 @@ class PlaceJsonLdRepositoryFactory {
   protected $eventBus;
 
   /**
-   * The place cache document repository.
+   * The organizer cache document repository.
    *
    * @var \Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
    */
-  protected $placeCacheDocumentRepository;
+  protected $organizerCacheDocumentRepository;
 
   /**
-   * PlaceJsonLdRepositoryFactory constructor.
+   * OrganizerJsonLdRepositoryFactory constructor.
    *
    * @param \CultuurNet\UDB3\SimpleEventBus $event_bus
    *   The event bus.
-   * @param \Drupal\culturefeed_udb3\Repository\CacheDocumentRepository $place_cache_document_repository
+   * @param \Drupal\culturefeed_udb3\Repository\CacheDocumentRepository $organizer_cache_document_repository
    *   The place cache document repository.
    */
-  public function __construct(SimpleEventBus $event_bus, CacheDocumentRepository $place_cache_document_repository) {
+  public function __construct(SimpleEventBus $event_bus, CacheDocumentRepository $organizer_cache_document_repository) {
     $this->eventBus = $event_bus;
-    $this->placeCacheDocumentRepository = $place_cache_document_repository;
+    $this->organizerCacheDocumentRepository = $organizer_cache_document_repository;
   }
 
   /**
-   * Get the place json ld repository.
+   * Get the organizer json ld repository.
    *
    * @return \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
-   *   The place json ld repository.
+   *   The organizer json ld repository.
    */
   public function get() {
 
     return new BroadcastingDocumentRepositoryDecorator(
-      $this->placeCacheDocumentRepository,
+      $this->organizerCacheDocumentRepository,
       $this->eventBus,
       new EventFactory()
     );
