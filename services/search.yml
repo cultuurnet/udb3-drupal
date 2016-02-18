@@ -7,7 +7,13 @@ services:
 
   culturefeed_udb3.cache.default_search:
     class: Drupal\culturefeed_udb3\DoctrineCache
-    arguments: ['@culturefeed_udb3.cache']
+    arguments: ['@culturefeed_udb3.cache.default_search.real']
+  culturefeed_udb3.cache.default_search.real:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [culturefeed_udb3_default_search]
   culturefeed_udb3.cached_search_service:
     class: CultuurNet\UDB3\Search\CachedDefaultSearchService
     arguments: ['@culturefeed_udb3.search_service', '@culturefeed_udb3.cache.default_search']
