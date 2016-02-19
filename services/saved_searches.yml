@@ -2,8 +2,11 @@ services:
 
   # Controller
   culturefeed_udb3.saved_searches_controller:
-    class: CultuurNet\UDB3\Symfony\SavedSearches\SavedSearchesRestController
-    arguments: ['@culturefeed_udb3.saved_searches_repository', '@culturefeed.current_user', '@culturefeed_udb3.event_command_bus']
+    class: CultuurNet\UDB3\Symfony\SavedSearches\ReadSavedSearchesController
+    arguments: ['@culturefeed.current_user', '@culturefeed_udb3.saved_searches_repository']
+  culturefeed_udb3.saved_searches_editing_controller:
+    class: CultuurNet\UDB3\Symfony\SavedSearches\EditSavedSearchesRestController
+    arguments: ['@culturefeed.current_user', '@culturefeed_udb3.event_command_bus']
 
   # Default
   culturefeed_udb3.logger.channel.saved_searches:
