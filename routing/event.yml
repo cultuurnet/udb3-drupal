@@ -8,7 +8,7 @@ culturefeed_udb3.event:
     _format: ld_json
     _method: GET
 culturefeed_udb3.event_add_image:
-  path: '/udb3/api/1.0/event/{eventId}/images'
+  path: '/udb3/api/1.0/event/{itemId}/images'
   defaults:
     _controller: 'culturefeed_udb3.event_editing_controller:addImage'
     _title: 'Add new images to the event'
@@ -35,7 +35,7 @@ culturefeed_udb3.event_delete:
     _format: json
     _method: DELETE
 culturefeed_udb3.event_delete_image:
-  path: '/udb3/api/1.0/event/{eventId}/images/{mediaObjectId}'
+  path: '/udb3/api/1.0/event/{itemId}/images/{mediaObjectId}'
   defaults:
     _controller: 'culturefeed_udb3.event_editing_controller:removeImage'
     _title: 'Delete an image'
@@ -151,7 +151,7 @@ culturefeed_udb3.event_update_description:
     _format: json
     _method: POST
 culturefeed_udb3.event_update_image:
-  path: '/udb3/api/1.0/event/{eventId}/images/{mediaObjectId}'
+  path: '/udb3/api/1.0/event/{itemId}/images/{mediaObjectId}'
   defaults:
     _controller: 'culturefeed_udb3.event_editing_controller:updateImage'
     _title: 'Update an image'
