@@ -66,6 +66,24 @@ culturefeed_udb3.place_events:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: GET
+culturefeed_udb3.place_labels:
+  path: '/udb3/api/1.0/place/{cdbid}/labels'
+  defaults:
+    _controller: 'culturefeed_udb3.place_offer_controller:addLabel'
+    _title: 'Add place label'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.place_labels_delete:
+  path: '/udb3/api/1.0/place/{cdbid}/labels/{label}'
+  defaults:
+    _controller: 'culturefeed_udb3.place_offer_controller:removeLabel'
+    _title: 'Delete placet label'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
 culturefeed_udb3.place_permission:
   path: '/udb3/api/1.0/place/{cdbid}/permission'
   defaults:
