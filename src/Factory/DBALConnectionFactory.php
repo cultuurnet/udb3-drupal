@@ -55,7 +55,7 @@ class DBALConnectionFactory {
     // Improve !!! (more generic, ...).
     $drupal_options = $this->database->getConnectionOptions();
     $dbal_options = array(
-      'dbname' => 'udb3-drupal',
+      'dbname' => $drupal_options['database'],
       'driver' => 'pdo_mysql',
       'password' => $drupal_options['password'],
       'user' => $drupal_options['username'],
