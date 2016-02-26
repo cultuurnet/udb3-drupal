@@ -1,0 +1,35 @@
+services:
+
+  # Bulk label selection controller.
+  # Uses a deserializer to convert the request JSON into a command and
+  # dispatches it on the command bus.
+  culturefeed_udb3.bulk_label_selection_controller:
+    class: CultuurNet\UDB3\Symfony\CommandDeserializerController
+    arguments:
+      - '@culturefeed_udb3.add_label_to_multiple_json_deserializer'
+      - '@culturefeed_udb3.event_command_bus'
+
+  # Deserializes the JSON for labelling multiple offers into a command.
+  # Uses a different deserializer to deserialize the individual offer
+  # identifiers, because their format could change down the road.
+  culturefeed_udb3.add_label_to_multiple_json_deserializer:
+    class: CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer
+    arguments:
+      - '@culturefeed_udb3.iri_offer_identifier_json_deserializer'
+
+  # Deserializes a single offer identifier. Expects the @id to be an iri.
+  culturefeed_udb3.iri_offer_identifier_json_deserializer:
+    class: CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer
+
+  # Bulk label query controller.
+  # Uses a deserializer to convert the request JSON into a command and
+  # dispatches it on the command bus.
+    culturefeed_udb3.bulk_label_query_controller:
+      class: CultuurNet\UDB3\Symfony\CommandDeserializerController
+      arguments:
+        - '@culturefeed_udb3.add_label_to_query_json_deserializer'
+        - '@culturefeed_udb3.event_command_bus'
+
+  # Deserializes the JSON for labelling a query into a command.
+  culturefeed_udb3.add_label_to_query_json_deserializer:
+    class: CultuurNet\UDB3\Offer\Commands\AddLabelToQueryJSONDeserializer
