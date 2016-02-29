@@ -16,6 +16,15 @@ services:
     class: CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer
     arguments:
       - '@culturefeed_udb3.iri_offer_identifier_json_deserializer'
+  culturefeed_udb3.bulk_label_offer_command_handler:
+    class: CultuurNet\UDB3\Offer\BulkLabelCommandHandler
+    factory: culturefeed_udb3.bulk_label_offer_command_handler.factory:get
+  culturefeed_udb3.bulk_label_offer_command_handler.factory:
+    class: Drupal\culturefeed_udb3\Factory\BulkLabelCommandHandlerFactory
+    arguments:
+       - '@culturefeed_udb3.search_results_generator'
+       - '@culturefeed_udb3.event_repository'
+       - '@culturefeed_udb3.place_repository'
 
   # Deserializes a single offer identifier. Expects the @id to be an iri.
   culturefeed_udb3.iri_offer_identifier_json_deserializer:

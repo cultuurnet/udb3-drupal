@@ -63,7 +63,7 @@ services:
     class: CultuurNet\UDB3\Place\PlaceRepository
     arguments: ['@culturefeed_udb3.place_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
   culturefeed_udb3.place_repository:
-    class: CultuurNet\UDB3\UDB2\PlaceRepository
+    class: CultuurNet\UDB3\UDB2\Place\PlaceRepository
     factory: culturefeed_udb3.place_repository.factory:get
   culturefeed_udb3.place_repository.factory:
     class: Drupal\culturefeed_udb3\Factory\PlaceRepositoryFactory
