@@ -1,21 +1,18 @@
-# Bulk label a selection
 culturefeed_udb3.bulk_label_selection:
-  path: '/offers/labels'
-    defaults:
-      _controller: 'culturefeed_udb3.bulk_label_selection_controller:handle'
-      _title: 'Label multiple offers'
-    requirements:
-      _culturefeed_current_user: 'TRUE'
-      _format: json
-      _method: POST
-
-# Bulk label a query
+  path: '/udb3/api/1.0/offers/labels'
+  defaults:
+    _controller: 'culturefeed_udb3.bulk_label_selection_controller:handle'
+    _title: 'Label multiple offers'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
 culturefeed_udb3.bulk_label_query:
-  path: '/query/labels'
-    defaults:
-      _controller: 'culturefeed_udb3.bulk_label_query_controller:handle'
-      _title: 'Label all offer results from a query'
-    requirements:
-      _culturefeed_current_user: 'TRUE'
-      _format: json
-      _method: POST
+  path: '/udb3/api/1.0/query/labels'
+  defaults:
+    _controller: 'culturefeed_udb3.bulk_label_query_controller:handle'
+    _title: 'Label all offer results from a query'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST

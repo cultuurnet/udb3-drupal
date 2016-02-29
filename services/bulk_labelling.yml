@@ -24,11 +24,11 @@ services:
   # Bulk label query controller.
   # Uses a deserializer to convert the request JSON into a command and
   # dispatches it on the command bus.
-    culturefeed_udb3.bulk_label_query_controller:
-      class: CultuurNet\UDB3\Symfony\CommandDeserializerController
-      arguments:
-        - '@culturefeed_udb3.add_label_to_query_json_deserializer'
-        - '@culturefeed_udb3.event_command_bus'
+  culturefeed_udb3.bulk_label_query_controller:
+    class: CultuurNet\UDB3\Symfony\CommandDeserializerController
+    arguments:
+      - '@culturefeed_udb3.add_label_to_query_json_deserializer'
+      - '@culturefeed_udb3.event_command_bus'
 
   # Deserializes the JSON for labelling a query into a command.
   culturefeed_udb3.add_label_to_query_json_deserializer:
