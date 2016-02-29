@@ -73,7 +73,7 @@ class EditAccess implements AccessInterface {
       watchdog_exception('udb3', $e);
     }
 
-    return AccessResult::allowedIf($has_permission)->setCacheable(FALSE);
+    return AccessResult::allowedIf($has_permission);
 
   }
 
