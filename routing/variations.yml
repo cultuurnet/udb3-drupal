@@ -1,0 +1,44 @@
+culturefeed_udb3.variations:
+  path: '/udb3/api/1.0/variations'
+  defaults:
+    _controller: 'culturefeed_udb3.variations_read_controller:search'
+    _title: 'Variations detail'
+  requirements:
+    _access: 'TRUE'
+    _method: GET
+culturefeed_udb3.variations_create:
+  path: '/udb3/api/1.0/variations'
+  defaults:
+    _controller: 'culturefeed_udb3.variations_write_controller:handle'
+    _title: 'Variations detail'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.variations_delete:
+  path: '/udb3/api/1.0/variations/{id}'
+  defaults:
+    _controller: 'culturefeed_udb3.variations_edit_controller:delete'
+    _title: 'Variations detail'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE
+culturefeed_udb3.variations_details:
+  path: '/udb3/api/1.0/variations/{id}'
+  defaults:
+    _controller: 'culturefeed_udb3.variations_read_controller:get'
+    _title: 'Variations detail'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
+culturefeed_udb3.variations_update:
+  path: '/udb3/api/1.0/variations/{id}'
+  defaults:
+    _controller: 'culturefeed_udb3.variations_edit_controller:edit'
+    _title: 'Variations update'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: PATCH
