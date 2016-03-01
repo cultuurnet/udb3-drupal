@@ -25,11 +25,10 @@ services:
     class: Drupal\culturefeed_udb3\IriGenerator
     arguments: ['@url_generator', 'culturefeed_udb3.organizer']
   culturefeed_udb3.organizer_jsonld_cache:
-    class: Drupal\Core\Cache\CacheBackendInterface
+    parent: culturefeed_udb3.cache_base
     tags:
-      - { name: cache.bin }
-    factory: cache_factory:get
-    arguments: [culturefeed_udb3_place_jsonld]
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
+    arguments: [culturefeed_udb3_organizer_jsonld]
   culturefeed_udb3.organizer_jsonld_projector:
     class: CultuurNet\UDB3\Organizer\OrganizerLDProjector
     arguments: ['@culturefeed_udb3.organizer_jsonld_repository', '@culturefeed_udb3.organizer_iri_generator', '@culturefeed_udb3.event_bus']
