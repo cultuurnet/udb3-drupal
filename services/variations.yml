@@ -11,7 +11,7 @@ services:
     class: CultuurNet\UDB3\Symfony\CommandDeserializerController
     factory: culturefeed_udb3.variations_write_controller.factory:get
   culturefeed_udb3.variations_write_controller.factory:
-    class: Drupal\culturefeed_udb3\Factory\CommandDeserializerControllerFactory
+    class: Drupal\culturefeed_udb3\Factory\CreateEventVariationControllerFactory
     arguments: ['@culturefeed_udb3.event_service', '@culturefeed_udb3.event_command_bus', '@config.factory']
   culturefeed_udb3.variations_edit_controller:
     class: CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController

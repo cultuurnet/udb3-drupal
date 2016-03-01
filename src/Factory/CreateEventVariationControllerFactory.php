@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\...\Factory\CommandDeserializerControllerFactory.
+ * Contains Drupal\...\Factory\CreateEventVariationControllerFactory.
  */
 
 namespace Drupal\culturefeed_udb3\Factory;
@@ -15,11 +15,11 @@ use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use Drupal\Core\Config\ConfigFactory;
 
 /**
- * Class CommandDeserializerControllerFactory
+ * Class CreateEventVariationControllerFactory
  *
  * @package Drupal\culturefeed_udb3\Factory
  */
-class CommandDeserializerControllerFactory {
+class CreateEventVariationControllerFactory {
 
   /**
    * The command bus.
@@ -43,7 +43,7 @@ class CommandDeserializerControllerFactory {
   protected $eventUrlRegex;
 
   /**
-   * CommandDeserializerControllerFactory constructor.
+   * CreateEventVariationControllerFactory constructor.
    *
    * @param \CultuurNet\UDB3\LocalEventService $event_service
    *   The event service.
