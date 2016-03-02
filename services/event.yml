@@ -40,10 +40,9 @@ services:
     class: Drupal\culturefeed_udb3\Repository\EntityLdRepository
     arguments: ['event_history', '@entity.manager']
   culturefeed_udb3.event_jsonld_cache:
-    class: Drupal\Core\Cache\CacheBackendInterface
+    parent: culturefeed_udb3.cache_base
     tags:
-      - { name: cache.bin }
-    factory: cache_factory:get
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
     arguments: [culturefeed_udb3_event_jsonld]
   culturefeed_udb3.event_jsonld_repository:
     class: CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
@@ -69,10 +68,9 @@ services:
     class: Drupal\culturefeed_udb3\DoctrineCache
     arguments: ['@culturefeed_udb3.event_history_cache.real']
   culturefeed_udb3.event_history_cache.real:
-    class: Drupal\Core\Cache\CacheBackendInterface
+    parent: culturefeed_udb3.cache_base
     tags:
-      - { name: cache.bin }
-    factory: cache_factory:get
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
     arguments: [culturefeed_udb3_event_history]
   culturefeed_udb3.event_history_repository:
     class: CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository
