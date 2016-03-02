@@ -48,10 +48,13 @@ function drush_culturefeed_udb3_udb3_delete_data() {
     'organizer_document_repository',
     'organizer_store',
     'place_document_repository',
+    'place_permission',
     'place_relations',
     'place_store',
     'udb3_index',
     'used_labels_memory_event_store',
+    'variation',
+    'variation_store',
   );
 
   foreach ($entities as $entity_type) {
@@ -60,6 +63,18 @@ function drush_culturefeed_udb3_udb3_delete_data() {
     entity_delete_multiple($entity_type, $entity_ids);
   }
 
+  // Clear the caches.
+  $container = \Drupal::getContainer();
+  foreach ($container->getParameter('cache_bins') as $service_id => $bin) {
+
+    $bin = $container->get($service_id);
+    $class = get_class($bin);
+
+    if ($class == 'Drupal\culturefeed_udb3\Cache\DatabaseBackend') {
+      $bin->realDeleteAll();
+    }
+
+  }
 }
 
 /**

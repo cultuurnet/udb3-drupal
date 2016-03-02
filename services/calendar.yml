@@ -13,8 +13,7 @@ services:
     class: Drupal\culturefeed_udb3\DoctrineCache
     arguments: ['@culturefeed_udb3.event_calendar_cache.real']
   culturefeed_udb3.event_calendar_cache.real:
-    class: Drupal\Core\Cache\CacheBackendInterface
+    parent: culturefeed_udb3.cache_base
     tags:
-      - { name: cache.bin }
-    factory: cache_factory:get
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
     arguments: [culturefeed_udb3_event_calendar]

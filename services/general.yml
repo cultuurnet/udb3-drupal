@@ -8,10 +8,9 @@ services:
 
   # General
   culturefeed_udb3.cache:
-    class: Drupal\Core\Cache\CacheBackendInterface
+    parent: culturefeed_udb3.cache_base
     tags:
-      - { name: cache.bin }
-    factory: cache_factory:get
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
     arguments: [culturefeed_udb3]
   culturefeed_udb3.format_setter:
     class: Drupal\culturefeed_udb3\StackMiddleware\FormatSetter
