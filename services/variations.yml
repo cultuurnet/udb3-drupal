@@ -1,0 +1,79 @@
+services:
+
+  # Controller
+  culturefeed_udb3.variations_read_controller:
+    class: CultuurNet\UDB3\Symfony\Variations\ReadVariationsRestController
+    arguments:
+      - '@culturefeed_udb3.variations_jsonld_repository'
+      - '@culturefeed_udb3.variations_search_repository'
+      - '@culturefeed_udb3.variations_symfony_url_generator'
+  culturefeed_udb3.variations_write_controller:
+    class: CultuurNet\UDB3\Symfony\CommandDeserializerController
+    arguments:
+      - '@culturefeed_udb3.create_event_variation_json_deserializer'
+      - '@culturefeed_udb3.event_command_bus'
+  culturefeed_udb3.variations_edit_controller:
+    class: CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController
+    arguments: ['@culturefeed_udb3.variations_jsonld_repository', '@culturefeed_udb3.event_command_bus']
+
+  # Default
+  culturefeed_udb3.create_event_variation_json_deserializer:
+    class: CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer
+    factory: culturefeed_udb3.create_event_variation_json_deserializer.factory:get
+  culturefeed_udb3.create_event_variation_json_deserializer.factory:
+    class: Drupal\culturefeed_udb3\Factory\CreateEventVariationJSONDeserializerFactory
+    arguments:
+      - '@culturefeed_udb3.event_service'
+      - '@config.factory'
+  culturefeed_udb3.variations:
+    class: CultuurNet\UDB3\Variations\DefaultEventVariationService
+    arguments: ['@culturefeed_udb3.variations_repository', '@culturefeed_udb3.uuid_generator']
+  culturefeed_udb3.variations_command_handler:
+    class: CultuurNet\UDB3\Variations\Command\EventVariationCommandHandler
+    arguments: ['@culturefeed_udb3.variations']
+    tags:
+      - { name: 'culturefeed_udb3.command_bus.subscriber' }
+  culturefeed_udb3.variations_event_store:
+    class: Drupal\culturefeed_udb3\Store\EventStore
+    arguments: ['variation_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
+  culturefeed_udb3.variations_expression_factory:
+    class: CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\ExpressionFactory
+  culturefeed_udb3.variations_jsonld_cache:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [culturefeed_udb3_variation_jsonld]
+  culturefeed_udb3.variations_jsonld_projector:
+    class: CultuurNet\UDB3\Variations\ReadModel\JSONLD\Projector
+    factory: culturefeed_udb3.variations_jsonld_projector.factory:get
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.variations_jsonld_projector.factory:
+    class: Drupal\culturefeed_udb3\Factory\VariationsJsonLdProjectorFactory
+    arguments:
+      - '@culturefeed_udb3.variations_jsonld_repository'
+      - '@culturefeed_udb3.event_jsonld_repository'
+      - '@culturefeed_udb3.variations_search_repository'
+      - '@config.factory'
+  culturefeed_udb3.variations_jsonld_repository:
+    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
+    arguments: ['@culturefeed_udb3.variations_jsonld_cache']
+  culturefeed_udb3.variations_repository:
+    class: CultuurNet\UDB3\Variations\EventVariationRepository
+    arguments: ['@culturefeed_udb3.variations_event_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
+  culturefeed_udb3.variations_search_projector:
+    class: CultuurNet\UDB3\Variations\ReadModel\Search\Projector
+    arguments: ['@culturefeed_udb3.variations_search_repository']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.variations_search_repository:
+    class: Drupal\culturefeed_udb3\Repository\VariationSearchRepository
+    arguments: ['@entity.manager', '@culturefeed_udb3.dbal_connection', '@culturefeed_udb3.variations_expression_factory']
+  culturefeed_udb3.variations_symfony_url_generator:
+    class: Symfony\Component\Routing\Generator\UrlGenerator
+    factory: culturefeed_udb3.variations_symfony_url_generator.factory:get
+  culturefeed_udb3.variations_symfony_url_generator.factory:
+    class: Drupal\culturefeed_udb3\Factory\SymfonyUrlGeneratorFactory
+    arguments: ['@router', /udb3/api/1.0/variations, variations]
+

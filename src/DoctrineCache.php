@@ -40,7 +40,8 @@ class DoctrineCache implements Cache {
    * {@inheritdoc}
    */
   public function fetch($id) {
-    return $this->cache->get($id)->data;
+    $cache = $this->cache->get($id);
+    return ($cache) ? $cache->data : FALSE;
   }
 
   /**
@@ -61,7 +62,7 @@ class DoctrineCache implements Cache {
    * {@inheritdoc}
    */
   public function contains($id) {
-    return $this->cache->get($id);
+    return ($this->cache->get($id));
   }
 
   /**

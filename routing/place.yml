@@ -32,7 +32,7 @@ culturefeed_udb3.place_delete:
     _format: json
     _method: DELETE
 culturefeed_udb3.place_delete_image:
-  path: '/udb3/api/1.0/place/{itemId}/images/{index}'
+  path: '/udb3/api/1.0/place/{itemId}/images/{mediaObjectId}'
   defaults:
     _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::deleteImage'
     _title: 'Delete an image'
@@ -148,7 +148,7 @@ culturefeed_udb3.place_description_translate:
     _format: json
     _method: POST
 culturefeed_udb3.place_update_image:
-  path: '/udb3/api/1.0/place/{itemId}/images/{index}'
+  path: '/udb3/api/1.0/place/{itemId}/images/{mediaObjectId}'
   defaults:
     _controller: '\Drupal\culturefeed_udb3\Controller\PlaceRestController::updateImage'
     _title: 'Update an image'

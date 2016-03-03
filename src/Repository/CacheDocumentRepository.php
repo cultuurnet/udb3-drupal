@@ -40,7 +40,9 @@ class CacheDocumentRepository implements DocumentRepositoryInterface {
    * {@inheritdoc}
    */
   public function get($id) {
-    $value = $this->cache->get($id)->data;
+
+    $cache = $this->cache->get((string) $id);
+    $value = ($cache) ? $cache->data : NULL;
 
     if ('GONE' === $value) {
       throw new DocumentGoneException();
@@ -50,21 +52,21 @@ class CacheDocumentRepository implements DocumentRepositoryInterface {
       return NULL;
     }
 
-    return new JsonDocument($id, $value);
+    return new JsonDocument((string) $id, $value);
   }
 
   /**
    * {@inheritdoc}
    */
   public function save(JsonDocument $document) {
-    $this->cache->set($document->getId(), $document->getRawBody(), CacheBackendInterface::CACHE_PERMANENT);
+    $this->cache->set((string) $document->getId(), $document->getRawBody(), CacheBackendInterface::CACHE_PERMANENT);
   }
 
   /**
    * {@inheritdoc}
    */
   public function remove($id) {
-    $this->cache->set($id, 'GONE', CacheBackendInterface::CACHE_PERMANENT);
+    $this->cache->set((string) $id, 'GONE', CacheBackendInterface::CACHE_PERMANENT);
   }
 
 }
