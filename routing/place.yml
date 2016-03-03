@@ -93,6 +93,15 @@ culturefeed_udb3.place_permission:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: GET
+culturefeed_udb3.place_title_translate:
+  path: '/udb3/api/1.0/place/{cdbid}/{lang}/title'
+  defaults:
+    _controller: 'culturefeed_udb3.place_offer_controller:translateTitle'
+    _title: 'Place title'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
 culturefeed_udb3.place_update:
   path: '/udb3/api/1.0/place/{cdbid}/major-info'
   defaults:
@@ -121,9 +130,18 @@ culturefeed_udb3.place_update_contactpoint:
     _format: json
     _method: POST
 culturefeed_udb3.place_update_description:
-  path: '/udb3/api/1.0/place/{cdbid}/{language}/description'
+  path: '/udb3/api/1.0/place/{cdbid}/nl/description'
   defaults:
     _controller: 'culturefeed_udb3.place_editing_controller:updateDescription'
+    _title: 'Update place description'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.place_description_translate:
+  path: '/udb3/api/1.0/place/{cdbid}/{lang}/description'
+  defaults:
+    _controller: 'culturefeed_udb3.place_offer_controller:translateDescription'
     _title: 'Update place description'
   requirements:
     _culturefeed_current_user: 'TRUE'
