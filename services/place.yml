@@ -13,11 +13,18 @@ services:
       - '@culturefeed.current_user'
       - '@culturefeed_udb3.place_security'
       - '@culturefeed_udb3.media_manager'
+  culturefeed_udb3.place_offer_controller:
+    class: CultuurNet\UDB3\Symfony\Offer\EditOfferRestController
+    arguments:
+     - '@culturefeed_udb3.place_editing_service_with_label_memory'
+     - '@culturefeed_udb3.label_json_deserializer'
+     - '@culturefeed_udb3.title_json_deserializer'
+     - '@culturefeed_udb3.description_json_deserializer'
 
   # Default
   culturefeed_udb3.place_cache_document_repositroy:
     class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
-    arguments: ['@culturefeed_udb3.place_jsonld_cache']
+    arguments: ['@culturefeed_udb3.culturefeed_udb3_place_jsonld_cache']
   culturefeed_udb3.place_command_factory:
     class: CultuurNet\UDB3\Place\Commands\PlaceCommandFactory
   culturefeed_udb3.place_editing_service:
@@ -28,14 +35,20 @@ services:
      - '@culturefeed_udb3.place_jsonld_repository'
      - '@culturefeed_udb3.place_command_factory'
      - '@culturefeed_udb3.place_repository'
+  culturefeed_udb3.place_editing_service_with_label_memory:
+    class: CultuurNet\UDB3\Offer\OfferEditingServiceWithLabelMemory
+    arguments:
+     - '@culturefeed_udb3.place_editing_service'
+     - '@culturefeed.current_user'
+     - '@culturefeed_udb3.used_labels_memory'
   culturefeed_udb3.place_iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
     arguments: ['@url_generator', 'culturefeed_udb3.place']
-  culturefeed_udb3.place_jsonld_cache:
+  culturefeed_udb3.culturefeed_udb3_place_jsonld_cache:
     parent: culturefeed_udb3.cache_base
     tags:
       - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
-    arguments: [culturefeed_udb3_place_jsonld]
+    arguments: [culturefeed_udb3_place_jsonld_cache]
   culturefeed_udb3.place_jsonld_repository:
     class: CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
     factory: culturefeed_udb3.place_jsonld_repository.factory:get
