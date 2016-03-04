@@ -22,6 +22,9 @@ services:
     tags:
       - { name: cache.bin }
     arguments: [culturefeed_udb3_search_default_cache_real]
+  culturefeed_udb3.search_results_generator:
+    class: CultuurNet\UDB3\Search\ResultsGenerator
+    arguments: ['@culturefeed_udb3.search_service']
   culturefeed_udb3.search_service:
     class: CultuurNet\UDB3\Search\PullParsingSearchService
     arguments: ['@culturefeed_udb3.search_api_2', '@culturefeed_udb3.iri_generator', '@culturefeed_udb3.place_iri_generator']
