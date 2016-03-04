@@ -5,23 +5,23 @@ services:
     class: CultuurNet\UDB3\Symfony\Search\SearchController
     arguments: ['@culturefeed_udb3.cached_search_service']
 
-  culturefeed_udb3.cache.default_search:
-    class: Drupal\culturefeed_udb3\DoctrineCache
-    arguments: ['@culturefeed_udb3.cache.default_search.real']
-  culturefeed_udb3.cache.default_search.real:
-    parent: culturefeed_udb3.cache_base
-    tags:
-      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
-    arguments: [culturefeed_udb3_default_search]
   culturefeed_udb3.cached_search_service:
     class: CultuurNet\UDB3\Search\CachedDefaultSearchService
-    arguments: ['@culturefeed_udb3.search_service', '@culturefeed_udb3.cache.default_search']
+    arguments: ['@culturefeed_udb3.search_service', '@culturefeed_udb3.search_default_cache']
   culturefeed_udb3.search_api_2:
     class: CultuurNet\UDB3\SearchAPI2\DefaultSearchService
     factory: culturefeed_udb3.search_api_2.factory:create
   culturefeed_udb3.search_api_2.factory:
     class: Drupal\culturefeed_udb3\SearchApi2Factory
     arguments: ['@config.factory']
+  culturefeed_udb3.search_default_cache:
+    class: Drupal\culturefeed_udb3\DoctrineCache
+    arguments: ['@culturefeed_udb3.culturefeed_udb3_search_default_cache_real']
+  culturefeed_udb3.culturefeed_udb3_search_default_cache_real:
+    parent: culturefeed_udb3.cache_base
+    tags:
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
+    arguments: [culturefeed_udb3_search_default_cache_real]
   culturefeed_udb3.search_service:
     class: CultuurNet\UDB3\Search\PullParsingSearchService
     arguments: ['@culturefeed_udb3.search_api_2', '@culturefeed_udb3.iri_generator', '@culturefeed_udb3.place_iri_generator']

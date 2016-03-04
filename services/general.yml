@@ -7,11 +7,6 @@ parameters:
 services:
 
   # General
-  culturefeed_udb3.cache:
-    parent: culturefeed_udb3.cache_base
-    tags:
-      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
-    arguments: [culturefeed_udb3]
   culturefeed_udb3.format_setter:
     class: Drupal\culturefeed_udb3\StackMiddleware\FormatSetter
     tags:
