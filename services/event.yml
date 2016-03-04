@@ -25,7 +25,7 @@ services:
   # Default
   culturefeed_udb3.event_cache_document_repositroy:
     class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
-    arguments: ['@culturefeed_udb3.event_jsonld_cache']
+    arguments: ['@culturefeed_udb3.culturefeed_udb3_event_jsonld_cache']
   culturefeed_udb3.event_command_factory:
     class: CultuurNet\UDB3\Event\Commands\EventCommandFactory
   culturefeed_udb3.event_editor:
@@ -44,20 +44,24 @@ services:
      - '@culturefeed_udb3.event_editor'
      - '@culturefeed.current_user'
      - '@culturefeed_udb3.used_labels_memory'
+  culturefeed_udb3.culturefeed_udb3_event_history_cache:
+    parent: culturefeed_udb3.cache_base
+    tags:
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
+    arguments: [culturefeed_udb3_event_history_cache]
   culturefeed_udb3.event_history_projector:
     class: CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector
     arguments: ['@culturefeed_udb3.event_history_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.event_history_repository:
-    class: Drupal\culturefeed_udb3\Repository\EntityLdRepository
-    arguments: ['event_history', '@entity.manager']
-  culturefeed_udb3.event_jsonld_cache:
-    class: Drupal\Core\Cache\CacheBackendInterface
+    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
+    arguments: ['@culturefeed_udb3.culturefeed_udb3_event_history_cache']
+  culturefeed_udb3.culturefeed_udb3_event_jsonld_cache:
+    parent: culturefeed_udb3.cache_base
     tags:
-      - { name: cache.bin }
-    factory: cache_factory:get
-    arguments: [culturefeed_udb3_event_jsonld]
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
+    arguments: [culturefeed_udb3_event_jsonld_cache]
   culturefeed_udb3.event_jsonld_repository:
     class: CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
     factory: culturefeed_udb3.event_jsonld_repository.factory:get
@@ -78,18 +82,6 @@ services:
       - [addDescriptionFilter, ['@culturefeed_udb3.description_filter.strip_source']]
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
-  culturefeed_udb3.event_history_cache:
-    class: Drupal\culturefeed_udb3\DoctrineCache
-    arguments: ['@culturefeed_udb3.event_history_cache.real']
-  culturefeed_udb3.event_history_cache.real:
-    class: Drupal\Core\Cache\CacheBackendInterface
-    tags:
-      - { name: cache.bin }
-    factory: cache_factory:get
-    arguments: [culturefeed_udb3_event_history]
-  culturefeed_udb3.event_history_repository:
-    class: CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository
-    arguments: ['@culturefeed_udb3.event_history_cache']
   culturefeed_udb3.event_permission_projector:
     class: CultuurNet\UDB3\Event\ReadModel\Permission\Projector
     factory: culturefeed_udb3.event_permission_projector.factory:get
