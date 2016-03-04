@@ -72,7 +72,7 @@ culturefeed_udb3.event_history:
 culturefeed_udb3.event_labels:
   path: '/udb3/api/1.0/event/{cdbid}/labels'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::addLabel'
+    _controller: 'culturefeed_udb3.event_offer_controller:addLabel'
     _title: 'Add event label'
   requirements:
     _culturefeed_current_user: 'TRUE'
@@ -81,7 +81,7 @@ culturefeed_udb3.event_labels:
 culturefeed_udb3.event_labels_delete:
   path: '/udb3/api/1.0/event/{cdbid}/labels/{label}'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::deleteLabel'
+    _controller: 'culturefeed_udb3.event_offer_controller:removeLabel'
     _title: 'Delete event label'
   requirements:
     _culturefeed_current_user: 'TRUE'
@@ -97,9 +97,9 @@ culturefeed_udb3.event_permission:
     _format: json
     _method: GET
 culturefeed_udb3.event_title:
-  path: '/udb3/api/1.0/event/{cdbid}/{language}/title'
+  path: '/udb3/api/1.0/event/{cdbid}/{lang}/title'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::title'
+    _controller: 'culturefeed_udb3.event_offer_controller:translateTitle'
     _title: 'Event title'
   requirements:
     _culturefeed_current_user: 'TRUE'
@@ -108,7 +108,7 @@ culturefeed_udb3.event_title:
 culturefeed_udb3.event_translate_description:
   path: '/udb3/api/1.0/event/{cdbid}/{lang}/description'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\Controller\EventRestController::translateDescription'
+    _controller: 'culturefeed_udb3.event_offer_controller:translateDescription'
     _title: 'Translate event description'
   requirements:
     _culturefeed_current_user: 'TRUE'

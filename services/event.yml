@@ -14,6 +14,13 @@ services:
       - '@culturefeed_udb3.media_manager'
       - '@culturefeed_udb3.iri_generator'
       - '@culturefeed_udb3.event_security'
+  culturefeed_udb3.event_offer_controller:
+    class: CultuurNet\UDB3\Symfony\Offer\EditOfferRestController
+    arguments:
+     - '@culturefeed_udb3.event_editor_with_label_memory'
+     - '@culturefeed_udb3.label_json_deserializer'
+     - '@culturefeed_udb3.title_json_deserializer'
+     - '@culturefeed_udb3.description_json_deserializer'
 
   # Default
   culturefeed_udb3.event_cache_document_repositroy:
@@ -31,19 +38,25 @@ services:
       - '@culturefeed_udb3.place_service'
       - '@culturefeed_udb3.event_command_factory'
       - '@culturefeed_udb3.event_repository'
+  culturefeed_udb3.event_editor_with_label_memory:
+    class: CultuurNet\UDB3\Offer\OfferEditingServiceWithLabelMemory
+    arguments:
+     - '@culturefeed_udb3.event_editor'
+     - '@culturefeed.current_user'
+     - '@culturefeed_udb3.used_labels_memory'
   culturefeed_udb3.culturefeed_udb3_event_history_cache:
     parent: culturefeed_udb3.cache_base
     tags:
       - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
     arguments: [culturefeed_udb3_event_history_cache]
-  culturefeed_udb3.event_history_repository:
-    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
-    arguments: ['@culturefeed_udb3.culturefeed_udb3_event_history_cache']
   culturefeed_udb3.event_history_projector:
     class: CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector
     arguments: ['@culturefeed_udb3.event_history_repository']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.event_history_repository:
+    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
+    arguments: ['@culturefeed_udb3.culturefeed_udb3_event_history_cache']
   culturefeed_udb3.culturefeed_udb3_event_jsonld_cache:
     parent: culturefeed_udb3.cache_base
     tags:

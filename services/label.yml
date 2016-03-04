@@ -1,0 +1,9 @@
+services:
+
+  # Default
+  culturefeed_udb3.description_json_deserializer:
+    class: CultuurNet\UDB3\DescriptionJSONDeserializer
+  culturefeed_udb3.label_json_deserializer:
+    class: CultuurNet\UDB3\LabelJSONDeserializer
+  culturefeed_udb3.title_json_deserializer:
+    class: CultuurNet\UDB3\TitleJSONDeserializer
