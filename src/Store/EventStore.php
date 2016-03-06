@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Store\EventStore.
- */
-
 namespace Drupal\culturefeed_udb3\Store;
 
 use Broadway\Domain\DateTime;
@@ -37,6 +32,13 @@ class EventStore implements EventStoreInterface {
    * @var \Drupal\Core\Entity\Query\QueryFactory;
    */
   protected $entityQuery;
+
+  /**
+   * The entity type.
+   *
+   * @var string
+   */
+  protected $entityType;
 
   /**
    * The payload serializer.
@@ -73,8 +75,9 @@ class EventStore implements EventStoreInterface {
     SerializerInterface $payload_serializer,
     SerializerInterface $metadata_serializer
   ) {
+    $this->entityType = $entity_type;
     $this->entityManager = $entity_manager->getStorage($entity_type);
-    $this->entityQuery = $entity_query->get($entity_type);
+    $this->entityQuery = $entity_query;
     $this->payloadSerializer  = $payload_serializer;
     $this->metadataSerializer = $metadata_serializer;
   }
@@ -84,7 +87,8 @@ class EventStore implements EventStoreInterface {
    */
   public function load($id) {
 
-    $query = $this->entityQuery->condition('uuid', $id);
+    $query = $this->entityQuery->get($this->entityType);
+    $query->condition('uuid', $id);
     $result = $query->execute();
 
     $events = array();

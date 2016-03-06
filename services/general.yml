@@ -7,11 +7,6 @@ parameters:
 services:
 
   # General
-  culturefeed_udb3.cache:
-    parent: culturefeed_udb3.cache_base
-    tags:
-      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
-    arguments: [culturefeed_udb3]
   culturefeed_udb3.format_setter:
     class: Drupal\culturefeed_udb3\StackMiddleware\FormatSetter
     tags:
@@ -108,6 +103,7 @@ services:
       - [subscribe, ['@culturefeed_udb3.place_command_handler']]
       - [subscribe, ['@culturefeed_udb3.saved_searches_command_handler']]
       - [subscribe, ['@culturefeed_udb3.media_manager']]
+      - [subscribe, ['@culturefeed_udb3.bulk_label_offer_command_handler']]
     tags:
       - { name: 'service_collector', tag: 'culturefeed_udb3.command_bus.subscriber', call: 'subscribe' }
 
