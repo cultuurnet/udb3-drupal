@@ -16,6 +16,15 @@ culturefeed_udb3.event_add_image:
     _culturefeed_current_user: 'TRUE'
     _format: json
     _method: POST
+culturefeed_udb3.event_main_image:
+  path: 'event/{itemId}/images/main'
+  defaults:
+    _controller: 'culturefeed_udb3.event_editing_controller:selectMainImage'
+    _title: 'Set the main image of an event'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
 culturefeed_udb3.event_create:
   path: '/udb3/api/1.0/event'
   defaults:
