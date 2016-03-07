@@ -8,6 +8,7 @@
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
+use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +19,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * @package Drupal\culturefeed_udb3\Controller
  */
 class ContentController extends ControllerBase {
+
+  /**
+   * The event document repository.
+   *
+   * @var \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface
+   */
+  protected $eventRepository;
+
+  /**
+   * The place document repository.
+   *
+   * @var \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface
+   */
+  protected $placeRepository;
+
+  /**
+   * The document repositories.
+   *
+   * @var array
+   */
+  protected $repositories;
 
   /**
    * The culturefeed user.
@@ -32,7 +54,9 @@ class ContentController extends ControllerBase {
   public static function create(ContainerInterface $container) {
 
     return new static(
-      $container->get('culturefeed.current_user')
+      $container->get('culturefeed.current_user'),
+      $container->get('culturefeed_udb3.event_cache_document_repositroy'),
+      $container->get('culturefeed_udb3.place_cache_document_repositroy')
     );
   }
 
@@ -41,9 +65,19 @@ class ContentController extends ControllerBase {
    *
    * @param CultureFeed_User $user
    *   The culturefeed user.
+   * @param \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $event_repository
+   *   The event document repository.
+   * @param \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $place_repository
+   *   The place document repository.
    */
-  public function __construct(CultureFeed_User $user) {
+  public function __construct(CultureFeed_User $user, DocumentRepositoryInterface $event_repository, DocumentRepositoryInterface $place_repository) {
     $this->user = $user;
+    $this->eventRepository = $event_repository;
+    $this->placeRepository = $place_repository;
+    $this->repositories = array(
+      'event' => $this->eventRepository,
+      'place' => $this->placeRepository,
+    );
   }
 
   /**
@@ -71,13 +105,11 @@ class ContentController extends ControllerBase {
     // Places are listed first, then the events for that place.
     foreach ($results as $result) {
 
-      $table = 'culturefeed_udb3_' . $result->type . '_document_repository';
-      $details_query = db_select($table, 'd')
-          ->fields('d', array('body'))
-          ->condition('d.id', $result->id);
-      $details = $details_query->execute()->fetch();
+      /* @var \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $repository */
+      $repository = $this->repositories[$result->type];
+      $details = $repository->get($result->id);
       if ($details) {
-        $jsonLd = json_decode($details->body);
+        $jsonLd = $details->getBody();
         $jsonLd->type = $result->type;
         $jsonLd->id = $result->id;
 
