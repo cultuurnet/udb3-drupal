@@ -35,11 +35,8 @@ services:
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.organizer_jsonld_repository:
-    class: CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
-    factory: culturefeed_udb3.organizer_jsonld_repository.factory:get
-  culturefeed_udb3.organizer_jsonld_repository.factory:
-    class: Drupal\culturefeed_udb3\Factory\OrganizerJsonLdRepositoryFactory
-    arguments: ['@culturefeed_udb3.event_bus', '@culturefeed_udb3.organizer_cache_document_repository']
+    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
+    arguments: ['@culturefeed_udb3.culturefeed_udb3_organizer_jsonld_cache']
   culturefeed_udb3.organizer_real_repository:
     class: \CultuurNet\UDB3\Organizer\OrganizerRepository
     arguments: ['@culturefeed_udb3.organizer_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
