@@ -15,7 +15,7 @@ culturefeed_udb3.place_add_image:
     _culturefeed_current_user: 'TRUE'
     _method: POST
 culturefeed_udb3.place_main_image:
-  path: 'place/{itemId}/images/main'
+  path: '/udb3/api/1.0/place/{itemId}/images/main'
   defaults:
     _controller: 'culturefeed_udb3.place_editing_controller:selectMainImage'
     _title: 'Set the main image of a place'
