@@ -54,6 +54,6 @@ services:
     class: Drupal\culturefeed_udb3\Store\EventStore
     arguments: ['media_object_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
   culturefeed_udb3.mime_type.guesser.file_info:
-    class: Symfony\Component\HttpFoundation\File\MimeType\FileinfoMimeTypeGuesser
+    class: Drupal\culturefeed_udb3\MimeType\FileinfoMimeTypeGuesser
     tags:
       - { name: mime_type_guesser, priority: 1 }
