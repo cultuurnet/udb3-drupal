@@ -17,7 +17,7 @@ use Drupal\culturefeed_udb3\DomainMessageEntity;
  *   label = @Translation("Culturefeed udb3 place store"),
  *   base_table = "culturefeed_udb3_place_store",
  *   handlers = {
- *     "storage_schema" = "Drupal\culturefeed_udb3\DomainMessageStorageSchema",
+ *     "storage_schema" = "Drupal\culturefeed_udb3\StorageSchema\DomainMessageStorageSchema",
  *   },
  *   entity_keys = {
  *     "id" = "dmid",

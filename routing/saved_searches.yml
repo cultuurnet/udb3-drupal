@@ -1,0 +1,27 @@
+culturefeed_udb3.saved_searches:
+  path: '/udb3/api/1.0/saved-searches'
+  defaults:
+    _controller: 'culturefeed_udb3.saved_searches_controller:ownedByCurrentUser'
+    _title: 'Saved searches'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: GET
+culturefeed_udb3.saved_searches_create:
+  path: '/udb3/api/1.0/saved-searches'
+  defaults:
+    _controller: 'culturefeed_udb3.saved_searches_editing_controller:save'
+    _title: 'Create new saved search'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: POST
+culturefeed_udb3.saved_searches_delete:
+  path: '/udb3/api/1.0/saved-searches/{id}'
+  defaults:
+    _controller: 'culturefeed_udb3.saved_searches_editing_controller:delete'
+    _title: 'Delete saved search'
+  requirements:
+    _culturefeed_current_user: 'TRUE'
+    _format: json
+    _method: DELETE

@@ -1,0 +1,19 @@
+services:
+
+  # Default
+  culturefeed_udb3.event_calendar_projector:
+    class: CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector
+    arguments: ['@culturefeed_udb3.event_calendar_repository']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.event_calendar_repository:
+    class: CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository
+    arguments: ['@culturefeed_udb3.event_calendar_cache']
+  culturefeed_udb3.event_calendar_cache:
+    class: Drupal\culturefeed_udb3\DoctrineCache
+    arguments: ['@culturefeed_udb3.culturefeed_udb3_event_calendar_cache_real']
+  culturefeed_udb3.culturefeed_udb3_event_calendar_cache_real:
+    parent: culturefeed_udb3.cache_base
+    tags:
+      - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
+    arguments: [culturefeed_udb3_event_calendar_cache_real]

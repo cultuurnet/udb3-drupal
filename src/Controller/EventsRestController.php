@@ -31,7 +31,7 @@ class EventsRestController extends ControllerBase {
     return new static(
       $container->get('culturefeed_udb3.search_service'),
       $container->get('culturefeed_udb3.event.labeller'),
-      $container->get('culturefeed_udb3.event.used_labels_memory'),
+      $container->get('culturefeed_udb3.used_labels_memory'),
       $container->get('culturefeed.current_user')
     );
   }
@@ -58,34 +58,6 @@ class EventsRestController extends ControllerBase {
     $this->eventLabeller = $event_labeller;
     $this->usedLabelsMemory = $used_labels_memory;
     $this->user = $user;
-  }
-
-  /**
-   * Executes a search and returns the results.
-   *
-   * @param Request $request
-   *   The request.
-   *
-   * @return JsonLdResponse
-   *   A response.
-   */
-  public function search(Request $request) {
-
-    $q = $request->query->get('query', '*.*');
-    $limit = $request->query->get('limit', 30);
-    $start = $request->query->get('start', 0);
-    $sort  = $request->query->get('sort', 'lastupdated desc');
-
-    $data = $this->searchService->search($q, $limit, $start, $sort);
-
-    $response = JsonLdResponse::create()
-      ->setData($data)
-      ->setPublic()
-      ->setClientTtl(60 * 1)
-      ->setTtl(60 * 5);
-
-    return $response;
-
   }
 
   /**

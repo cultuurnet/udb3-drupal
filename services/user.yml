@@ -1,0 +1,20 @@
+services:
+
+  # Controller
+  culturefeed_udb3.user_label_memory_controller:
+    class: CultuurNet\UDB3\Symfony\User\UserLabelMemoryRestController
+    arguments: ['@culturefeed_udb3.used_labels_memory', '@culturefeed.current_user']
+
+  # Default
+  culturefeed_udb3.uitid_users:
+    class: CultuurNet\UDB3\UiTID\CultureFeedUsers
+    factory: culturefeed_udb3.uitid_users.factory:get
+  culturefeed_udb3.uitid_users.factory:
+    class: Drupal\culturefeed_udb3\Factory\UitIdUsersFactory
+    arguments: ['@culturefeed']
+  culturefeed_udb3.used_labels_memory:
+    class: CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService
+    arguments: ['@culturefeed_udb3.used_labels_memory_repository']
+  culturefeed_udb3.used_labels_memory_repository:
+    class: CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryRepository
+    arguments: ['@culturefeed_udb3.event_store', '@culturefeed_udb3.event_bus']

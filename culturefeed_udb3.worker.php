@@ -23,7 +23,7 @@ if (!$root) {
   exit();
 }
 
-$autoloader_path = $root . '/core/vendor/autoload.php';
+$autoloader_path = $root . '/autoload.php';
 if (!file_exists($autoloader_path)) {
   print "Drupal root is invalid\n";
   print "No vendor autoload found at $autoloader_path\n";
@@ -73,4 +73,4 @@ Resque_Event::listen('afterFork', function() use ($autoloader) {
 $worker = new Resque_Worker(array($queue_name));
 $worker->logLevel = Resque_Worker::LOG_VERBOSE;
 fwrite(STDOUT, '*** Starting worker ' . $worker . "\n");
-$worker->work(5);
+$worker->work(1);
