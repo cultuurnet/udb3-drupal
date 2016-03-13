@@ -15,9 +15,6 @@ services:
       - '@culturefeed_udb3.organizer_iri_generator'
 
   # Default
-  culturefeed_udb3.organizer_cache_document_repository:
-    class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
-    arguments: ['@culturefeed_udb3.culturefeed_udb3_organizer_jsonld_cache']
   culturefeed_udb3.organizer_editing_service:
     class: CultuurNet\UDB3\Organizer\DefaultOrganizerEditingService
     arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuid_generator', '@culturefeed_udb3.organizer_repository']
