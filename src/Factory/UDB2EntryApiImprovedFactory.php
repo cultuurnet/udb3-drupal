@@ -54,5 +54,4 @@ class UDB2EntryApiImprovedFactory implements UDB2EntryApiImprovedFactoryInterfac
     return new EntryAPIImprovedFactory($consumer);
   }
 
-
 }

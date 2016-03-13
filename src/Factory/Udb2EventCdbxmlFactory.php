@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Factory\Udb2EventCdbxmlFactory.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml;

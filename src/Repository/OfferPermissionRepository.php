@@ -55,7 +55,7 @@ class OfferPermissionRepository implements PermissionRepositoryInterface, Permis
    * @param \Drupal\Core\Entity\EntityManagerInterface $manager
    *   The entity manager.
    * @param string $offer_type
-   *   The offer type. Eg. "place", "event"
+   *   The offer type, eg. "place", "event".
    */
   public function __construct(
     QueryFactory $query_factory,

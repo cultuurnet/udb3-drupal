@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Factory\EventPermissionProjectorFactory.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\UDB3\Event\ReadModel\Permission\Projector;

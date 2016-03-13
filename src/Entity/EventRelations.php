@@ -1,19 +1,15 @@
 <?php
-/**
- * @file
- */
 
 namespace Drupal\culturefeed_udb3\Entity;
-
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Entity\Annotation\ContentEntityType;
-use Drupal\Core\Annotation\Translation;
 
 /**
+ * Defines the event relations entity.
+ *
  * @ContentEntityType(
  *  id = "event_relations",
  *  label = @Translation("Culturefeed udb3 event relations"),
@@ -26,6 +22,7 @@ use Drupal\Core\Annotation\Translation;
  *  },
  *  fieldable = FALSE,
  * )
+ *
  * @package Drupal\culturefeed_udb3\Entity
  */
 class EventRelations extends ContentEntityBase implements ContentEntityInterface {
@@ -49,4 +46,5 @@ class EventRelations extends ContentEntityBase implements ContentEntityInterface
 
     return $fields;
   }
+
 }

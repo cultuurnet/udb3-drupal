@@ -24,15 +24,18 @@ class EditAccess implements AccessInterface {
   private $user;
 
   /**
+   * The user credentials.
+   *
    * @var UserCredentials
    */
   private $credentials;
 
   /**
+   * The improved entry api factory.
+   *
    * @var EntryAPIImprovedFactory
    */
   private $entryApiImprovedFactory;
-
 
   /**
    * Constructs the user access object.
@@ -51,7 +54,7 @@ class EditAccess implements AccessInterface {
   }
 
   /**
-   * Checks access based on Culturefeed user.
+   * {@inheritdoc}
    */
   public function access($id) {
 
@@ -62,7 +65,7 @@ class EditAccess implements AccessInterface {
     try {
       $result = $entryApi->checkPermission($this->user->id, $this->user->mbox, array($id));
       if (!empty($result->event)) {
-        $has_permission = (string)$result->event->editable == 'true';
+        $has_permission = (string) $result->event->editable == 'true';
       }
 
     }

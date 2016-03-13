@@ -1,7 +1,7 @@
 culturefeed_udb3.export.jsonld:
   path: '/udb3/api/1.0/events/export/json'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsJSONLD'
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsJsonLd'
     _title: 'Export as JSONLD'
   requirements:
     _access: 'TRUE'
@@ -10,7 +10,7 @@ culturefeed_udb3.export.jsonld:
 culturefeed_udb3.export.ooxml:
   path: '/udb3/api/1.0/events/export/ooxml'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsOOXML'
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsOoXml'
     _title: 'Export as OOXML'
   requirements:
     _access: 'TRUE'
@@ -19,7 +19,7 @@ culturefeed_udb3.export.ooxml:
 culturefeed_udb3.export.pdf:
   path: '/udb3/api/1.0/events/export/pdf'
   defaults:
-    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsPDF'
+    _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsPdf'
     _title: 'Export as PDF'
   requirements:
     _access: 'TRUE'

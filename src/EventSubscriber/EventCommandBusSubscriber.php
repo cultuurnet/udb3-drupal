@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\EventCommandBusSubscriber.
- */
-
 namespace Drupal\culturefeed_udb3\EventSubscriber;
 
 use CultuurNet\Auth\TokenCredentials;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Factory\SavedSearchesServiceFactory.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\Auth\ConsumerCredentials;

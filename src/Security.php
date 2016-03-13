@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Security.
- */
-
 namespace Drupal\culturefeed_udb3;
 
 use CultureFeed_User;
@@ -22,7 +17,7 @@ class Security implements SecurityInterface {
   /**
    * The permission repository.
    *
-   * @var \CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface
+   * @var \CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface
    */
   protected $permissionRepository;
 
@@ -55,7 +50,7 @@ class Security implements SecurityInterface {
    * @return bool
    *   Edit access.
    */
-  public function currentUiTIDUserCanEditOffer(String $offer_id) {
+  public function currentUitIdUserCanEditOffer(String $offer_id) {
     $user_id = new String($this->user->id);
     $editable_events = $this->permissionRepository->getEditableOffers($user_id);
     return in_array($offer_id, $editable_events);
@@ -65,14 +60,14 @@ class Security implements SecurityInterface {
    * {@inheritdoc}
    */
   public function allowsUpdates(String $offer_id) {
-    return $this->currentUiTIDUserCanEditOffer($offer_id);
+    return $this->currentUitIdUserCanEditOffer($offer_id);
   }
 
   /**
    * {@inheritdoc}
    */
   public function allowsUpdateWithCdbXml(String $offer_id) {
-    return $this->currentUiTIDUserCanEditOffer($offer_id);
+    return $this->currentUitIdUserCanEditOffer($offer_id);
   }
 
 }

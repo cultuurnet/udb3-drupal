@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\...\Factory\CreateEventVariationJSONDeserializerFactory.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\UDB3\EventServiceInterface;
@@ -13,7 +8,7 @@ use CultuurNet\UDB3\Variations\Model\Properties\DefaultUrlValidator;
 use Drupal\Core\Config\ConfigFactoryInterface;
 
 /**
- * Class CreateEventVariationJSONDeserializerFactory
+ * Class CreateEventVariationJSONDeserializerFactory.
  *
  * @package Drupal\culturefeed_udb3\Factory
  */

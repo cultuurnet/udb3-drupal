@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\Form\SettingsForm.
- */
-
 namespace Drupal\culturefeed_udb3\Form;
 
 use Drupal\Core\Form\ConfigFormBase;

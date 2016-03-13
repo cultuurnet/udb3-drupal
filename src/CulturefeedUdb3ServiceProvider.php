@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\CulturefeedUdb3ServiceProvider.
- */
-
 namespace Drupal\culturefeed_udb3;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;

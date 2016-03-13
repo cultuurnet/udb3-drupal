@@ -9,7 +9,7 @@ use Drupal\Core\Entity\Query\QueryFactory;
 /**
  * Repository for place relations.
  */
-class PlaceRelationsRepository implements RepositoryInterface{
+class PlaceRelationsRepository implements RepositoryInterface {
 
   /**
    * The query factory.
@@ -26,8 +26,12 @@ class PlaceRelationsRepository implements RepositoryInterface{
   protected $database;
 
   /**
-   * @param QueryFactory $query_factory
-   * @param Connection $database
+   * PlaceRelationsRepository constructor.
+   *
+   * @param \Drupal\Core\Entity\Query\QueryFactory $query_factory
+   *   The query factory.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
    */
   public function __construct(
     QueryFactory $query_factory,
@@ -38,16 +42,16 @@ class PlaceRelationsRepository implements RepositoryInterface{
   }
 
   /**
-   * Store the relations.
+   * {@inheritdoc}
    */
-  public function storeRelations($placeId, $organizerId) {
+  public function storeRelations($place_id, $organizer_id) {
     // For optimal performance we use a merge query here
     // instead of the entity API.
     $query = $this->database->merge('culturefeed_udb3_place_relations')
-      ->key(array('place' => $placeId))
+      ->key(array('place' => $place_id))
       ->fields(
         array(
-          'organizer' => $organizerId
+          'organizer' => $organizer_id,
         )
       );
 
@@ -55,19 +59,22 @@ class PlaceRelationsRepository implements RepositoryInterface{
   }
 
   /**
-   * Get all places by organizer.
+   * {@inheritdoc}
    */
-  public function getPlacesOrganizedByOrganizer($organizerId) {
+  public function getPlacesOrganizedByOrganizer($organizer_id) {
     $query = $this->queryFactory->get('place_relations');
-    $query->condition('organizer', $organizerId);
-
+    $query->condition('organizer', $organizer_id);
     return $query->execute();
   }
 
-  public function removeRelations($placeId) {
+  /**
+   * {@inheritdoc}
+   */
+  public function removeRelations($place_id) {
     $query = $this->database->delete('culturefeed_udb3_place_relations')
-      ->condition('place', $placeId);
+      ->condition('place', $place_id);
 
     return $query->execute();
   }
+
 }

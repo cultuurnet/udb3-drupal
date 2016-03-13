@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Tests\AccessTest.
- */
-
 namespace Drupal\culturefeed_udb3\Tests;
 
 use Drupal\simpletest\WebTestBase;
@@ -13,6 +8,7 @@ use Drupal\simpletest\WebTestBase;
  * Tests the access.
  *
  * @group Culturefeed
+ *
  * @see \Drupal\culturefeed\Access\UserAccess
  */
 class AccessTest extends WebTestBase {

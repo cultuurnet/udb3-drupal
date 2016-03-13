@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Repository\Udb3IndexRepository.
- */
-
 namespace Drupal\culturefeed_udb3\Repository;
 
 use DateTimeInterface;

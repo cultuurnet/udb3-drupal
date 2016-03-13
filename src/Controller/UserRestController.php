@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed\Controller\UserRestController.
- */
-
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;

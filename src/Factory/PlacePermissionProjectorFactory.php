@@ -1,11 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Factory\PlacePermissionProjectorFactory.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
+
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
 use CultuurNet\UDB3\Place\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;

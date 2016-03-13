@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Controller\ContentController.
- */
-
 namespace Drupal\culturefeed_udb3\Controller;
 
 use CultureFeed_User;
@@ -84,6 +79,7 @@ class ContentController extends ControllerBase {
    * Load the udb3 content for the current user.
    *
    * @return JsonResponse
+   *   The response.
    */
   public function contentForCurrentUser() {
 

@@ -6,6 +6,11 @@ use Drupal\Core\Cache\CacheFactoryInterface;
 use Drupal\Core\Cache\CacheTagsChecksumInterface;
 use Drupal\Core\Database\Connection;
 
+/**
+ * Class DatabaseBackendFactory.
+ *
+ * @package Drupal\culturefeed_udb3\Cache
+ */
 class DatabaseBackendFactory implements CacheFactoryInterface {
 
   /**
@@ -26,11 +31,11 @@ class DatabaseBackendFactory implements CacheFactoryInterface {
    * Constructs the DatabaseBackendFactory object.
    *
    * @param \Drupal\Core\Database\Connection $connection
-   *   Database connection
+   *   Database connection.
    * @param \Drupal\Core\Cache\CacheTagsChecksumInterface $checksum_provider
    *   The cache tags checksum provider.
    */
-  function __construct(Connection $connection, CacheTagsChecksumInterface $checksum_provider) {
+  public function __construct(Connection $connection, CacheTagsChecksumInterface $checksum_provider) {
     $this->connection = $connection;
     $this->checksumProvider = $checksum_provider;
   }
@@ -38,13 +43,13 @@ class DatabaseBackendFactory implements CacheFactoryInterface {
   /**
    * Gets DatabaseBackend for the specified cache bin.
    *
-   * @param $bin
+   * @param string $bin
    *   The cache bin for which the object is created.
    *
    * @return \Drupal\culturefeed_udb3\Cache\DatabaseBackend
    *   The cache backend object for the specified cache bin.
    */
-  function get($bin) {
+  public function get($bin) {
     return new DatabaseBackend($this->connection, $this->checksumProvider, $bin);
   }
 

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\Repository\EventRelationsRepository.
- */
-
 namespace Drupal\culturefeed_udb3\Repository;
 
 

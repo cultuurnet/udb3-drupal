@@ -1,16 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Factory\UitIdUsersFactory.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 use CultureFeed;
 use CultuurNet\UDB3\UiTID\CultureFeedUsers;
-use CultuurNet\UDB3\UiTID\InMemoryCacheDecoratedUsers;
-use CultuurNet\UDB3\UiTID\UsersInterface;
 
 /**
  * Class UitIdUsersFactory.

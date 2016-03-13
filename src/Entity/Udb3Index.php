@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Entity\OrganizerIndex.
- */
-
 namespace Drupal\culturefeed_udb3\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
@@ -13,6 +8,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
+ * Defines the udb3 index entity.
+ *
  * @ContentEntityType(
  *  id = "udb3_index",
  *  label = @Translation("Culturefeed udb3 index"),
@@ -25,6 +22,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *  },
  *  fieldable = FALSE,
  * )
+ *
  * @package Drupal\culturefeed_udb3\Entity
  */
 class Udb3Index extends ContentEntityBase implements ContentEntityInterface {
@@ -60,4 +58,5 @@ class Udb3Index extends ContentEntityBase implements ContentEntityInterface {
 
     return $fields;
   }
+
 }

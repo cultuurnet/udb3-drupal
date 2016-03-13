@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Repository\CacheDocumentRepository.
- */
-
 namespace Drupal\culturefeed_udb3\Repository;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;

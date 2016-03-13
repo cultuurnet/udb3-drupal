@@ -4,6 +4,11 @@ namespace Drupal\culturefeed_udb3\Cache;
 
 use Drupal\Core\Cache\DatabaseBackend as CoreDatabaseBackend;
 
+/**
+ * Class DatabaseBackend.
+ *
+ * @package Drupal\culturefeed_udb3\Cache
+ */
 class DatabaseBackend extends CoreDatabaseBackend {
 
   /**

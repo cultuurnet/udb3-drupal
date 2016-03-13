@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\CulturefeedUdb3RedirectResponseSubscriber.
- */
-
 namespace Drupal\culturefeed_udb3;
 
 use Drupal\Core\EventSubscriber\RedirectResponseSubscriber;

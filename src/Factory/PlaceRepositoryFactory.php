@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Factory\PlaceRepositoryFactory.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 use Broadway\EventSourcing\EventSourcingRepository;

@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Variations\ReadModel\Search\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Drupal\Core\Entity\EntityManagerInterface;
 
-
 /**
  * Class VariationSearchRepository.
  *

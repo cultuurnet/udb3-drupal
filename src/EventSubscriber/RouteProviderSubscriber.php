@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Core\EventSubscriber\EntityRouteProviderSubscriber.
- */
-
 namespace Drupal\culturefeed_udb3\EventSubscriber;
 
 use Drupal\Component\Serialization\Yaml;

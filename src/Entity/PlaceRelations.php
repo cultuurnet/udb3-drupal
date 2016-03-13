@@ -1,7 +1,4 @@
 <?php
-/**
- * @file
- */
 
 namespace Drupal\culturefeed_udb3\Entity;
 
@@ -11,6 +8,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
+ * Defines the place relation entity type.
+ *
  * @ContentEntityType(
  *  id = "place_relations",
  *  label = @Translation("Culturefeed udb3 place relations"),
@@ -23,6 +22,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *  },
  *  fieldable = FALSE,
  * )
+ *
  * @package Drupal\culturefeed_udb3\Entity
  */
 class PlaceRelations extends ContentEntityBase implements ContentEntityInterface {
@@ -42,4 +42,5 @@ class PlaceRelations extends ContentEntityBase implements ContentEntityInterface
 
     return $fields;
   }
+
 }

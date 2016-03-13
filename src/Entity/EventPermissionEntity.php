@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\Entity\EventPermissionEntity.
- */
-
 namespace Drupal\culturefeed_udb3\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;

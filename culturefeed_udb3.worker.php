@@ -7,6 +7,7 @@
  */
 
 use Drupal\Core\DrupalKernel;
+use Drupal\Core\Database\Database;
 use Symfony\Component\HttpFoundation\Request;
 use CultuurNet\UDB3\CommandHandling\QueueJob;
 
@@ -42,7 +43,7 @@ $queue_name = $kernel->getContainer()->getParameter('command_bus.queue_name');
 // We need to close the database connection here, otherwise
 // the worker child process will kill it when the process finishes, and the
 // next worker child process won't be able to use the database.
-\Drupal\Core\Database\Database::closeConnection();
+Database::closeConnection();
 
 // Bootstrap drupal after the parent forks its process and is ready to perform.
 Resque_Event::listen('afterFork', function() use ($autoloader) {

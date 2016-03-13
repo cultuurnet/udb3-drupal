@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\StackMiddleware\FormatSetter.
- */
-
 namespace Drupal\culturefeed_udb3\StackMiddleware;
 
 use Symfony\Component\HttpFoundation\Request;

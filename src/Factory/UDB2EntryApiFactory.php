@@ -54,5 +54,4 @@ class UDB2EntryApiFactory implements UDB2EntryApiFactoryInterface {
     return new EntryAPIFactory($consumer);
   }
 
-
 }

@@ -3,6 +3,7 @@
 namespace Drupal\culturefeed_udb3;
 
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 
 /**
@@ -58,7 +59,7 @@ class IriGenerator implements IriGeneratorInterface {
     // Implement cleaner approach once https://www.drupal.org/node/2616164 is
     // in.  For the same reason the language manager isn't injected, as there
     // are multiple services using this class and it's only temporary.
-    $language = \Drupal::languageManager()->getLanguage(\Drupal\Core\Language\LanguageInterface::LANGCODE_NOT_APPLICABLE);
+    $language = \Drupal::languageManager()->getLanguage(LanguageInterface::LANGCODE_NOT_APPLICABLE);
     return $this->urlGenerator->generateFromRoute(
       $this->eventRouteName,
       array(

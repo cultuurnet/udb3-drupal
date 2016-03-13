@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\StorageSchema\Utf8StorageSchema.
- */
-
 namespace Drupal\culturefeed_udb3\StorageSchema;
 
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageSchema;

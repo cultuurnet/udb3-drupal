@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \...\Factory\OrganizerRepositoryFactoryInterface.
- */
-
 namespace Drupal\culturefeed_udb3\Factory;
 
 /**
