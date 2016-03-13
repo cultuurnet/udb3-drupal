@@ -1,13 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\Entity\MediaObjectStoreEntity.
- */
-
 namespace Drupal\culturefeed_udb3\Entity;
-
-use Drupal\culturefeed_udb3\DomainMessageEntity;
 
 /**
  * Defines the culturefeed udb3 media object store.

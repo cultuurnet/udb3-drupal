@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\EventCdbXmlFromEntryAPIFactory.
- */
-
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI;

@@ -12,10 +12,10 @@ services:
     class: CultuurNet\UDB3\SearchAPI2\DefaultSearchService
     factory: culturefeed_udb3.search_api_2.factory:create
   culturefeed_udb3.search_api_2.factory:
-    class: Drupal\culturefeed_udb3\SearchApi2Factory
+    class: Drupal\culturefeed_udb3\Factory\SearchApi2Factory
     arguments: ['@config.factory']
   culturefeed_udb3.search_default_cache:
-    class: Drupal\culturefeed_udb3\DoctrineCache
+    class: Drupal\culturefeed_udb3\Cache\DoctrineCache
     arguments: ['@culturefeed_udb3.culturefeed_udb3_search_default_cache_real']
   culturefeed_udb3.culturefeed_udb3_search_default_cache_real:
     parent: culturefeed_udb3.cache_base

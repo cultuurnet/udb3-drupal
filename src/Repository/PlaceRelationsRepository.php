@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\PlaceRelationsRepository.
- */
-
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Repository;
 
 use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
 use Drupal\Core\Database\Connection;
@@ -76,4 +71,3 @@ class PlaceRelationsRepository implements RepositoryInterface{
     return $query->execute();
   }
 }
-

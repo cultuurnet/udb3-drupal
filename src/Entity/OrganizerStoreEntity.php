@@ -1,13 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\Entity\OrganizerStoreEntity.
- */
-
 namespace Drupal\culturefeed_udb3\Entity;
-
-use Drupal\culturefeed_udb3\DomainMessageEntity;
 
 /**
  * Defines the culturefeed udb3 organizer store.

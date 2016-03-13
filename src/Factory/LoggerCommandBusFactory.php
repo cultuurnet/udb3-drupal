@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\LoggerCommandBusFactory.
- */
-
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Factory;
 
 use Drupal\Core\Config\ConfigFactory;
 use Psr\Log\LoggerInterface;

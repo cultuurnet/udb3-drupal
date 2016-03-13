@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\DoctrineCache.
- */
-
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Cache;
 
 use Doctrine\Common\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\LoggerCommandBusFactoryInterface.
- */
-
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Factory;
 
 use Monolog\Logger;
 

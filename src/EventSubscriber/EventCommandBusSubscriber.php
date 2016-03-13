@@ -5,7 +5,7 @@
  * Contains \Drupal\culturefeed_udb3\EventCommandBusSubscriber.
  */
 
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\EventSubscriber;
 
 use CultuurNet\Auth\TokenCredentials;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

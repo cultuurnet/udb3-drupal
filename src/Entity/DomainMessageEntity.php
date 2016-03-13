@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\Entity\DomainMessageEntity.
- */
-
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -15,7 +10,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 /**
  * Class DomainMessageEntity.
  *
- * @package Drupal\culturefeed_udb3
+ * @package Drupal\culturefeed_udb3\Entity
  */
 class DomainMessageEntity extends ContentEntityBase implements ContentEntityInterface {
 

@@ -2,8 +2,6 @@
 
 namespace Drupal\culturefeed_udb3\Entity;
 
-use Drupal\culturefeed_udb3\DomainMessageEntity;
-
 /**
  * Defines the culturefeed udb3 variation store.
  *

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Access\EditAccess.
- */
-
 namespace Drupal\culturefeed_udb3\Access;
 
 use CultureFeed_User;
@@ -13,10 +8,8 @@ use CultuurNet\UDB3\UDB2\EntryAPIImprovedFactory;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\culturefeed\UserCredentials;
-use Drupal\culturefeed_udb3\UDB2EntryApiImprovedFactory;
+use Drupal\culturefeed_udb3\Factory\UDB2EntryApiImprovedFactory;
 use Exception;
-use Guzzle\Http\Message\Request;
-use Symfony\Component\Routing\Route;
 
 /**
  * Access class to check if user has edit permissions.
@@ -46,6 +39,10 @@ class EditAccess implements AccessInterface {
    *
    * @param CultureFeed_User $user
    *   The culturefeed user.
+   * @param UserCredentials $credentials
+   *   The user credentials.
+   * @param UDB2EntryApiImprovedFactory $entryApiImprovedFactory
+   *   The improved entry api factory.
    */
   public function __construct(CultureFeed_User $user, UserCredentials $credentials, UDB2EntryApiImprovedFactory $entryApiImprovedFactory) {
     $this->user = $user;

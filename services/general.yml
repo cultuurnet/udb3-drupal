@@ -37,13 +37,13 @@ services:
     calls:
       - [addListener, ['%resque.command.bus.event_command_context_set%', ['@culturefeed_udb3.execution_context_metadata_enricher', 'setContext']]]
   culturefeed_udb3.udb2_entry_api.factory:
-    class: Drupal\culturefeed_udb3\UDB2EntryApiFactory
+    class: Drupal\culturefeed_udb3\Factory\UDB2EntryApiFactory
     arguments: ['@config.factory', '@culturefeed.consumer_credentials']
   culturefeed_udb3.udb2_entry_api:
     class: CultuurNet\UDB3\UDB2\EntryAPIFactory
     factory: culturefeed_udb3.udb2_entry_api.factory:get
   culturefeed_udb3.udb2_entry_api_improved_factory:
-    class: Drupal\culturefeed_udb3\UDB2EntryApiImprovedFactory
+    class: Drupal\culturefeed_udb3\Factory\UDB2EntryApiImprovedFactory
     arguments: ['@config.factory', '@culturefeed.consumer_credentials']
   culturefeed_udb3.udb2_entry_api_improved:
     class: CultuurNet\UDB3\UDB2\EntryAPIImprovedFactory
@@ -89,7 +89,7 @@ services:
     arguments: ['@culturefeed_udb3.place_repository']
 
   culturefeed_udb3.logger.command_bus.factory:
-    class: Drupal\culturefeed_udb3\LoggerCommandBusFactory
+    class: Drupal\culturefeed_udb3\Factory\LoggerCommandBusFactory
     arguments: ['@config.factory', '@logger.channel.culturefeed']
   culturefeed_udb3.logger.command_bus:
     class: Monolog\Logger
@@ -112,7 +112,7 @@ services:
     arguments: ['@culturefeed_udb3.event_service', '@culturefeed_udb3.event_command_bus']
 
   culturefeed_udb3.event_command_bus_subscriber:
-    class: Drupal\culturefeed_udb3\EventCommandBusSubscriber
+    class: Drupal\culturefeed_udb3\EventSubscriber\EventCommandBusSubscriber
     arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed.current_user', '@culturefeed.user_credentials']
     tags:
       - { name: event_subscriber }
@@ -124,7 +124,7 @@ services:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
 
   culturefeed_udb3.place_relations_repository:
-    class: Drupal\culturefeed_udb3\PlaceRelationsRepository
+    class: Drupal\culturefeed_udb3\Repository\PlaceRelationsRepository
     arguments: ['@entity.query', '@database']
 
   culturefeed_udb3.place_relations_projector:
@@ -182,13 +182,13 @@ services:
 
 
   culturefeed_udb3.drupal_udb3_event_event_listener:
-    class: Drupal\culturefeed_udb3\Udb3EventEventListener
+    class: Drupal\culturefeed_udb3\EventListener\Udb3EventEventListener
     arguments: ['@file.usage']
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
 
   culturefeed_udb3.drupal_udb3_place_event_listener:
-      class: Drupal\culturefeed_udb3\Udb3PlaceEventListener
+      class: Drupal\culturefeed_udb3\EventListener\Udb3PlaceEventListener
       arguments: ['@file.usage']
       tags:
         - { name: 'culturefeed_udb3.event_bus.subscriber' }

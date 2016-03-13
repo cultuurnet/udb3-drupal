@@ -1,23 +1,18 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\culturefeed_udb3\Udb3EventListener.
- */
-
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\EventListener;
 
 use Broadway\EventHandling\EventListenerInterface;
+use CultuurNet\UDB3\Event\Events\ImageDeleted;
+use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\Place\Events\ImageDeleted;
-use CultuurNet\UDB3\Place\Events\ImageUpdated;
 use Drupal\file\Entity\File;
 use Drupal\file\FileUsage\FileUsageInterface;
 
 /**
- * Eventlistener for places in drupal to cleanup drupal stuff.
+ * Event listener on events in drupal to cleanup drupal stuff.
  */
-class Udb3PlaceEventListener implements EventListenerInterface {
+class Udb3EventEventListener implements EventListenerInterface {
 
     use DelegateEventHandlingToSpecificMethodTrait;
 
@@ -52,7 +47,7 @@ class Udb3PlaceEventListener implements EventListenerInterface {
           $file = File::load($internalId);
           // Delete the usage, cron will  delete the file if this was the only usage.
           if ($file) {
-            $this->fileUsage->delete($file, 'culturefeed_udb3');
+            $this->fileUsage->delete($file, 'culturefeed_udb3', 'udb3_item', $imageUpdated->getEventId());
           }
       }
 
@@ -68,7 +63,7 @@ class Udb3PlaceEventListener implements EventListenerInterface {
           $file = File::load($internalId);
           // Delete the usage, cron will  delete the file if this was the only usage.
           if ($file) {
-            $this->fileUsage->delete($file, 'culturefeed_udb3');
+            $this->fileUsage->delete($file, 'culturefeed_udb3', 'udb3_item', $imageDeleted->getEventId());
           }
         }
     }

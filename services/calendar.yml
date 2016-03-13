@@ -10,7 +10,7 @@ services:
     class: CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository
     arguments: ['@culturefeed_udb3.event_calendar_cache']
   culturefeed_udb3.event_calendar_cache:
-    class: Drupal\culturefeed_udb3\DoctrineCache
+    class: Drupal\culturefeed_udb3\Cache\DoctrineCache
     arguments: ['@culturefeed_udb3.culturefeed_udb3_event_calendar_cache_real']
   culturefeed_udb3.culturefeed_udb3_event_calendar_cache_real:
     parent: culturefeed_udb3.cache_base

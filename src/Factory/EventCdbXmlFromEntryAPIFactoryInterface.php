@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\culturefeed_udb3\EventCdbXmlFromEntryAPIFactoryInterface.
- */
-
-namespace Drupal\culturefeed_udb3;
+namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI;
 
