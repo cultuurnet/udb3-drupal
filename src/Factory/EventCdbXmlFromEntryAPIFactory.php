@@ -8,11 +8,18 @@ use Drupal\Core\Config\ConfigFactory;
 use ValueObjects\String\String;
 
 /**
- * Class UDB2EntryApiFactory.
+ * Class EventCdbXmlFromEntryAPIFactory.
  *
  * @package Drupal\culturefeed_udb3
  */
 class EventCdbXmlFromEntryAPIFactory implements EventCdbXmlFromEntryAPIFactoryInterface {
+
+  /**
+   * The cdb xml namespace uri.
+   *
+   * @var string
+   */
+  protected $cdbXmlNamespaceUri;
 
   /**
    * The config factory.
@@ -35,10 +42,13 @@ class EventCdbXmlFromEntryAPIFactory implements EventCdbXmlFromEntryAPIFactoryIn
    *   The config factory.
    * @param ConsumerCredentials $credentials
    *   The credentials.
+   * @param string $cdb_xml_namespace_uri
+   *   The cdb xml namespace uri.
    */
-  public function __construct(ConfigFactory $config_factory, ConsumerCredentials $credentials) {
+  public function __construct(ConfigFactory $config_factory, ConsumerCredentials $credentials, $cdb_xml_namespace_uri) {
     $this->configFactory = $config_factory;
     $this->credentials = $credentials;
+    $this->cdbXmlNamespaceUri = $cdb_xml_namespace_uri;
   }
 
   /**
@@ -57,9 +67,7 @@ class EventCdbXmlFromEntryAPIFactory implements EventCdbXmlFromEntryAPIFactoryIn
       $base_url,
       $this->credentials,
       $user_id,
-      // @todo Move the cdbxml version to configuration file. Use the same
-      // setting when instantiating the ImprovedEntryApiFactory.
-      'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+      $this->cdbXmlNamespaceUri
     );
   }
 

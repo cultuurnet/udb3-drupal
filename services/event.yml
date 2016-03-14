@@ -142,7 +142,7 @@ services:
     factory: culturefeed_udb3.udb2_event_cdbxml_provider.factory:get
   culturefeed_udb3.udb2_event_cdbxml_provider.factory:
     class: Drupal\culturefeed_udb3\Factory\EventCdbXmlFromEntryAPIFactory
-    arguments: ['@config.factory', '@culturefeed.consumer_credentials']
+    arguments: ['@config.factory', '@culturefeed.consumer_credentials', '%culturefeed_udb3.cdb_xml_namespace_uri%']
   culturefeed_udb3.udb2_event_importer:
     class: CultuurNet\UDB3\UDB2\EventImporter
     arguments:

@@ -14,4 +14,4 @@ services:
     arguments: ['@config.factory', '@culturefeed.consumer_credentials']
   culturefeed_udb3.udb2_actor_cdbxml_provider:
     class: CultuurNet\UDB3\UDB2\ActorCdbXmlFromSearchService
-    arguments: ['@culturefeed_udb3.search_api_2']
+    arguments: ['@culturefeed_udb3.search_api_2', '%culturefeed_udb3.cdb_xml_namespace_uri%']
