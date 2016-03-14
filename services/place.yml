@@ -44,6 +44,11 @@ services:
      - '@culturefeed_udb3.place_editing_service'
      - '@culturefeed.current_user'
      - '@culturefeed_udb3.used_labels_memory'
+  culturefeed_udb3.place_file_usage:
+    class: Drupal\culturefeed_udb3\FileUsage\PlaceMedia
+    arguments: ['@entity_type.manager', '@file.usage', '@entity.repository']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.place_iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
     arguments: ['@url_generator', 'culturefeed_udb3.place']

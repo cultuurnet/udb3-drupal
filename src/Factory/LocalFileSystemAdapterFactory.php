@@ -37,6 +37,7 @@ class LocalFileSystemAdapterFactory {
    *   The local file system adapter.
    */
   public function get() {
+    $this->publicStream->setUri('public://');
     return new Local($this->publicStream->realpath());
   }
 

@@ -83,18 +83,6 @@ services:
     class: Monolog\Logger
     factory: culturefeed_udb3.logger.command_bus.factory:get
 
-  # Event listeners.
-  culturefeed_udb3.drupal_udb3_event_event_listener:
-    class: Drupal\culturefeed_udb3\EventListener\Udb3EventEventListener
-    arguments: ['@file.usage']
-    tags:
-      - { name: 'culturefeed_udb3.event_bus.subscriber' }
-  culturefeed_udb3.drupal_udb3_place_event_listener:
-      class: Drupal\culturefeed_udb3\EventListener\Udb3PlaceEventListener
-      arguments: ['@file.usage']
-      tags:
-        - { name: 'culturefeed_udb3.event_bus.subscriber' }
-
   # Filters.
   culturefeed_udb3.description_filter.strip_source:
     class: CultuurNet\UDB3\StringFilter\StripSourceStringFilter
