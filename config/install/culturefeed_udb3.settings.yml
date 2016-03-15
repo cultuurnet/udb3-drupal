@@ -1,3 +1,5 @@
+media:
+  file_size_limit: 1000000
 sync_with_udb2: 1
 impersonation_user_id: cf6cd194-c9e3-436d-8340-50680bd38947
 use_full_event_data_to_update_description: 0

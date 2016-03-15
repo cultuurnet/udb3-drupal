@@ -17,11 +17,15 @@ services:
   # Default
   culturefeed_udb3.image_uploader:
     class: CultuurNet\UDB3\Media\ImageUploaderService
+    factory: culturefeed_udb3.image_uploader.factory:get
+  culturefeed_udb3.image_uploader.factory:
+    class: Drupal\culturefeed_udb3\Factory\ImageUploaderFactory
     arguments:
       - '@culturefeed_udb3.uuid_generator'
       - '@culturefeed_udb3.event_command_bus'
       - '@culturefeed_udb3.local_file_system'
       - '%culturefeed_udb3.media_upload_directory%'
+      - '@config.factory'
   culturefeed_udb3.local_file_system:
     class: League\Flysystem\Filesystem
     arguments: ['@culturefeed_udb3.local_file_system_adapter']
