@@ -49,7 +49,13 @@ services:
      - '@culturefeed_udb3.used_labels_memory'
   culturefeed_udb3.event_file_usage:
     class: Drupal\culturefeed_udb3\FileUsage\EventMedia
-    arguments: ['@entity_type.manager', '@file.usage', '@entity.repository']
+    arguments:
+      - '@entity_type.manager'
+      - '%culturefeed_udb3.media_directory%'
+      - '%culturefeed_udb3.media_stream_uri%'
+      - '@file.usage'
+      - '@entity.repository'
+      - 'event'
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.culturefeed_udb3_event_history_cache:

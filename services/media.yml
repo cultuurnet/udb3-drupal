@@ -1,6 +1,7 @@
 parameters:
 
   culturefeed_udb3.media_directory: 'culturefeed/udb3/media'
+  culturefeed_udb3.media_stream_uri: 'public://'
   culturefeed_udb3.media_upload_directory: 'culturefeed/udb3/upload'
 
 services:
@@ -29,7 +30,7 @@ services:
     factory: culturefeed_udb3.local_file_system_adapter.factory:get
   culturefeed_udb3.local_file_system_adapter.factory:
     class: Drupal\culturefeed_udb3\Factory\LocalFileSystemAdapterFactory
-    arguments: ['@stream_wrapper.public']
+    arguments: ['@stream_wrapper.public', '%culturefeed_udb3.media_stream_uri%']
   culturefeed_udb3.media_manager:
     class: CultuurNet\UDB3\Media\MediaManager
     arguments:

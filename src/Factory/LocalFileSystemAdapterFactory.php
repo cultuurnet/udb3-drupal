@@ -20,13 +20,23 @@ class LocalFileSystemAdapterFactory {
   private $publicStream;
 
   /**
+   * The stream uri.
+   *
+   * @var string
+   */
+  protected $streamUri;
+
+  /**
    * LocalFileSystemAdapterFactory constructor.
    *
    * @param \Drupal\Core\StreamWrapper\PublicStream $public_stream
    *   The public stream.
+   * @param string $stream_uri
+   *   The stream uri.
    */
-  public function __construct(PublicStream $public_stream) {
+  public function __construct(PublicStream $public_stream, $stream_uri) {
     $this->publicStream = $public_stream;
+    $this->streamUri = $stream_uri;
   }
 
 
@@ -37,7 +47,7 @@ class LocalFileSystemAdapterFactory {
    *   The local file system adapter.
    */
   public function get() {
-    $this->publicStream->setUri('public://');
+    $this->publicStream->setUri($this->streamUri);
     return new Local($this->publicStream->realpath());
   }
 
