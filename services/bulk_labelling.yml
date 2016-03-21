@@ -29,6 +29,7 @@ services:
   # Deserializes a single offer identifier. Expects the @id to be an iri.
   culturefeed_udb3.iri_offer_identifier_json_deserializer:
     class: CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer
+    arguments: ['@culturefeed_udb3.iri_offer_identifier_factory']
 
   # Bulk label query controller.
   # Uses a deserializer to convert the request JSON into a command and

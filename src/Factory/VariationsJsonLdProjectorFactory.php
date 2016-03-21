@@ -2,7 +2,7 @@
 
 namespace Drupal\culturefeed_udb3\Factory;
 
-use CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator;
+use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Variations\ReadModel\JSONLD\Projector;
 use Drupal\Core\Config\ConfigFactory;
@@ -19,7 +19,7 @@ class VariationsJsonLdProjectorFactory {
   /**
    * The event json ld repository.
    *
-   * @var \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
+   * @var \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator
    */
   protected $eventJsonLdRepository;
 
@@ -49,7 +49,7 @@ class VariationsJsonLdProjectorFactory {
    *
    * @param \Drupal\culturefeed_udb3\Repository\CacheDocumentRepository $variations_json_ld_repository
    *   The variations json ld repository.
-   * @param \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator $event_json_ld_repository
+   * @param \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator $event_json_ld_repository
    *   The event json ld repository.
    * @param \Drupal\culturefeed_udb3\Repository\VariationSearchRepository $variations_search_repository
    *   The variations search repository.

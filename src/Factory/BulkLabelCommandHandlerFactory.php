@@ -59,7 +59,7 @@ class BulkLabelCommandHandlerFactory {
   /**
    * Get the place json ld repository.
    *
-   * @return \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
+   * @return \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator
    *   The place json ld repository.
    */
   public function get() {

@@ -92,7 +92,7 @@ class VariationSearchRepository implements RepositoryInterface {
   /**
    * {@inheritdoc}
    */
-  public function countEventVariations(
+  public function countOfferVariations(
     Criteria $criteria
   ) {
 
@@ -111,16 +111,18 @@ class VariationSearchRepository implements RepositoryInterface {
     }
 
     return intval($q->execute()->fetchColumn(0));
+
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEventVariations(
+  public function getOfferVariations(
     Criteria $criteria,
     $limit = 30,
     $page = 0
   ) {
+
     $offset = $limit * $page;
     $q = $this->connection->createQueryBuilder();
     $q
@@ -147,6 +149,7 @@ class VariationSearchRepository implements RepositoryInterface {
     }
 
     return $ids;
+
   }
 
   /**
