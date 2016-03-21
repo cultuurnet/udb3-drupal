@@ -57,7 +57,7 @@ services:
     class: Drupal\culturefeed_udb3\Factory\VariationsJsonLdProjectorFactory
     arguments:
       - '@culturefeed_udb3.variations_jsonld_repository'
-      - '@culturefeed_udb3.event_jsonld_repository'
+      - '@culturefeed_udb3.offer_reading_service'
       - '@culturefeed_udb3.variations_search_repository'
       - '@config.factory'
   culturefeed_udb3.variations_jsonld_repository:

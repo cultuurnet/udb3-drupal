@@ -94,6 +94,7 @@ services:
       - '@culturefeed_udb3.place_service'
       - '@culturefeed_udb3.organizer_service'
       - '@culturefeed_udb3.media_object_serializer'
+      - '@culturefeed_udb3.iri_offer_identifier_factory'
     calls:
       - [addDescriptionFilter, ['@culturefeed_udb3.description_filter.tidy']]
       - [addDescriptionFilter, ['@culturefeed_udb3.description_filter.strip_source']]
