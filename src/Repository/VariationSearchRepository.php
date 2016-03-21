@@ -73,17 +73,17 @@ class VariationSearchRepository implements RepositoryInterface {
    */
   public function save(
     Id $variation_id,
-    Url $event_url,
+    Url $origin_url,
     OwnerId $owner_id,
     Purpose $purpose
   ) {
 
     $variation = $this->storage->create(array(
       'id' => (string) $variation_id,
-      'event' => (string) $event_url,
       'owner' => (string) $owner_id,
       'purpose' => (string) $purpose,
       'inserted' => time(),
+      'origin_url' => (string) $origin_url,
     ));
     $variation->save();
 
