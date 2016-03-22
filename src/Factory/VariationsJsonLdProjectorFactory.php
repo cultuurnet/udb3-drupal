@@ -2,8 +2,8 @@
 
 namespace Drupal\culturefeed_udb3\Factory;
 
-use CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Offer\LocalOfferReadingService;
 use CultuurNet\UDB3\Variations\ReadModel\JSONLD\Projector;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\culturefeed_udb3\Repository\CacheDocumentRepository;
@@ -17,11 +17,11 @@ use Drupal\culturefeed_udb3\Repository\VariationSearchRepository;
 class VariationsJsonLdProjectorFactory {
 
   /**
-   * The event json ld repository.
+   * The local offer reading service.
    *
-   * @var \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
+   * @var \CultuurNet\UDB3\Offer\LocalOfferReadingService
    */
-  protected $eventJsonLdRepository;
+  protected $localOfferReadingService;
 
   /**
    * The url.
@@ -49,7 +49,7 @@ class VariationsJsonLdProjectorFactory {
    *
    * @param \Drupal\culturefeed_udb3\Repository\CacheDocumentRepository $variations_json_ld_repository
    *   The variations json ld repository.
-   * @param \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator $event_json_ld_repository
+   * @param \CultuurNet\UDB3\Offer\LocalOfferReadingService $local_offer_reading_service
    *   The event json ld repository.
    * @param \Drupal\culturefeed_udb3\Repository\VariationSearchRepository $variations_search_repository
    *   The variations search repository.
@@ -58,12 +58,12 @@ class VariationsJsonLdProjectorFactory {
    */
   public function __construct(
     CacheDocumentRepository $variations_json_ld_repository,
-    BroadcastingDocumentRepositoryDecorator $event_json_ld_repository,
+    LocalOfferReadingService $local_offer_reading_service,
     VariationSearchRepository $variations_search_repository,
     ConfigFactory $config
   ) {
     $this->variationsJsonLdRepository = $variations_json_ld_repository;
-    $this->eventJsonLdRepository = $event_json_ld_repository;
+    $this->localOfferReadingService = $local_offer_reading_service;
     $this->variationsSearchRepository = $variations_search_repository;
     $this->url = $config->get('culturefeed_udb3.settings')->get('url');
 
@@ -86,7 +86,7 @@ class VariationsJsonLdProjectorFactory {
 
     return new Projector(
       $this->variationsJsonLdRepository,
-      $this->eventJsonLdRepository,
+      $this->localOfferReadingService,
       $this->variationsSearchRepository,
       $iri_generator
     );

@@ -1,0 +1,18 @@
+services:
+
+  # Default
+  culturefeed_udb3.iri_offer_identifier_factory:
+    class: CultuurNet\UDB3\Offer\IriOfferIdentifierFactory
+    factory: culturefeed_udb3.iri_offer_identifier_factory.factory:get
+  culturefeed_udb3.iri_offer_identifier_factory.factory:
+    class: Drupal\culturefeed_udb3\Factory\IriOfferIdentifierFactoryFactory
+    arguments: ['@config.factory']
+  culturefeed_udb3.offer_reading_service:
+    class: CultuurNet\UDB3\Offer\LocalOfferReadingService
+    factory: culturefeed_udb3.offer_reading_service.factory:get
+  culturefeed_udb3.offer_reading_service.factory:
+    class: Drupal\culturefeed_udb3\Factory\OfferReadingServiceFactory
+    arguments:
+      - '@culturefeed_udb3.iri_offer_identifier_factory'
+      - '@culturefeed_udb3.event_jsonld_repository'
+      - '@culturefeed_udb3.place_jsonld_repository'

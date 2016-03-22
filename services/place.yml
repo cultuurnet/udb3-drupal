@@ -64,14 +64,21 @@ services:
       - { name: cache.bin, default_backend: culturefeed_udb3.cache_backend }
     arguments: [culturefeed_udb3_place_jsonld_cache]
   culturefeed_udb3.place_jsonld_repository:
-    class: CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator
+    class: CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator
     factory: culturefeed_udb3.place_jsonld_repository.factory:get
   culturefeed_udb3.place_jsonld_repository.factory:
     class: Drupal\culturefeed_udb3\Factory\PlaceJsonLdRepositoryFactory
-    arguments: ['@culturefeed_udb3.event_bus', '@culturefeed_udb3.place_cache_document_repositroy']
+    arguments:
+      - '@culturefeed_udb3.event_bus'
+      - '@culturefeed_udb3.place_cache_document_repositroy'
+      - '@culturefeed_udb3.place_iri_generator'
   culturefeed_udb3.place_jsonld_projector:
     class: CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector
-    arguments: ['@culturefeed_udb3.place_jsonld_repository', '@culturefeed_udb3.place_iri_generator', '@culturefeed_udb3.organizer_service', '@culturefeed_udb3.media_object_serializer']
+    arguments:
+      - '@culturefeed_udb3.place_jsonld_repository'
+      - '@culturefeed_udb3.place_iri_generator'
+      - '@culturefeed_udb3.organizer_service'
+      - '@culturefeed_udb3.media_object_serializer'
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.place_permission_projector:

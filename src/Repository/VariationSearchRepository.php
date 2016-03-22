@@ -73,17 +73,17 @@ class VariationSearchRepository implements RepositoryInterface {
    */
   public function save(
     Id $variation_id,
-    Url $event_url,
+    Url $origin_url,
     OwnerId $owner_id,
     Purpose $purpose
   ) {
 
     $variation = $this->storage->create(array(
       'id' => (string) $variation_id,
-      'event' => (string) $event_url,
       'owner' => (string) $owner_id,
       'purpose' => (string) $purpose,
       'inserted' => time(),
+      'origin_url' => (string) $origin_url,
     ));
     $variation->save();
 
@@ -92,7 +92,7 @@ class VariationSearchRepository implements RepositoryInterface {
   /**
    * {@inheritdoc}
    */
-  public function countEventVariations(
+  public function countOfferVariations(
     Criteria $criteria
   ) {
 
@@ -111,16 +111,18 @@ class VariationSearchRepository implements RepositoryInterface {
     }
 
     return intval($q->execute()->fetchColumn(0));
+
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEventVariations(
+  public function getOfferVariations(
     Criteria $criteria,
     $limit = 30,
     $page = 0
   ) {
+
     $offset = $limit * $page;
     $q = $this->connection->createQueryBuilder();
     $q
@@ -147,6 +149,7 @@ class VariationSearchRepository implements RepositoryInterface {
     }
 
     return $ids;
+
   }
 
   /**

@@ -36,10 +36,6 @@ class Variation extends ContentEntityBase implements ContentEntityInterface {
       ->setLabel(t('Variation UUID'))
       ->setDescription(t('Variation UUID.'));
 
-    $fields['event'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Event UUID'))
-      ->setDescription(t('Event UUID.'));
-
     $fields['owner'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Owner ID'))
       ->setDescription(t('Owner ID.'));
@@ -51,6 +47,10 @@ class Variation extends ContentEntityBase implements ContentEntityInterface {
     $fields['inserted'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Inserted'))
       ->setDescription(t('Inserted.'));
+
+    $fields['origin_url'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Origin url'))
+      ->setDescription(t('Url of the original piece of content.'));
 
     return $fields;
   }
