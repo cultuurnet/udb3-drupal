@@ -20,7 +20,7 @@ services:
     arguments: ['@culturefeed_udb3.event_command_bus', '@culturefeed_udb3.uuid_generator', '@culturefeed_udb3.organizer_repository']
   culturefeed_udb3.organizer_iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
-    arguments: ['@url_generator', 'culturefeed_udb3.organizer']
+    arguments: ['@url_generator', '@config.factory', 'culturefeed_udb3.organizer']
   culturefeed_udb3.culturefeed_udb3_organizer_jsonld_cache:
     parent: culturefeed_udb3.cache_base
     tags:

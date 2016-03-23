@@ -57,7 +57,7 @@ services:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.place_iri_generator:
     class: Drupal\culturefeed_udb3\IriGenerator
-    arguments: ['@url_generator', 'culturefeed_udb3.place']
+    arguments: ['@url_generator', '@config.factory', 'culturefeed_udb3.place']
   culturefeed_udb3.culturefeed_udb3_place_jsonld_cache:
     parent: culturefeed_udb3.cache_base
     tags:
