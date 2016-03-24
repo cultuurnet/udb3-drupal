@@ -35,7 +35,6 @@ class BulkLabelCommandHandlerFactory {
    */
   protected $searchResultsGenerator;
 
-
   /**
    * BulkLabelCommandHandlerFactory constructor.
    *

@@ -39,7 +39,6 @@ class LocalFileSystemAdapterFactory {
     $this->streamUri = $stream_uri;
   }
 
-
   /**
    * Get the public stream path.
    *

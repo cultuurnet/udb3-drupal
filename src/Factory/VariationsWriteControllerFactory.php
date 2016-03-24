@@ -45,7 +45,6 @@ class VariationsWriteControllerFactory {
    */
   protected $placeService;
 
-
   /**
    * VariationsWriteControllerFactory constructor.
    *

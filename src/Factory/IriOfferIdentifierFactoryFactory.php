@@ -19,7 +19,6 @@ class IriOfferIdentifierFactoryFactory {
    */
   protected $config;
 
-
   /**
    * IriOfferIdentifierFactoryFactory constructor.
    *

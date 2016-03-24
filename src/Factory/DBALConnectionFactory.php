@@ -33,7 +33,6 @@ class DBALConnectionFactory {
     $this->database = $database;
   }
 
-
   /**
    * Get the dbal connection.
    *
