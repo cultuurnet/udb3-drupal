@@ -123,7 +123,7 @@ class DefaultEventEditingServiceFactory {
    */
   public function get() {
 
-    return new DefaultEventEditingService(
+    $editing_service = new DefaultEventEditingService(
       $this->eventService,
       $this->commandBus,
       $this->uuidGenerator,
@@ -132,6 +132,13 @@ class DefaultEventEditingServiceFactory {
       $this->eventCommandFactory,
       $this->eventRepository
     );
+
+    if ($this->config->get('publication_date')) {
+      $publicationDate = \DateTimeImmutable::createFromFormat(\DateTime::ISO8601, $this->config->get('publication_date'));
+      $editing_service = $editing_service->withFixedPublicationDateForNewOffers($publicationDate);
+    }
+
+    return $editing_service;
 
   }
 

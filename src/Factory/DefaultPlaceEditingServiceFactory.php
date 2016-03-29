@@ -99,13 +99,20 @@ class DefaultPlaceEditingServiceFactory {
    */
   public function get() {
 
-    return new DefaultPlaceEditingService(
+    $editing_service = new DefaultPlaceEditingService(
       $this->commandBus,
       $this->uuidGenerator,
       $this->placeJsonLdRepository,
       $this->placeCommandFactory,
       $this->placeRepository
     );
+
+    if ($this->config->get('publication_date')) {
+      $publicationDate = \DateTimeImmutable::createFromFormat(\DateTime::ISO8601, $this->config->get('publication_date'));
+      $editing_service = $editing_service->withFixedPublicationDateForNewOffers($publicationDate);
+    }
+
+    return $editing_service;
 
   }
 
