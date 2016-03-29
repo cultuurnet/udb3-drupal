@@ -12,6 +12,11 @@ use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\PlaceService;
 use Drupal\Core\Config\ConfigFactory;
 
+/**
+ * Class DefaultEventEditingServiceFactory.
+ *
+ * @package Drupal\culturefeed_udb3\Factory
+ */
 class DefaultEventEditingServiceFactory {
 
   /**
@@ -70,6 +75,26 @@ class DefaultEventEditingServiceFactory {
    */
   protected $uuidGenerator;
 
+  /**
+   * DefaultEventEditingServiceFactory constructor.
+   *
+   * @param \CultuurNet\UDB3\EventServiceInterface $event_service
+   *   The event service.
+   * @param \Broadway\CommandHandling\CommandBusInterface $command_bus
+   *   The command bus.
+   * @param \Broadway\UuidGenerator\UuidGeneratorInterface $uuid_generator
+   *   The uuid generator.
+   * @param \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $event_json_ld_repository
+   *   The event json ld repository.
+   * @param \CultuurNet\UDB3\PlaceService $place_service
+   *   The place service.
+   * @param \CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface $event_command_factory
+   *   The event command factory.
+   * @param \Broadway\Repository\RepositoryInterface $event_repository
+   *   Th event repository.
+   * @param \Drupal\Core\Config\ConfigFactory $config
+   *   The config factory.
+   */
   public function __construct(
     EventServiceInterface $event_service,
     CommandBusInterface $command_bus,
