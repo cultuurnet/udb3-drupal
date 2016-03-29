@@ -91,7 +91,7 @@ class DefaultEventEditingServiceFactory {
    * @param \CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface $event_command_factory
    *   The event command factory.
    * @param \Broadway\Repository\RepositoryInterface $event_repository
-   *   Th event repository.
+   *   The event repository.
    * @param \Drupal\Core\Config\ConfigFactory $config
    *   The config factory.
    */
