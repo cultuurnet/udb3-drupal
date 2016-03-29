@@ -108,7 +108,9 @@ class DefaultPlaceEditingServiceFactory {
     );
 
     if ($this->config->get('publication_date')) {
-      $publicationDate = \DateTimeImmutable::createFromFormat(\DateTime::ISO8601, $this->config->get('publication_date'));
+      $publicationDate = \DateTimeImmutable::createFromMutable(
+        new \DateTime($this->config->get('publication_date'))
+      );
       $editing_service = $editing_service->withFixedPublicationDateForNewOffers($publicationDate);
     }
 
