@@ -1,0 +1,18 @@
+parameters:
+
+  culturefeed_udb3.udb2_domain: 'uitdatabank.be'
+
+services:
+
+  culturefeed_udb3.domain_local:
+    class: ValueObjects\Web\Hostname
+    factory: culturefeed_udb3.domain_local.factory:get
+  culturefeed_udb3.domain_local.factory:
+    class: Drupal\culturefeed_udb3\Factory\LocalDomainFactory
+    arguments: ['@config.factory']
+  culturefeed_udb3.domain_udb2:
+    class: ValueObjects\Web\Hostname
+    factory: culturefeed_udb3.domain_udb2.factory:get
+  culturefeed_udb3.domain_udb2.factory:
+    class: Drupal\culturefeed_udb3\Factory\Udb2DomainFactory
+    arguments: ['%culturefeed_udb3.udb2_domain%']

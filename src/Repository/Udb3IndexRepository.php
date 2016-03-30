@@ -2,6 +2,7 @@
 
 namespace Drupal\culturefeed_udb3\Repository;
 
+use CultureFeed_User;
 use CultuurNet\UDB3\Dashboard\DashboardItemLookupServiceInterface;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
@@ -95,10 +96,9 @@ class Udb3IndexRepository implements DashboardItemLookupServiceInterface, Organi
    * {@inheritdoc}
    */
   public function findByUser(
-    User $user,
+    CultureFeed_User $user,
     Natural $limit,
-    Natural $start,
-    Domain $owning_domain
+    Natural $start
   ) {
 
     $query = $this->queryFactory->get('udb3_index');
@@ -116,7 +116,7 @@ class Udb3IndexRepository implements DashboardItemLookupServiceInterface, Organi
    * {@inheritdoc}
    */
   public function findByUserForDomain(
-    User $user,
+    CultureFeed_User $user,
     Natural $limit,
     Natural $start,
     Domain $owning_domain
