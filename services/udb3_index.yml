@@ -7,4 +7,4 @@ services:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.udb3_index_repository:
     class: Drupal\culturefeed_udb3\Repository\Udb3IndexRepository
-    arguments: ['@entity.query', '@database']
+    arguments: ['@entity.query', '@database', '@culturefeed_udb3.entity_iri_generator_factory']
