@@ -125,7 +125,7 @@ class Udb3IndexRepository implements DashboardItemLookupServiceInterface, Organi
     $query = $this->queryFactory->get('udb3_index');
     $query->condition('uid', $user->id);
     $query->condition('owning_domain', $owning_domain->toNative());
-    $or = new Condition('OR');
+    $or = $query->orConditionGroup();
     $or->condition('type', 'place');
     $or->condition('type', 'event');
     $query->condition($or);

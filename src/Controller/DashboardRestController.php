@@ -6,6 +6,8 @@ use CultureFeed_User;
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Dashboard\DashboardItemLookupServiceInterface;
+use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -17,14 +19,14 @@ use ValueObjects\Web\Domain;
  *
  * @package Drupal\culturefeed_udb3\Controller
  */
-class DashboardRestController {
+class DashboardRestController extends ControllerBase {
 
   /**
    * The culturefeed user.
    *
    * @var \CultureFeed_User
    */
-  private $currentUser;
+  protected $currentUser;
 
   /**
    * The domain.
@@ -38,14 +40,26 @@ class DashboardRestController {
    *
    * @var \CultuurNet\UDB3\Dashboard\DashboardItemLookupServiceInterface
    */
-  private $itemLookupService;
+  protected $itemLookupService;
 
   /**
    * The url generator.
    *
    * @var \Symfony\Component\Routing\Generator\UrlGenerator
    */
-  private $urlGenerator;
+  protected $urlGenerator;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('culturefeed_udb3.udb3_index_repository'),
+      $container->get('culturefeed.current_user'),
+      $container->get('culturefeed_udb3.domain_local'),
+      $container->get('culturefeed_udb3.dashboard_symfony_url_generator')
+    );
+  }
 
   /**
    * DashboardRestController constructor.
