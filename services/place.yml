@@ -32,12 +32,16 @@ services:
     arguments: ['@culturefeed_udb3.place_repository']
   culturefeed_udb3.place_editing_service:
     class: CultuurNet\UDB3\Place\DefaultPlaceEditingService
+    factory: culturefeed_udb3.place_editing_service.factory:get
+  culturefeed_udb3.place_editing_service.factory:
+    class: Drupal\culturefeed_udb3\Factory\DefaultPlaceEditingServiceFactory
     arguments:
      - '@culturefeed_udb3.event_command_bus'
      - '@culturefeed_udb3.uuid_generator'
      - '@culturefeed_udb3.place_jsonld_repository'
      - '@culturefeed_udb3.place_command_factory'
      - '@culturefeed_udb3.place_repository'
+     - '@config.factory'
   culturefeed_udb3.place_editing_service_with_label_memory:
     class: CultuurNet\UDB3\Offer\OfferEditingServiceWithLabelMemory
     arguments:
