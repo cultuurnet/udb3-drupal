@@ -8,6 +8,9 @@ parameters:
 services:
 
   # General
+  culturefeed_udb3.entity_iri_generator_factory:
+    class: Drupal\culturefeed_udb3\Factory\EntityIriGeneratorFactory
+    arguments: ['@config.factory']
   culturefeed_udb3.eventstore_payload_serializer:
     class: CultuurNet\UDB3\EventSourcing\PayloadManipulatingSerializer
     factory: [CultuurNet\UDB3\BackwardsCompatiblePayloadSerializerFactory, createSerializer]

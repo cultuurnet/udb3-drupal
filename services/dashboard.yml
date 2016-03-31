@@ -1,0 +1,8 @@
+services:
+
+  culturefeed_udb3.dashboard_symfony_url_generator:
+    class: Symfony\Component\Routing\Generator\UrlGenerator
+    factory: culturefeed_udb3.dashboard_symfony_url_generator.factory:get
+  culturefeed_udb3.dashboard_symfony_url_generator.factory:
+    class: Drupal\culturefeed_udb3\Factory\SymfonyUrlGeneratorFactory
+    arguments: ['@router', /udb3/api/1.0/dashboard/items, dashboard-items]

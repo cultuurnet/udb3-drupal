@@ -52,9 +52,21 @@ class Udb3Index extends ContentEntityBase implements ContentEntityInterface {
       ->setLabel(t('Location zip'))
       ->setDescription(t('Location zip.'));
 
+    $fields['owning_domain'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Owning domain'))
+      ->setDescription(t('Owning domain.'));
+
+    $fields['entity_iri'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Entity iri'))
+      ->setDescription(t('Entity iri.'));
+
     $fields['created_on'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Created on'))
       ->setDescription(t('Creation date.'));
+
+    $fields['updated'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Updated on'))
+      ->setDescription(t('Updated on.'));
 
     return $fields;
   }
