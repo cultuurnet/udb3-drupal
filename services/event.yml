@@ -33,6 +33,9 @@ services:
     arguments: ['@culturefeed_udb3.event_repository', '@culturefeed_udb3.search_service']
   culturefeed_udb3.event_editor:
     class: CultuurNet\UDB3\Event\DefaultEventEditingService
+    factory: culturefeed_udb3.event_editor.factory:get
+  culturefeed_udb3.event_editor.factory:
+    class: Drupal\culturefeed_udb3\Factory\DefaultEventEditingServiceFactory
     arguments:
       - '@culturefeed_udb3.event_service'
       - '@culturefeed_udb3.event_command_bus'
@@ -41,6 +44,7 @@ services:
       - '@culturefeed_udb3.place_service'
       - '@culturefeed_udb3.event_command_factory'
       - '@culturefeed_udb3.event_repository'
+      - '@config.factory'
   culturefeed_udb3.event_editor_with_label_memory:
     class: CultuurNet\UDB3\Offer\OfferEditingServiceWithLabelMemory
     arguments:
