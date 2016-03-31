@@ -96,13 +96,13 @@ class Udb3IndexRepository implements DashboardItemLookupServiceInterface, Organi
    * {@inheritdoc}
    */
   public function findByUser(
-    CultureFeed_User $user,
+    $user_id,
     Natural $limit,
     Natural $start
   ) {
 
     $query = $this->queryFactory->get('udb3_index');
-    $query->condition('uid', $user->id);
+    $query->condition('uid', $user_id);
     $or = new Condition('OR');
     $or->condition('type', 'place');
     $or->condition('type', 'event');
@@ -116,14 +116,14 @@ class Udb3IndexRepository implements DashboardItemLookupServiceInterface, Organi
    * {@inheritdoc}
    */
   public function findByUserForDomain(
-    CultureFeed_User $user,
+    $user_id,
     Natural $limit,
     Natural $start,
     Domain $owning_domain
   ) {
 
     $query = $this->queryFactory->get('udb3_index');
-    $query->condition('uid', $user->id);
+    $query->condition('uid', $user_id);
     $query->condition('owning_domain', $owning_domain->toNative());
     $or = $query->orConditionGroup();
     $or->condition('type', 'place');
