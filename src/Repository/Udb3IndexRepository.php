@@ -180,6 +180,7 @@ class Udb3IndexRepository implements DashboardItemLookupServiceInterface, Organi
     // Results query.
     $results_query = clone($query);
     $results_query->range($start->toNative(), $limit->toNative());
+    $results_query->sort('updated', 'DESC');
     $results = $results_query->execute();
     $offer_identifier_array = array_map(
 
