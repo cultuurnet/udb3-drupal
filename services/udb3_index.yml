@@ -2,9 +2,18 @@ services:
 
   culturefeed_udb3.udb3_index_projector:
     class: CultuurNet\UDB3\ReadModel\Index\Projector
-    arguments: ['@culturefeed_udb3.udb3_index_repository']
+    arguments:
+      - '@culturefeed_udb3.udb3_index_repository'
+      - '@culturefeed_udb3.cdbxml_created_by_to_user_id_resolver'
+      - '@culturefeed_udb3.domain_local'
+      - '@culturefeed_udb3.domain_udb2'
+      - '@culturefeed_udb3.iri_offer_identifier_factory'
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.udb3_index_repository:
     class: Drupal\culturefeed_udb3\Repository\Udb3IndexRepository
-    arguments: ['@entity.query', '@database']
+    arguments:
+      - '@entity.query'
+      - '@database'
+      - '@entity_type.manager'
+      - '@culturefeed_udb3.entity_iri_generator_factory'

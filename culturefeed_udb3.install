@@ -1,8 +1,11 @@
 <?php
+
 /**
  * @file
  * Installation and update routines for culturefeed_udb3.
  */
+
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Implements hook_install().
@@ -119,4 +122,30 @@ function culturefeed_udb3_update_8008() {
       $entity_manager->onEntityTypeCreate($entity_type);
     }
   }
+}
+
+/**
+ * Add new fields to udb3 index.
+ */
+function culturefeed_udb3_update_8009() {
+
+  $owning_domain_storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(t('Owning domain'))
+    ->setDescription(t('Owning domain.'));
+
+  $entity_iri_storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(t('Entity iri'))
+    ->setDescription(t('Entity iri.'));
+
+  $updated_storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(t('Updated'))
+    ->setDescription(t('Updated.'));
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('owning_domain', 'udb3_index', 'culturefeed_udb3', $owning_domain_storage_definition);
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('entity_iri', 'udb3_index', 'culturefeed_udb3', $entity_iri_storage_definition);
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('updated', 'udb3_index', 'culturefeed_udb3', $updated_storage_definition);
+
 }
