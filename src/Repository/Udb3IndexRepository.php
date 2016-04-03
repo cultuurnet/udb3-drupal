@@ -2,7 +2,6 @@
 
 namespace Drupal\culturefeed_udb3\Repository;
 
-use CultureFeed_User;
 use CultuurNet\UDB3\Dashboard\DashboardItemLookupServiceInterface;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
