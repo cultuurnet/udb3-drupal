@@ -31,7 +31,7 @@ culturefeed_udb3.place_create:
     _culturefeed_current_user: 'TRUE'
     _method: POST
 culturefeed_udb3.place_delete:
-  path: '/udb3/api/1.0/place/{cdbid}/delete'
+  path: '/udb3/api/1.0/place/{cdbid}'
   defaults:
     _title: 'Remove place'
     _controller: 'culturefeed_udb3.place_editing_controller:deletePlace'

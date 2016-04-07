@@ -33,7 +33,7 @@ culturefeed_udb3.event_create:
     _format: json
     _method: POST
 culturefeed_udb3.event_delete:
-  path: '/udb3/api/1.0/event/{cdbid}/delete'
+  path: '/udb3/api/1.0/event/{cdbid}'
   defaults:
     _controller: 'culturefeed_udb3.event_editing_controller:deleteEvent'
     _title: 'Event verwijderen'
