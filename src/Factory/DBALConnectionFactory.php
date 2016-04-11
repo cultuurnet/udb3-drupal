@@ -60,6 +60,10 @@ class DBALConnectionFactory {
       'user' => $drupal_options['username'],
     );
 
+    if (!empty($drupal_options['host'])) {
+      $dbal_options['host'] = $drupal_options['host'];
+    }
+
     $connection = DriverManager::getConnection(
       $dbal_options,
       NULL,
