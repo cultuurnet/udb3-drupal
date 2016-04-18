@@ -7,11 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * Class CdbXmlProxyMiddleWare
+ * Class CdbXmlProxyMiddleWare.
  *
  * @package Drupal\culturefeed_udb3\StackMiddleware
  */
-class CdbXmlProxyMiddleWare implements HttpKernelInterface{
+class CdbXmlProxyMiddleWare implements HttpKernelInterface {
 
   /**
    * The http kernel.
@@ -40,6 +40,9 @@ class CdbXmlProxyMiddleWare implements HttpKernelInterface{
     $this->proxy = $proxy;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = TRUE) {
 
     $response = $this->proxy->handle($request);
