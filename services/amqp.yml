@@ -1,0 +1,10 @@
+services:
+
+  culturefeed_udb3.amqp_publisher:
+    class: CultuurNet\BroadwayAMQP\AMQPPublisher
+    factory: culturefeed_udb3.amqp_publisher.factory:get
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.amqp_publisher.factory:
+    class: Drupal\culturefeed_udb3\Factory\AMQPPublisherFactory
+    arguments: ['@config.factory']
