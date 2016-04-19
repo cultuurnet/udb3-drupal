@@ -6,11 +6,9 @@ services:
     factory: culturefeed_udb3.cdbxml_proxy.factory:get
   culturefeed_udb3.cdbxml_proxy.factory:
     class: Drupal\culturefeed_udb3\Factory\CdbXmlProxyFactory
-    arguments: ['@culturefeed_udb3.cdbxml_redirect_factory', '@config.factory']
+    arguments: ['@config.factory']
   culturefeed_udb3.cdbxml_proxy_middleware:
     class: Drupal\culturefeed_udb3\StackMiddleware\CdbXmlProxyMiddleWare
     arguments: ['@culturefeed_udb3.cdbxml_proxy']
     tags:
       - { name: http_middleware }
-  culturefeed_udb3.cdbxml_redirect_factory:
-    class: Drupal\culturefeed_udb3\Factory\CdbXmlRedirectFactory

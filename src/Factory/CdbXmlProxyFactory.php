@@ -4,8 +4,11 @@ namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy;
 use Drupal\Core\Config\ConfigFactory;
+use GuzzleHttp\Client;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use ValueObjects\String\String;
-use ValueObjects\Web\Url;
+use ValueObjects\Web\Hostname;
 
 /**
  * Class CdbXmlProxyFactory.
@@ -22,25 +25,13 @@ class CdbXmlProxyFactory {
   protected $config;
 
   /**
-   * The cdbxml redirect factory.
-   *
-   * @var \Drupal\culturefeed_udb3\Factory\CdbXmlRedirectFactory
-   */
-  protected $redirectFactory;
-
-  /**
    * CdbXmlProxyFactory constructor.
    *
-   * @param \Drupal\culturefeed_udb3\Factory\CdbXmlRedirectFactory $redirect_factory
-   *   The redirect factory.
    * @param \Drupal\Core\Config\ConfigFactory $config
    *   The config factory.
    */
-  public function __construct(CdbXmlRedirectFactory $redirect_factory, ConfigFactory $config) {
-
-    $this->redirectFactory = $redirect_factory;
+  public function __construct(ConfigFactory $config) {
     $this->config = $config->get('culturefeed_udb3.settings');
-
   }
 
   /**
@@ -55,14 +46,17 @@ class CdbXmlProxyFactory {
       $this->config->get('cdbxml_proxy.accept')
     );
 
-    $redirect_domain = Url::fromNative(
+    /* @var \ValueObjects\Web\Domain $redirect_domain */
+    $redirect_domain = Hostname::fromNative(
       $this->config->get('cdbxml_proxy.redirect_domain')
     );
 
     return new CdbXmlProxy(
       $accept,
       $redirect_domain,
-      $this->redirectFactory
+      new DiactorosFactory(),
+      new HttpFoundationFactory(),
+      new Client()
     );
 
   }
