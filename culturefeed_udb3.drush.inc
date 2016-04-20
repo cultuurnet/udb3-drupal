@@ -5,6 +5,10 @@
  * Contains culturefeed_udb3.drush.inc.
  */
 
+use Broadway\Serializer\SimpleInterfaceSerializer;
+use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use Drush\Log\LogLevel;
+
 /**
  * Implements hook_drush_command().
  */
@@ -15,7 +19,7 @@ function culturefeed_udb3_drush_command() {
     'description' => 'The culturefeed udb3 replay command.',
     'options' => array(
       'cache' => 'Alternative cache factory method to use, specify the service suffix, for example "redis".',
-      'subscriber' => 'Subscribers to register with the event bus. If not specified, all subscribers will be registered.',
+      'subscribers' => 'A comma seperated list of service ids to register with the event bus. If not specified, all subscribers will be registered.',
       'start-id' => 'The id of the row to start the replay from.',
       'disable-publishing' => 'Disable publishing to the event bus.',
     ),
@@ -38,7 +42,9 @@ function culturefeed_udb3_drush_command() {
 
   $items['udb3-delete-data'] = array(
     'description' => 'Delete all culturefeed udb3 data: document store and repository.',
-    'options' => array(),
+    'options' => array(
+      'include-stores' => 'Also delete event stores, use with caution.',
+    ),
     'arguments' => array(),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_SITE,
     'core' => array('8+'),
@@ -54,20 +60,28 @@ function culturefeed_udb3_drush_command() {
 function drush_culturefeed_udb3_udb3_delete_data() {
 
   // Delete the domain message implementations.
-  $entities = array(
+  $read_models = array(
     'event_permission',
     'event_relations',
-    'event_store',
-    'media_object_store',
-    'organizer_store',
     'place_permission',
     'place_relations',
-    'place_store',
     'udb3_index',
     'used_labels_memory_event_store',
     'variation',
+  );
+
+  $stores = array(
+    'event_store',
+    'media_object_store',
+    'organizer_store',
+    'place_store',
     'variation_store',
   );
+
+  $entities = $read_models;
+  if (drush_get_option('include-stores', 0)) {
+    $entities = array_merge($entities, $stores);
+  }
 
   foreach ($entities as $entity_type) {
     $results = entity_load_multiple($entity_type);
@@ -97,26 +111,33 @@ function drush_culturefeed_udb3_udb3_delete_data() {
  */
 function drush_culturefeed_udb3_udb3_replay($store) {
 
-  // Event bus.
-  /* @var \CultuurNet\UDB3\SimpleEventBus $event_bus */
-  $event_bus = Drupal::service('culturefeed_udb3.event_bus');
-
-  // Subscribers.
-  // @todo The drupal subscribers are already in here.
-  $subscribers = drush_get_option('subscriber');
+  // Event bus and subscribers.
+  // If subscribers are added manually, use an empty event bus (without
+  // subscribers).
+  $subscribers = drush_get_option('subscribers');
   if (!empty($subscribers)) {
     drush_log(
       'Registering the following subscribers with the event bus: ' . $subscribers,
-      \Drush\Log\LogLevel::OK
+      LogLevel::OK
     );
+    $subscribers = explode(',', $subscribers);
+    /* @var \CultuurNet\UDB3\SimpleEventBus $event_bus */
+    $event_bus = Drupal::service('culturefeed_udb3.replay_event_bus');
     foreach ($subscribers as $subscriber) {
+      $subscriber = Drupal::service($subscriber);
+      /* @var \Broadway\EventHandling\EventListenerInterface $subscriber */
       $event_bus->subscribe($subscriber);
     }
+  }
+  else {
+    /* @var \CultuurNet\UDB3\SimpleEventBus $event_bus */
+    $event_bus = Drupal::service('culturefeed_udb3.event_bus');
   }
 
   // Store.
   $valid_stores = [
     'events' => 'culturefeed_udb3_event_store',
+    'media_objects' => 'culturefeed_udb3_media_object_store',
     'places' => 'culturefeed_udb3_place_store',
     'organizers' => 'culturefeed_udb3_organizer_store',
     'variations' => 'culturefeed_udb3_variation_store',
@@ -125,7 +146,7 @@ function drush_culturefeed_udb3_udb3_replay($store) {
   if (!in_array($store, array_keys($valid_stores))) {
     drush_log(
       'Invalid store "' . $store . '"", use one of: ' . implode(', ', array_keys($valid_stores)),
-      \Drush\Log\LogLevel::ERROR
+      LogLevel::ERROR
     );
     exit();
   }
@@ -143,29 +164,32 @@ function drush_culturefeed_udb3_udb3_replay($store) {
   $payload_serializer = Drupal::service('culturefeed_udb3.eventstore_payload_serializer');
 
   // Stream.
-  $stream = new \CultuurNet\UDB3\EventSourcing\DBAL\EventStream(
+  $stream = new EventStream(
     $dbal,
     $payload_serializer,
-    new \Broadway\Serializer\SimpleInterfaceSerializer(),
+    new SimpleInterfaceSerializer(),
     $store,
-    $start_id !== null ? $start_id : 0
+    $start_id !== NULL ? $start_id : 0,
+    'dmid'
   );
 
-  /* @var \Broadway\Domain\DomainEventStream $eventStream */
+  /* @var \Broadway\Domain\DomainEventStream $event_stream */
   foreach ($stream() as $event_stream) {
+
     /* @var \Broadway\Domain\DomainMessage $message */
     foreach ($event_stream->getIterator() as $message) {
       drush_log(
         $stream->getPreviousId() . '. ' .
         $message->getRecordedOn()->toString() . ' ' .
         $message->getType() . ' (' . $message->getId() . ')',
-        \Drush\Log\LogLevel::OK
+        LogLevel::OK
       );
     }
 
     if (drush_get_option('disable-publishing', TRUE)) {
       $event_bus->publish($event_stream);
     }
+
   }
 
 }

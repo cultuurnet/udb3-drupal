@@ -75,6 +75,11 @@ services:
   culturefeed_udb3.event_bus.factory:
     class: Drupal\culturefeed_udb3\Factory\EventBusFactory
 
+  # Replay event bus where domain events are published to.  This event bus is used by the drush replay command to allow
+  # adding subscribers manually.
+  culturefeed_udb3.replay_event_bus:
+    class: CultuurNet\UDB3\SimpleEventBus
+
   # Loggers.
   culturefeed_udb3.logger.channel.udb2:
     parent: logger.channel_base
