@@ -7,6 +7,7 @@
 
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use CultuurNet\UDB3\SimpleEventBus;
 use Drush\Log\LogLevel;
 
 /**
@@ -121,8 +122,7 @@ function drush_culturefeed_udb3_udb3_replay($store) {
       LogLevel::OK
     );
     $subscribers = explode(',', $subscribers);
-    /* @var \CultuurNet\UDB3\SimpleEventBus $event_bus */
-    $event_bus = Drupal::service('culturefeed_udb3.replay_event_bus');
+    $event_bus = new SimpleEventBus();
     foreach ($subscribers as $subscriber) {
       $subscriber = Drupal::service($subscriber);
       /* @var \Broadway\EventHandling\EventListenerInterface $subscriber */
