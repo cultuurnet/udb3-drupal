@@ -8,6 +8,7 @@ use CultuurNet\Deserializer\DeserializerLocatorInterface;
 use Drupal\Core\Config\ConfigFactory;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Number\Natural;
+use ValueObjects\String\String;
 
 /**
  * Class EventBusForwardingConsumerFactoryFactory.
@@ -22,6 +23,13 @@ class EventBusForwardingConsumerFactoryFactory {
    * @var array
    */
   protected $connectionConfig;
+
+  /**
+   * The consumer tag.
+   *
+   * @var \ValueObjects\String\String
+   */
+  protected $consumerTag;
 
   /**
    * The deserializer locator.
@@ -72,8 +80,11 @@ class EventBusForwardingConsumerFactoryFactory {
 
     $config = $config->get('culturefeed_udb3.settings');
 
-    $this->executionDelay = Natural::fromNative($config->get('execution_delay'));
+    $this->executionDelay = Natural::fromNative(
+      ($config->get('amqp.execution_delay') ? $config->get('amqp.execution_delay') : 10)
+    );
     $this->connectionConfig = $config->get('amqp');
+    $this->consumerTag = String::fromNative($config->get('amqp.consumer_tag'));
     $this->logger = $logger;
     $this->deserializerLocator = $deserializer_locator;
     $this->eventBus = $event_bus;
@@ -93,7 +104,8 @@ class EventBusForwardingConsumerFactoryFactory {
       $this->connectionConfig,
       $this->logger,
       $this->deserializerLocator,
-      $this->eventBus
+      $this->eventBus,
+      $this->consumerTag
     );
 
   }

@@ -7,11 +7,11 @@ use Drupal\Core\Config\ConfigFactory;
 use ValueObjects\String\String;
 
 /**
- * Class AMQPStreamConnectionFactory.
+ * Class AMQPEventBusForwardingConsumerFactory.
  *
  * @package Drupal\culturefeed_udb3\Factory
  */
-class AMQPStreamConnectionFactory {
+class AMQPEventBusForwardingConsumerFactory {
 
   /**
    * The config factory.
