@@ -1,5 +1,13 @@
 services:
 
+  culturefeed_udb3.amqp_connection:
+    class: PhpAmqpLib\Connection\AMQPStreamConnection
+    factory: culturefeed_udb3.amqp_connection.factory:get
+  culturefeed_udb3.amqp_connection.factory:
+    class: Drupal\culturefeed_udb3\Factory\AMQPStreamConnectionFactory
+    arguments:
+      - '@config.factory'
+      - '@culturefeed_udb3.event_bus_forwarding_consumer_factory'
   culturefeed_udb3.amqp_publisher:
     class: CultuurNet\BroadwayAMQP\AMQPPublisher
     factory: culturefeed_udb3.amqp_publisher.factory:get
@@ -8,3 +16,13 @@ services:
   culturefeed_udb3.amqp_publisher.factory:
     class: Drupal\culturefeed_udb3\Factory\AMQPPublisherFactory
     arguments: ['@config.factory']
+  culturefeed_udb3.event_bus_forwarding_consumer_factory:
+    class: CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory
+    factory: culturefeed_udb3.event_bus_forwarding_consumer_factory.factory:get
+  culturefeed_udb3.event_bus_forwarding_consumer_factory.factory:
+    class: Drupal\culturefeed_udb3\Factory\EventBusForwardingConsumerFactoryFactory
+    arguments:
+      - '@config.factory'
+      - '@culturefeed_udb3.logger.channel.amqp.event_bus_forwarder'
+      - '@culturefeed_udb3.udb2_deserializer_locator'
+      - '@culturefeed_udb3.event_bus'

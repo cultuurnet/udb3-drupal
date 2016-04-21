@@ -66,16 +66,10 @@ services:
   culturefeed_udb3.main_command_bus:
     class: CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus
 
-  # Central event bus where domain events are published to. You can subscribe
-  # your services to the event bus by tagging them with
-  # 'culturefeed_udb3.event_bus.subscriber'
-  culturefeed_udb3.event_bus:
-    class: CultuurNet\UDB3\SimpleEventBus
-    factory: culturefeed_udb3.event_bus.factory:get
-  culturefeed_udb3.event_bus.factory:
-    class: Drupal\culturefeed_udb3\Factory\EventBusFactory
-
   # Loggers.
+  culturefeed_udb3.logger.channel.amqp.event_bus_forwarder:
+    parent: logger.channel_base
+    arguments: ['amqp.event_bus_forwarder']
   culturefeed_udb3.logger.channel.udb2:
     parent: logger.channel_base
     arguments: ['udb2']
