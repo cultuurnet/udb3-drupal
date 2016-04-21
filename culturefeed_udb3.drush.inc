@@ -19,7 +19,6 @@ function culturefeed_udb3_drush_command() {
   $items['udb3-replay'] = array(
     'description' => 'The culturefeed udb3 replay command.',
     'options' => array(
-      'cache' => 'Alternative cache factory method to use, specify the service suffix, for example "redis".',
       'subscribers' => 'A comma seperated list of service ids to register with the event bus. If not specified, all subscribers will be registered.',
       'start-id' => 'The id of the row to start the replay from.',
       'disable-publishing' => 'Disable publishing to the event bus.',
