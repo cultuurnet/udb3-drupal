@@ -12,7 +12,7 @@ services:
       - '@culturefeed_udb3.used_labels_memory'
       - '@culturefeed.current_user'
       - '@culturefeed_udb3.media_manager'
-      - '@culturefeed_udb3.iri_generator'
+      - '@culturefeed_udb3.event_iri_generator'
       - '@culturefeed_udb3.event_security'
   culturefeed_udb3.event_offer_controller:
     class: CultuurNet\UDB3\Symfony\Offer\EditOfferRestController
@@ -75,6 +75,12 @@ services:
   culturefeed_udb3.event_history_repository:
     class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
     arguments: ['@culturefeed_udb3.culturefeed_udb3_event_history_cache']
+  culturefeed_udb3.event_iri_generator:
+    class: CultuurNet\UDB3\Iri\CallableIriGenerator
+    factory: culturefeed_udb3.event_iri_generator.factory:get
+  culturefeed_udb3.event_iri_generator.factory:
+    class: Drupal\culturefeed_udb3\Factory\CallableIriGeneratorFactory
+    arguments: ['@config.factory', 'culturefeed_udb3.event']
   culturefeed_udb3.culturefeed_udb3_event_jsonld_cache:
     parent: culturefeed_udb3.cache_base
     tags:
@@ -88,12 +94,12 @@ services:
     arguments:
       - '@culturefeed_udb3.event_bus'
       - '@culturefeed_udb3.event_cache_document_repositroy'
-      - '@culturefeed_udb3.iri_generator'
+      - '@culturefeed_udb3.event_iri_generator'
   culturefeed_udb3.event_jsonld_projector:
     class: CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector
     arguments:
       - '@culturefeed_udb3.event_jsonld_repository'
-      - '@culturefeed_udb3.iri_generator'
+      - '@culturefeed_udb3.event_iri_generator'
       - '@culturefeed_udb3.event_service'
       - '@culturefeed_udb3.place_service'
       - '@culturefeed_udb3.organizer_service'
@@ -104,6 +110,9 @@ services:
       - [addDescriptionFilter, ['@culturefeed_udb3.description_filter.strip_source']]
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.event_offer_locator:
+    class: CultuurNet\UDB3\Offer\OfferLocator
+    arguments: ['@culturefeed_udb3.event_iri_generator']
   culturefeed_udb3.event_permission_projector:
     class: CultuurNet\UDB3\Event\ReadModel\Permission\Projector
     factory: culturefeed_udb3.event_permission_projector.factory:get
@@ -117,7 +126,10 @@ services:
     arguments: ['@entity.query', '@database', '@entity.manager', 'event']
   culturefeed_udb3.event_real_repository:
     class: CultuurNet\UDB3\Event\EventRepository
-    arguments: ['@culturefeed_udb3.event_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
+    arguments:
+      - '@culturefeed_udb3.event_store'
+      - '@culturefeed_udb3.event_bus'
+      - ['@culturefeed_udb3.event_stream_metadata_enricher', '@culturefeed_udb3.event_iri_generator']
   culturefeed_udb3.event_relations_projector:
     class: CultuurNet\UDB3\Event\ReadModel\Relations\Projector
     arguments: ['@culturefeed_udb3.event_relations_repository']
@@ -132,19 +144,23 @@ services:
   culturefeed_udb3.event_repository.factory:
     class: Drupal\culturefeed_udb3\Factory\EventRepositoryFactory
     arguments:
-    - '@culturefeed_udb3.event_real_repository'
-    - '@culturefeed_udb3.udb2_entry_api_improved'
-    - '@culturefeed_udb3.udb2_event_importer'
-    - '@culturefeed_udb3.place_service'
-    - '@culturefeed_udb3.organizer_service'
-    - '@culturefeed_udb3.event_stream_metadata_enricher'
-    - '@config.factory'
+      - '@culturefeed_udb3.event_real_repository'
+      - '@culturefeed_udb3.udb2_entry_api_improved'
+      - '@culturefeed_udb3.udb2_event_importer'
+      - '@culturefeed_udb3.place_service'
+      - '@culturefeed_udb3.organizer_service'
+      - '@culturefeed_udb3.event_stream_metadata_enricher'
+      - '@config.factory'
   culturefeed_udb3.event_security:
     class: Drupal\culturefeed_udb3\Security
     arguments: ['@culturefeed_udb3.event_permission_repository', '@culturefeed.current_user']
   culturefeed_udb3.event_service:
     class: CultuurNet\UDB3\LocalEventService
-    arguments: ['@culturefeed_udb3.event_jsonld_repository', '@culturefeed_udb3.event_repository', '@culturefeed_udb3.event_relations_repository', '@culturefeed_udb3.iri_generator']
+    arguments:
+      - '@culturefeed_udb3.event_jsonld_repository'
+      - '@culturefeed_udb3.event_repository'
+      - '@culturefeed_udb3.event_relations_repository'
+      - '@culturefeed_udb3.event_iri_generator'
   culturefeed_udb3.event_store:
     class: Drupal\culturefeed_udb3\Store\EventStore
     arguments: ['event_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
