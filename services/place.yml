@@ -107,7 +107,7 @@ services:
     arguments:
       - '@culturefeed_udb3.place_store'
       - '@culturefeed_udb3.event_bus'
-      - ['@culturefeed_udb3.event_stream_metadata_enricher', '@culturefeed_udb3.place_iri_generator']
+      - ['@culturefeed_udb3.event_stream_metadata_enricher', '@culturefeed_udb3.place_offer_locator']
   culturefeed_udb3.place_relations_projector:
     class: CultuurNet\UDB3\Place\ReadModel\Relations\Projector
     arguments: ['@culturefeed_udb3.place_relations_repository']
