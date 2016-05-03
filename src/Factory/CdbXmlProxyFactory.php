@@ -9,6 +9,7 @@ use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use ValueObjects\String\String;
 use ValueObjects\Web\Hostname;
+use ValueObjects\Web\PortNumber;
 
 /**
  * Class CdbXmlProxyFactory.
@@ -51,9 +52,14 @@ class CdbXmlProxyFactory {
       $this->config->get('cdbxml_proxy.redirect_domain')
     );
 
+    $redirect_port = PortNumber::fromNative(
+      $this->config->get('cdbxml_proxy.redirect_port')
+    );
+
     return new CdbXmlProxy(
       $accept,
       $redirect_domain,
+      $redirect_port,
       new DiactorosFactory(),
       new HttpFoundationFactory(),
       new Client()
