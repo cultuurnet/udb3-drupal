@@ -28,16 +28,26 @@ class CallableIriGeneratorFactory {
   protected $routeName;
 
   /**
+   * The url config name (in culturefeed_udb3.settings).
+   *
+   * @var string
+   */
+  protected $urlConfigName;
+
+  /**
    * CallableIriGeneratorFactory constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactory $config
    *   The config factory.
    * @param string $route_name
    *   The route name.
+   * @param string $url_config_name
+   *   The url config name (in culturefeed_udb3.settings).
    */
-  public function __construct(ConfigFactory $config, $route_name) {
+  public function __construct(ConfigFactory $config, $route_name, $url_config_name = 'url') {
     $this->config = $config->get('culturefeed_udb3.settings');
     $this->routeName = $route_name;
+    $this->urlConfigName = $url_config_name;
   }
 
   /**
@@ -48,7 +58,7 @@ class CallableIriGeneratorFactory {
    */
   public function get() {
 
-    $base_url = $this->config->get('url');
+    $base_url = $this->config->get($this->urlConfigName);
     $route_name = $this->routeName;
 
     return new CallableIriGenerator(
