@@ -9,6 +9,7 @@ use CultuurNet\BroadwayAMQP\DomainMessage\PayloadIsInstanceOf;
 use CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection;
 use CultuurNet\BroadwayAMQP\Message\EntireDomainMessageBodyFactory;
 use CultuurNet\UDB3\Event\Events\ContentTypes as EventContentTypes;
+use CultuurNet\UDB3\Organizer\Events\ContentTypes as OrganizerContentTypes;
 use CultuurNet\UDB3\Place\Events\ContentTypes as PlaceContentTypes;
 use Drupal\Core\Config\ConfigFactory;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -57,7 +58,7 @@ class AMQPPublisherFactory {
 
     $channel = $connection->channel();
 
-    $map = EventContentTypes::map() + PlaceContentTypes::map();
+    $map = EventContentTypes::map() + OrganizerContentTypes::map() + PlaceContentTypes::map();
 
     $classes = (new SpecificationCollection());
     foreach (array_keys($map) as $className) {
