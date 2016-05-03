@@ -129,7 +129,7 @@ services:
     arguments:
       - '@culturefeed_udb3.event_store'
       - '@culturefeed_udb3.event_bus'
-      - ['@culturefeed_udb3.event_stream_metadata_enricher', '@culturefeed_udb3.event_iri_generator']
+      - ['@culturefeed_udb3.event_stream_metadata_enricher', '@culturefeed_udb3.event_offer_locator']
   culturefeed_udb3.event_relations_projector:
     class: CultuurNet\UDB3\Event\ReadModel\Relations\Projector
     arguments: ['@culturefeed_udb3.event_relations_repository']
