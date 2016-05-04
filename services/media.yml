@@ -47,7 +47,7 @@ services:
     class: CultuurNet\UDB3\Iri\CallableIriGenerator
     factory: culturefeed_udb3.media_object_iri_generator.factory:get
   culturefeed_udb3.media_object_iri_generator.factory:
-    class: Drupal\culturefeed_udb3\Factory\CallableIriGeneratorFactory
+    class: Drupal\culturefeed_udb3\Factory\MediaCallableIriGeneratorFactory
     arguments: ['@config.factory', '@stream_wrapper.public', '%culturefeed_udb3.media_directory%']
   culturefeed_udb3.media_object_repository:
     class: CultuurNet\UDB3\Media\MediaObjectRepository

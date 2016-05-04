@@ -4,7 +4,7 @@ namespace Drupal\culturefeed_udb3\Factory;
 
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use Drupal\Core\Config\ConfigFactory;
-use Drupal\Core\StreamWrapper\PublicStream;
+use Drupal\Core\Url;
 
 /**
  * Class CallableIriGeneratorFactory.
@@ -21,33 +21,23 @@ class CallableIriGeneratorFactory {
   protected $config;
 
   /**
-   * The media directory.
+   * The route name.
    *
-   * @var String
+   * @var string
    */
-  protected $mediaDirectory;
-
-  /**
-   * The public stream.
-   *
-   * @var \Drupal\Core\StreamWrapper\PublicStream
-   */
-  protected $publicStream;
+  protected $routeName;
 
   /**
    * CallableIriGeneratorFactory constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactory $config
    *   The config factory.
-   * @param \Drupal\Core\StreamWrapper\PublicStream $public_stream
-   *   The public stream.
-   * @param string $media_directory
-   *   The media directory.
+   * @param string $route_name
+   *   The route name.
    */
-  public function __construct(ConfigFactory $config, PublicStream $public_stream, $media_directory) {
+  public function __construct(ConfigFactory $config, $route_name) {
     $this->config = $config->get('culturefeed_udb3.settings');
-    $this->publicStream = $public_stream;
-    $this->mediaDirectory = $media_directory;
+    $this->routeName = $route_name;
   }
 
   /**
@@ -58,13 +48,13 @@ class CallableIriGeneratorFactory {
    */
   public function get() {
 
-    $url = $this->config->get('url');
-    $base_path = $this->publicStream->basePath();
-    $base_url = $url . '/' . $base_path . '/' . $this->mediaDirectory;
+    $base_url = $this->config->get('url');
+    $route_name = $this->routeName;
 
     return new CallableIriGenerator(
-      function ($file_path) use ($base_url) {
-        return $base_url . '/' . $file_path;
+      function ($cdbid) use ($route_name, $base_url) {
+        $url = Url::fromRoute($route_name, array('cdbid' => $cdbid), array('base_url' => $base_url));
+        return $url->toString();
       }
     );
 

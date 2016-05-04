@@ -60,8 +60,11 @@ services:
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.place_iri_generator:
-    class: Drupal\culturefeed_udb3\IriGenerator
-    arguments: ['@url_generator', '@config.factory', 'culturefeed_udb3.place']
+    class: CultuurNet\UDB3\Iri\CallableIriGenerator
+    factory: culturefeed_udb3.place_iri_generator.factory:get
+  culturefeed_udb3.place_iri_generator.factory:
+    class: Drupal\culturefeed_udb3\Factory\CallableIriGeneratorFactory
+    arguments: ['@config.factory', 'culturefeed_udb3.place']
   culturefeed_udb3.culturefeed_udb3_place_jsonld_cache:
     parent: culturefeed_udb3.cache_base
     tags:
@@ -85,6 +88,9 @@ services:
       - '@culturefeed_udb3.media_object_serializer'
     tags:
       - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  culturefeed_udb3.place_offer_locator:
+    class: CultuurNet\UDB3\Offer\OfferLocator
+    arguments: ['@culturefeed_udb3.place_iri_generator']
   culturefeed_udb3.place_permission_projector:
     class: CultuurNet\UDB3\Place\ReadModel\Permission\Projector
     factory: culturefeed_udb3.place_permission_projector.factory:get
@@ -98,7 +104,10 @@ services:
     arguments: ['@entity.query', '@database', '@entity.manager', 'place']
   culturefeed_udb3.place_real_repository:
     class: CultuurNet\UDB3\Place\PlaceRepository
-    arguments: ['@culturefeed_udb3.place_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
+    arguments:
+      - '@culturefeed_udb3.place_store'
+      - '@culturefeed_udb3.event_bus'
+      - ['@culturefeed_udb3.event_stream_metadata_enricher', '@culturefeed_udb3.place_offer_locator']
   culturefeed_udb3.place_relations_projector:
     class: CultuurNet\UDB3\Place\ReadModel\Relations\Projector
     arguments: ['@culturefeed_udb3.place_relations_repository']
