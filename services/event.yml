@@ -151,6 +151,12 @@ services:
       - '@culturefeed_udb3.organizer_service'
       - '@culturefeed_udb3.event_stream_metadata_enricher'
       - '@config.factory'
+  culturefeed_udb3.event_search_iri_generator:
+    class: CultuurNet\UDB3\Iri\CallableIriGenerator
+    factory: culturefeed_udb3.event_search_iri_generator.factory:get
+  culturefeed_udb3.event_search_iri_generator.factory:
+    class: Drupal\culturefeed_udb3\Factory\CallableIriGeneratorFactory
+    arguments: ['@config.factory', 'culturefeed_udb3.event', 'udb3_url']
   culturefeed_udb3.event_security:
     class: Drupal\culturefeed_udb3\Security
     arguments: ['@culturefeed_udb3.event_permission_repository', '@culturefeed.current_user']

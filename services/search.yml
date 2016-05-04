@@ -29,5 +29,5 @@ services:
     class: CultuurNet\UDB3\Search\PullParsingSearchService
     arguments:
       - '@culturefeed_udb3.search_api_2'
-      - '@culturefeed_udb3.event_iri_generator'
-      - '@culturefeed_udb3.place_iri_generator'
+      - '@culturefeed_udb3.event_search_iri_generator'
+      - '@culturefeed_udb3.place_search_iri_generator'
