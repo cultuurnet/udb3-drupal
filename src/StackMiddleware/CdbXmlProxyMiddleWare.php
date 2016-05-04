@@ -45,10 +45,22 @@ class CdbXmlProxyMiddleWare implements HttpKernelInterface {
    */
   public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = TRUE) {
 
-    $response = $this->proxy->handle($request);
+    // Create a request clone so the drupal udb3 path prefix can be stripped.
+    $path_info = $request->getPathInfo();
+    $path = str_replace('udb3/api/1.0/', '', $path_info);
+    $cdbxml_request = $request->duplicate(
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      array_merge($request->server->all(), array('REQUEST_URI' => $path))
+    );
 
-    if (!empty($response)) {
-      return $response;
+    $cdbxml_response = $this->proxy->handle($cdbxml_request);
+
+    if (!empty($cdbxml_response)) {
+      return $cdbxml_response;
     }
     else {
       return $this->httpKernel->handle($request, $type, $catch);
