@@ -3,8 +3,21 @@ services:
   culturefeed_udb3.amqp_publisher:
     class: CultuurNet\BroadwayAMQP\AMQPPublisher
     factory: culturefeed_udb3.amqp_publisher.factory:get
-    tags:
-      - { name: 'culturefeed_udb3.event_bus.subscriber' }
   culturefeed_udb3.amqp_publisher.factory:
     class: Drupal\culturefeed_udb3\Factory\AMQPPublisherFactory
     arguments: ['@config.factory']
+  culturefeed_udb3.combined_domain_message_normalizer:
+    class: CultuurNet\BroadwayAMQP\Normalizer\CombinedDomainMessageNormalizer
+    factory: culturefeed_udb3.combined_domain_message_normalizer.factory:get
+  culturefeed_udb3.combined_domain_message_normalizer.factory:
+    class: Drupal\culturefeed_udb3\Factory\CombinedDomainMessageNormalizerFactory
+    arguments: ['@culturefeed_udb3.domain_message_normalizer_collector', '@service_container']
+  culturefeed_udb3.domain_message_normalizer_amqp_publisher_decorator:
+    class: CultuurNet\BroadwayAMQP\Normalizer\DomainMessageNormalizerAMQPPublisherDecorator
+    arguments: ['@culturefeed_udb3.amqp_publisher', '@culturefeed_udb3.combined_domain_message_normalizer']
+    tags:
+      - { name: 'culturefeed_udb3.event_bus.subscriber' }
+  # Central domain message normalizer collector, you can subscribe your services by tagging them with
+  # 'culturefeed_udb3.domain_message_normalizer_collector.subscriber'
+  culturefeed_udb3.domain_message_normalizer_collector:
+    class: Drupal\culturefeed_udb3\Collector\DomainMessageNormalizerCollector

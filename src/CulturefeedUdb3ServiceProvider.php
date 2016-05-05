@@ -20,7 +20,10 @@ class CulturefeedUdb3ServiceProvider extends ServiceProviderBase {
    *   The ContainerBuilder to register services to.
    */
   public function register(ContainerBuilder $container) {
+
+    // Compiler passes.
     $container->addCompilerPass(new RegisterEventBusSubscribersPass());
+    $container->addCompilerPass(new RegisterDomainMessageNormalizerCollectorSubscribersPass());
 
     // Load separated service files.
     // Can't use file_scan_directory() here because Drupal isn't fully
