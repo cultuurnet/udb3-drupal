@@ -21,6 +21,7 @@ use Drupal\Core\Entity\Query\QueryFactory;
 use ValueObjects\Number\Integer;
 use ValueObjects\Number\Natural;
 use ValueObjects\Web\Domain;
+use ValueObjects\Web\Url;
 
 /**
  * Repository for the udb3 index.
@@ -188,7 +189,7 @@ class Udb3IndexRepository implements DashboardItemLookupServiceInterface, Organi
         $item = $this->storage->load($id);
 
         $offer_identifier = new IriOfferIdentifier(
-          $item->get('entity_iri')->value,
+          Url::fromNative($item->get('entity_iri')->value),
           $id,
           OfferType::fromNative(ucfirst($item->get('type')->value))
         );
