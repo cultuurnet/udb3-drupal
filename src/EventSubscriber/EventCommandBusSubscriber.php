@@ -3,6 +3,7 @@
 namespace Drupal\culturefeed_udb3\EventSubscriber;
 
 use CultuurNet\Auth\TokenCredentials;
+use Drupal\culturefeed_jwt\Factory\JwtStatelessTokenFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultureFeed_User;
@@ -26,6 +27,13 @@ class EventCommandBusSubscriber implements EventSubscriberInterface {
   protected $eventCommandBus;
 
   /**
+   * The jwt stateless token factory.
+   *
+   * @var \Drupal\culturefeed_jwt\Factory\JwtStatelessTokenFactory
+   */
+  protected $jwtStatelessTokenFactory;
+
+  /**
    * The current culturefeed user.
    *
    * @var \CultureFeed_User
@@ -46,12 +54,20 @@ class EventCommandBusSubscriber implements EventSubscriberInterface {
    *   The event command bus.
    * @param CultureFeed_User $user
    *   The culturefeed user.
+   * @param \Drupal\culturefeed_jwt\Factory\JwtStatelessTokenFactory $jwt_stateless_token_factory
+   *   The jwt stateless token factory.
    * @param UserCredentials $user_credentials
    *   The culturefeed user credentials.
    */
-  public function __construct(ResqueCommandBus $resque_command_bus, CultureFeed_User $user, UserCredentials $user_credentials) {
+  public function __construct(
+      ResqueCommandBus $resque_command_bus,
+      CultureFeed_User $user,
+      JwtStatelessTokenFactory $jwt_stateless_token_factory,
+      UserCredentials $user_credentials
+  ) {
     $this->eventCommandBus = $resque_command_bus;
     $this->user = $user;
+    $this->jwtStatelessTokenFactory = $jwt_stateless_token_factory;
     $this->userCredentials = $user_credentials;
   }
 
@@ -67,7 +83,7 @@ class EventCommandBusSubscriber implements EventSubscriberInterface {
 
     /* @var \Symfony\Component\Routing\Route $route */
     $route = $request->attributes->get('_route_object');
-    $culturefeed_user_requirement = $route->getRequirement('_culturefeed_current_user');
+    $culturefeed_user_requirement = $route->getRequirement('_culturefeed_jwt_stateless_access');
 
     if ($culturefeed_user_requirement) {
 
@@ -75,6 +91,8 @@ class EventCommandBusSubscriber implements EventSubscriberInterface {
 
         $context_values['user_id'] = $this->user->id;
         $context_values['user_nick'] = $this->user->nick;
+        $context_values['user_email'] = $this->user->mbox;
+        $context_values['auth_jwt'] = $this->jwtStatelessTokenFactory->get();
         $credentials = new TokenCredentials($this->userCredentials->getToken(), $this->userCredentials->getSecret());
         $context_values['uitid_token_credentials'] = $credentials;
 
