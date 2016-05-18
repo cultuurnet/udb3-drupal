@@ -4,6 +4,6 @@ culturefeed_udb3.dashboard:
     _controller: '\Drupal\culturefeed_udb3\Controller\DashboardRestController::itemsOwnedByCurrentUser'
     _title: 'Dashboard items'
   requirements:
-    _culturefeed_current_user: 'TRUE'
-    #_format: json
+    _culturefeed_jwt_stateless_access: 'TRUE'
+    _format: json
     _method: GET

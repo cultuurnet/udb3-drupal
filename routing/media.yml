@@ -4,7 +4,7 @@ culturefeed_udb3.images:
     _controller: 'culturefeed_udb3.media_controller:upload'
     _title: 'Upload images'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.media:

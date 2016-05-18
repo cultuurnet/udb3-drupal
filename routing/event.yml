@@ -13,7 +13,7 @@ culturefeed_udb3.event_add_image:
     _controller: 'culturefeed_udb3.event_editing_controller:addImage'
     _title: 'Add new images to the event'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_context:
@@ -29,7 +29,7 @@ culturefeed_udb3.event_create:
     _controller: 'culturefeed_udb3.event_editing_controller:createEvent'
     _title: 'Create event'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_delete:
@@ -38,7 +38,7 @@ culturefeed_udb3.event_delete:
     _controller: 'culturefeed_udb3.event_editing_controller:deleteEvent'
     _title: 'Event verwijderen'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.event_delete_image:
@@ -47,7 +47,7 @@ culturefeed_udb3.event_delete_image:
     _controller: 'culturefeed_udb3.event_editing_controller:removeImage'
     _title: 'Delete an image'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _method: DELETE
 culturefeed_udb3.event_delete_organizer:
   path: '/udb3/api/1.0/event/{cdbid}/organizer/{organizerId}'
@@ -55,7 +55,7 @@ culturefeed_udb3.event_delete_organizer:
     _controller: 'culturefeed_udb3.event_editing_controller:deleteOrganizer'
     _title: 'Delete the organizer for this event'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.event_delete_typical_age_range:
@@ -64,7 +64,7 @@ culturefeed_udb3.event_delete_typical_age_range:
     _controller: 'culturefeed_udb3.event_editing_controller:deleteTypicalAgeRange'
     _title: 'Delete the typical age range for this event'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.event_history:
@@ -82,7 +82,7 @@ culturefeed_udb3.event_labels:
     _controller: 'culturefeed_udb3.event_offer_controller:addLabel'
     _title: 'Add event label'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_labels_delete:
@@ -91,7 +91,7 @@ culturefeed_udb3.event_labels_delete:
     _controller: 'culturefeed_udb3.event_offer_controller:removeLabel'
     _title: 'Delete event label'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.event_main_image:
@@ -100,7 +100,7 @@ culturefeed_udb3.event_main_image:
     _controller: 'culturefeed_udb3.event_editing_controller:selectMainImage'
     _title: 'Set the main image of an event'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_permission:
@@ -109,7 +109,7 @@ culturefeed_udb3.event_permission:
     _controller: 'culturefeed_udb3.event_editing_controller:hasPermission'
     _title: 'Event permission'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: GET
 culturefeed_udb3.event_title:
@@ -118,7 +118,7 @@ culturefeed_udb3.event_title:
     _controller: 'culturefeed_udb3.event_offer_controller:translateTitle'
     _title: 'Event title'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_translate_description:
@@ -127,7 +127,7 @@ culturefeed_udb3.event_translate_description:
     _controller: 'culturefeed_udb3.event_offer_controller:translateDescription'
     _title: 'Translate event description'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_update:
@@ -136,7 +136,7 @@ culturefeed_udb3.event_update:
     _controller: 'culturefeed_udb3.event_editing_controller:updateMajorInfo'
     _title: 'Update major info'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_update_bookinginfo:
@@ -145,7 +145,7 @@ culturefeed_udb3.event_update_bookinginfo:
     _controller: 'culturefeed_udb3.event_editing_controller:updateBookingInfo'
     _title: 'Update the booking info for this event'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_update_contact_point:
@@ -154,7 +154,7 @@ culturefeed_udb3.event_update_contact_point:
     _controller: 'culturefeed_udb3.event_editing_controller:updateContactPoint'
     _title: 'Update the contact info for this event'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_update_description:
@@ -163,7 +163,7 @@ culturefeed_udb3.event_update_description:
     _controller: 'culturefeed_udb3.event_editing_controller:updateDescription'
     _title: 'Event description'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_update_image:
@@ -172,7 +172,7 @@ culturefeed_udb3.event_update_image:
     _controller: 'culturefeed_udb3.event_editing_controller:updateImage'
     _title: 'Update an image'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _method: POST
 culturefeed_udb3.event_update_organizer:
   path: '/udb3/api/1.0/event/{cdbid}/organizer'
@@ -180,7 +180,7 @@ culturefeed_udb3.event_update_organizer:
     _controller: 'culturefeed_udb3.event_editing_controller:updateOrganizer'
     _title: 'Update the organizer for this event'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.event_update_typical_age_range:
@@ -189,6 +189,6 @@ culturefeed_udb3.event_update_typical_age_range:
     _controller: 'culturefeed_udb3.event_editing_controller:updateTypicalAgeRange'
     _title: 'Update typical age range'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
