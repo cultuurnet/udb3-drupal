@@ -5,5 +5,4 @@ culturefeed_udb3.dashboard:
     _title: 'Dashboard items'
   requirements:
     _culturefeed_jwt_stateless_access: 'TRUE'
-    _format: json
     _method: GET

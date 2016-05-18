@@ -5,7 +5,7 @@ culturefeed_udb3.place:
     _title: 'Place detail'
   requirements:
     _access: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: GET
 culturefeed_udb3.place_add_image:
   path: '/udb3/api/1.0/place/{itemId}/images'
