@@ -149,3 +149,10 @@ function culturefeed_udb3_update_8009() {
     ->installFieldStorageDefinition('updated', 'udb3_index', 'culturefeed_udb3', $updated_storage_definition);
 
 }
+
+/**
+ * Enable the culturefeed_jwt module.
+ */
+function culturefeed_udb3_update_8010() {
+  \Drupal::service('module_installer')->install(array('culturefeed_jwt'), TRUE);
+}
