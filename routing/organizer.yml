@@ -4,7 +4,7 @@ culturefeed_udb3.organizer:
     _controller: 'culturefeed_udb3.organizer_controller:get'
     _title: 'Organizer detail'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: ld_json
     _method: GET
 culturefeed_udb3.organizer_create:
@@ -13,7 +13,7 @@ culturefeed_udb3.organizer_create:
     _controller: 'culturefeed_udb3.organizer_edit_controller:createOrganizer'
     _title: 'Create organizer'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.organizer_suggest:

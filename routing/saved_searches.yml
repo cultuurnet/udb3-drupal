@@ -4,7 +4,7 @@ culturefeed_udb3.saved_searches:
     _controller: 'culturefeed_udb3.saved_searches_controller:ownedByCurrentUser'
     _title: 'Saved searches'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: GET
 culturefeed_udb3.saved_searches_create:
@@ -13,7 +13,7 @@ culturefeed_udb3.saved_searches_create:
     _controller: 'culturefeed_udb3.saved_searches_editing_controller:save'
     _title: 'Create new saved search'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.saved_searches_delete:
@@ -22,6 +22,6 @@ culturefeed_udb3.saved_searches_delete:
     _controller: 'culturefeed_udb3.saved_searches_editing_controller:delete'
     _title: 'Delete saved search'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE

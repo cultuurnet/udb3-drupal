@@ -4,7 +4,7 @@ culturefeed_udb3.bulk_label_selection:
     _controller: 'culturefeed_udb3.bulk_label_selection_controller:handle'
     _title: 'Label multiple offers'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.bulk_label_query:
@@ -13,6 +13,6 @@ culturefeed_udb3.bulk_label_query:
     _controller: 'culturefeed_udb3.bulk_label_query_controller:handle'
     _title: 'Label all offer results from a query'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST

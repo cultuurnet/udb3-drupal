@@ -12,7 +12,7 @@ culturefeed_udb3.variations_create:
     _controller: 'culturefeed_udb3.variations_write_controller:handle'
     _title: 'Variations detail'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.variations_delete:
@@ -21,7 +21,7 @@ culturefeed_udb3.variations_delete:
     _controller: 'culturefeed_udb3.variations_edit_controller:delete'
     _title: 'Variations detail'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.variations_details:
@@ -30,7 +30,7 @@ culturefeed_udb3.variations_details:
     _controller: 'culturefeed_udb3.variations_read_controller:get'
     _title: 'Variations detail'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: GET
 culturefeed_udb3.variations_update:
@@ -39,6 +39,6 @@ culturefeed_udb3.variations_update:
     _controller: 'culturefeed_udb3.variations_edit_controller:edit'
     _title: 'Variations update'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: PATCH

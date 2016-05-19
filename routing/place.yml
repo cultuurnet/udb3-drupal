@@ -5,7 +5,7 @@ culturefeed_udb3.place:
     _title: 'Place detail'
   requirements:
     _access: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: GET
 culturefeed_udb3.place_add_image:
   path: '/udb3/api/1.0/place/{itemId}/images'
@@ -13,7 +13,7 @@ culturefeed_udb3.place_add_image:
     _controller: 'culturefeed_udb3.place_editing_controller:addImage'
     _title: 'Add new images to the place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _method: POST
 culturefeed_udb3.place_context:
   path: '/udb3/api/1.0/place.jsonld'
@@ -28,7 +28,7 @@ culturefeed_udb3.place_create:
     _controller: 'culturefeed_udb3.place_editing_controller:createPlace'
     _title: 'Add new place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _method: POST
 culturefeed_udb3.place_delete:
   path: '/udb3/api/1.0/place/{cdbid}'
@@ -36,7 +36,7 @@ culturefeed_udb3.place_delete:
     _title: 'Remove place'
     _controller: 'culturefeed_udb3.place_editing_controller:deletePlace'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.place_delete_image:
@@ -45,7 +45,7 @@ culturefeed_udb3.place_delete_image:
     _controller: 'culturefeed_udb3.place_editing_controller:removeImage'
     _title: 'Delete an image'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _method: DELETE
 culturefeed_udb3.place_delete_organizer:
   path: '/udb3/api/1.0/place/{cdbid}/organizer/{organizerId}'
@@ -53,7 +53,7 @@ culturefeed_udb3.place_delete_organizer:
     _controller: 'culturefeed_udb3.place_editing_controller:deleteOrganizer'
     _title: 'Delete the organizer for this place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.place_delete_typical_age_range:
@@ -62,7 +62,7 @@ culturefeed_udb3.place_delete_typical_age_range:
     _controller: 'culturefeed_udb3.place_editing_controller:deleteTypicalAgeRange'
     _title: 'Delete the typical age range for this place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.place_events:
@@ -71,7 +71,7 @@ culturefeed_udb3.place_events:
     _controller: 'culturefeed_udb3.place_editing_controller:getEvents'
     _title: 'Events for current place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: GET
 culturefeed_udb3.place_labels:
@@ -80,7 +80,7 @@ culturefeed_udb3.place_labels:
     _controller: 'culturefeed_udb3.place_offer_controller:addLabel'
     _title: 'Add place label'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_labels_delete:
@@ -89,7 +89,7 @@ culturefeed_udb3.place_labels_delete:
     _controller: 'culturefeed_udb3.place_offer_controller:removeLabel'
     _title: 'Delete placet label'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: DELETE
 culturefeed_udb3.place_main_image:
@@ -98,7 +98,7 @@ culturefeed_udb3.place_main_image:
     _controller: 'culturefeed_udb3.place_editing_controller:selectMainImage'
     _title: 'Set the main image of a place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_permission:
@@ -107,7 +107,7 @@ culturefeed_udb3.place_permission:
     _controller: 'culturefeed_udb3.place_editing_controller:hasPermission'
     _title: 'Place permission'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: GET
 culturefeed_udb3.place_translate_description:
@@ -116,7 +116,7 @@ culturefeed_udb3.place_translate_description:
     _controller: 'culturefeed_udb3.place_offer_controller:translateDescription'
     _title: 'Update place description'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_title_translate:
@@ -125,7 +125,7 @@ culturefeed_udb3.place_title_translate:
     _controller: 'culturefeed_udb3.place_offer_controller:translateTitle'
     _title: 'Place title'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_update:
@@ -134,7 +134,7 @@ culturefeed_udb3.place_update:
     _controller: 'culturefeed_udb3.place_editing_controller:updateMajorInfo'
     _title: 'Update major info'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_update_bookinginfo:
@@ -143,7 +143,7 @@ culturefeed_udb3.place_update_bookinginfo:
     _controller: 'culturefeed_udb3.place_editing_controller:updateBookingInfo'
     _title: 'Update the booking info for this place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_update_contactpoint:
@@ -152,7 +152,7 @@ culturefeed_udb3.place_update_contactpoint:
     _controller: 'culturefeed_udb3.place_editing_controller:updateContactPoint'
     _title: 'Update the contact info for this place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_update_description:
@@ -161,7 +161,7 @@ culturefeed_udb3.place_update_description:
     _controller: 'culturefeed_udb3.place_editing_controller:updateDescription'
     _title: 'Update place description'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_update_image:
@@ -170,7 +170,7 @@ culturefeed_udb3.place_update_image:
     _controller: 'culturefeed_udb3.place_editing_controller:updateImage'
     _title: 'Update an image'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _method: POST
 culturefeed_udb3.place_update_facilities:
   path: '/udb3/api/1.0/place/{cdbid}/facilities'
@@ -178,7 +178,7 @@ culturefeed_udb3.place_update_facilities:
     _controller: 'culturefeed_udb3.place_editing_controller:updateFacilities'
     _title: 'Update facilities'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_update_organizer:
@@ -187,7 +187,7 @@ culturefeed_udb3.place_update_organizer:
     _controller: 'culturefeed_udb3.place_editing_controller:updateOrganizer'
     _title: 'Update the organizer for this place'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.place_update_typical_age_range:
@@ -196,7 +196,7 @@ culturefeed_udb3.place_update_typical_age_range:
     _controller: 'culturefeed_udb3.place_editing_controller:updateTypicalAgeRange'
     _title: 'Update typical age range'
   requirements:
-    _culturefeed_current_user: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.places:
