@@ -13,6 +13,7 @@ services:
       - '@culturefeed.current_user'
       - '@culturefeed_udb3.place_security'
       - '@culturefeed_udb3.media_manager'
+      - '@culturefeed_udb3.place_iri_generator'
   culturefeed_udb3.place_offer_controller:
     class: CultuurNet\UDB3\Symfony\Offer\EditOfferRestController
     arguments:
