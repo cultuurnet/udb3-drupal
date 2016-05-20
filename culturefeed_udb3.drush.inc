@@ -172,6 +172,21 @@ function drush_culturefeed_udb3_udb3_replay($store) {
     'dmid'
   );
 
+  switch ($store) {
+
+    case 'culturefeed_udb3_organizer_store':
+      $stream = $stream->withDomainEventStreamDecorator(Drupal::service('culturefeed_udb3.organizer_offer_locator'));
+      break;
+
+    case 'culturefeed_udb3_place_store':
+      $stream = $stream->withDomainEventStreamDecorator(Drupal::service('culturefeed_udb3.place_offer_locator'));
+      break;
+
+    case 'culturefeed_udb3_event_store':
+      $stream = $stream->withDomainEventStreamDecorator(Drupal::service('culturefeed_udb3.event_offer_locator'));
+      break;
+
+  }
   /* @var \Broadway\Domain\DomainEventStream $event_stream */
   foreach ($stream() as $event_stream) {
 
