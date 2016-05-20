@@ -5,7 +5,7 @@ culturefeed_udb3.organizer:
     _title: 'Organizer detail'
   requirements:
     _culturefeed_jwt_stateless_access: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: GET
 culturefeed_udb3.organizer_create:
   path: '/udb3/api/1.0/organizer'

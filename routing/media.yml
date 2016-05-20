@@ -14,5 +14,5 @@ culturefeed_udb3.media:
     _title: 'Get media'
   requirements:
     _access: 'TRUE'
-    _format: ld_json
+    _format: json
     _method: GET
