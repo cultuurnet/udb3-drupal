@@ -7,6 +7,12 @@ services:
   culturefeed_udb3.iri_offer_identifier_factory.factory:
     class: Drupal\culturefeed_udb3\Factory\IriOfferIdentifierFactoryFactory
     arguments: ['@config.factory']
+  culturefeed_udb3.offer_external_editing_service:
+    class: CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService
+    arguments:
+      - '@culturefeed_udb3.http_guzzle'
+      - '@culturefeed_udb3.http_guzzle_psr7_factory'
+      - '@culturefeed_udb3.http_jwt_request_authorizer'
   culturefeed_udb3.offer_reading_service:
     class: CultuurNet\UDB3\Offer\LocalOfferReadingService
     factory: culturefeed_udb3.offer_reading_service.factory:get

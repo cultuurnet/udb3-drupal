@@ -81,6 +81,23 @@ class EventRelationsRepository implements RepositoryInterface {
   /**
    * {@inheritdoc}
    */
+  public function storeRelation($event_id, $relation_type, $item_id) {
+    // For optimal performance we use a merge query here
+    // instead of the entity API.
+    $query = $this->database->merge('culturefeed_udb3_event_relations')
+      ->key(array('event' => $event_id))
+      ->fields(
+        array(
+          $relation_type => $item_id,
+        )
+      );
+
+    $query->execute();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function storeRelations($event_id, $place_id, $organizer_id) {
     // For optimal performance we use a merge query here
     // instead of the entity API.

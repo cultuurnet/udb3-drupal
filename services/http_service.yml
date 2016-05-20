@@ -1,0 +1,14 @@
+services:
+
+  culturefeed_udb3.http_guzzle:
+    class: Http\Adapter\Guzzle6\Client
+    arguments: ['@culturefeed_udb3.http_guzzle_client']
+  culturefeed_udb3.http_guzzle_client:
+    class: GuzzleHttp\Client
+  culturefeed_udb3.http_guzzle_psr7_factory:
+    class: CultuurNet\UDB3\Http\GuzzlePsr7Factory
+  culturefeed_udb3.http_jwt_request_authorizer:
+    class: CultuurNet\UDB3\Http\JwtPsr7RequestAuthorizer
+    factory: culturefeed_udb3.http_jwt_request_authorizer.factory:get
+  culturefeed_udb3.http_jwt_request_authorizer.factory:
+    class: Drupal\culturefeed_udb3\Factory\JwtPsr7RequestAuthorizerFactory
