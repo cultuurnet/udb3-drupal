@@ -36,8 +36,6 @@ services:
   culturefeed_udb3.variations_command_handler:
     class: CultuurNet\UDB3\Variations\OfferVariationCommandHandler
     arguments: ['@culturefeed_udb3.variations']
-    tags:
-      - { name: 'culturefeed_udb3.command_bus.subscriber' }
   culturefeed_udb3.variations_event_store:
     class: Drupal\culturefeed_udb3\Store\EventStore
     arguments: ['variation_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
@@ -63,6 +61,17 @@ services:
   culturefeed_udb3.variations_jsonld_repository:
     class: Drupal\culturefeed_udb3\Repository\CacheDocumentRepository
     arguments: ['@culturefeed_udb3.culturefeed_udb3_variations_jsonld_cache']
+  culturefeed_udb3.variations_personal_decorated_event_service:
+    class: CultuurNet\UDB3\Variations\VariationDecoratedEventService
+    factory: culturefeed_udb3.variations_personal_decorated_event_service.factory
+  culturefeed_udb3.variations_personal_decorated_event_service.factory:
+    class: Drupal\culturefeed_udb3\Factory\VariationDecoratedEventServiceFactory
+    arguments:
+      - '@culturefeed_udb3.event_service'
+      - '@culturefeed_udb3.variations_search_repository'
+      - '@culturefeed.current_user'
+      - '@culturefeed_udb3.variations_jsonld_repository'
+      - '@culturefeed_udb3.event_iri_generator'
   culturefeed_udb3.variations_repository:
     class: CultuurNet\UDB3\Variations\OfferVariationRepository
     arguments: ['@culturefeed_udb3.variations_event_store', '@culturefeed_udb3.event_bus', ['@culturefeed_udb3.event_stream_metadata_enricher']]
