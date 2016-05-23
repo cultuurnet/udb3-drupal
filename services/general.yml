@@ -50,6 +50,7 @@ services:
       - [setLogger, ['@culturefeed_udb3.logger.command_bus']]
       - [subscribe, ['@culturefeed_udb3.event_command_handler']]
       - [subscribe, ['@culturefeed_udb3.place_command_handler']]
+      - [subscribe, ['@culturefeed_udb3.variations_command_handler']]
       - [subscribe, ['@culturefeed_udb3.saved_searches_command_handler']]
       - [subscribe, ['@culturefeed_udb3.media_manager']]
       - [subscribe, ['@culturefeed_udb3.bulk_label_offer_command_handler']]

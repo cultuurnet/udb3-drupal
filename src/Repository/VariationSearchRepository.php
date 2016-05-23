@@ -156,7 +156,8 @@ class VariationSearchRepository implements RepositoryInterface {
    * {@inheritdoc}
    */
   public function remove(Id $variation_id) {
-    $this->storage->delete(array((string) $variation_id));
+    $entity = $this->storage->load((string) $variation_id);
+    $this->storage->delete(array($entity));
   }
 
 }
