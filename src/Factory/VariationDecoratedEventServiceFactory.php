@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: hansl
- * Date: 23/05/2016
- * Time: 11:30
- */
 
 namespace Drupal\culturefeed_udb3\Factory;
 
@@ -18,6 +12,11 @@ use CultuurNet\UDB3\Variations\ReadModel\Search\Criteria;
 use CultuurNet\UDB3\Variations\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Variations\VariationDecoratedEventService;
 
+/**
+ * Class VariationDecoratedEventServiceFactory.
+ *
+ * @package Drupal\culturefeed_udb3\Factory
+ */
 class VariationDecoratedEventServiceFactory {
 
   /**
