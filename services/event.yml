@@ -161,7 +161,7 @@ services:
     class: Drupal\culturefeed_udb3\Security
     arguments: ['@culturefeed_udb3.event_permission_repository', '@culturefeed.current_user']
   culturefeed_udb3.event_service:
-    class: CultuurNet\UDB3\LocalEventService
+    class: CultuurNet\UDB3\Event\LocalEventService
     arguments:
       - '@culturefeed_udb3.event_jsonld_repository'
       - '@culturefeed_udb3.event_repository'

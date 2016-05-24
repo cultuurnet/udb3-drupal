@@ -7,7 +7,7 @@ use Broadway\Repository\RepositoryInterface;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Event\DefaultEventEditingService;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\EventServiceInterface;
+use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\PlaceService;
 use Drupal\Core\Config\ConfigFactory;
@@ -57,7 +57,7 @@ class DefaultEventEditingServiceFactory {
   /**
    * The event service.
    *
-   * @var \CultuurNet\UDB3\EventServiceInterface
+   * @var \CultuurNet\UDB3\Event\EventServiceInterface
    */
   protected $eventService;
 
@@ -78,7 +78,7 @@ class DefaultEventEditingServiceFactory {
   /**
    * DefaultEventEditingServiceFactory constructor.
    *
-   * @param \CultuurNet\UDB3\EventServiceInterface $event_service
+   * @param \CultuurNet\UDB3\Event\EventServiceInterface $event_service
    *   The event service.
    * @param \Broadway\CommandHandling\CommandBusInterface $command_bus
    *   The command bus.
