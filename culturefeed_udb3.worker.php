@@ -46,7 +46,7 @@ $queue_name = $kernel->getContainer()->getParameter('command_bus.queue_name');
 Database::closeConnection();
 
 // Bootstrap drupal after the parent forks its process and is ready to perform.
-Resque_Event::listen('afterFork', function(Resque_Job $job) use ($autoloader) {
+Resque_Event::listen('beforePerform', function(Resque_Job $job) use ($autoloader) {
 
   try {
 
