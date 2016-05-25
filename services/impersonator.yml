@@ -1,0 +1,4 @@
+services:
+
+    culturefeed_udb3.impersonator:
+      class: Drupal\culturefeed_udb3\Impersonator

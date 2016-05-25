@@ -46,7 +46,7 @@ $queue_name = $kernel->getContainer()->getParameter('command_bus.queue_name');
 Database::closeConnection();
 
 // Bootstrap drupal after the parent forks its process and is ready to perform.
-Resque_Event::listen('afterFork', function() use ($autoloader) {
+Resque_Event::listen('afterFork', function(Resque_Job $job) use ($autoloader) {
 
   try {
 
@@ -54,9 +54,15 @@ Resque_Event::listen('afterFork', function() use ($autoloader) {
     $kernel = DrupalKernel::createFromRequest($request, $autoloader, 'prod');
     $kernel->prepareLegacyRequest($request);
 
-    $command_bus = $kernel->getContainer()->get(
-      'culturefeed_udb3.event_command_bus'
-    );
+    $args = $job->getArguments();
+    $context = unserialize(base64_decode($args['context']));
+
+    /* @var \Drupal\culturefeed_udb3\Impersonator $impersonator */
+    $impersonator = $kernel->getContainer()->get('culturefeed_udb3.impersonator');
+    $impersonator->impersonate($context);
+
+    /* @var \CultuurNet\UDB3\CommandHandling\ResqueCommandBus $command_bus */
+    $command_bus = $kernel->getContainer()->get('culturefeed_udb3.event_command_bus');
     QueueJob::setCommandBus($command_bus);
 
   }
