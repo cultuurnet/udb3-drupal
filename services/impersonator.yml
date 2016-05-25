@@ -2,3 +2,12 @@ services:
 
     culturefeed_udb3.impersonator:
       class: Drupal\culturefeed_udb3\Impersonator
+    culturefeed_udb3.jwt_storage_token_factory_impersonator_decorator:
+      class: Drupal\culturefeed_udb3\Decorator\JwtStorageTokenFactoryImpersonatorDecorator
+      arguments: ['@culturefeed_jwt.storage_token.factory', '@culturefeed_udb3.impersonator']
+    culturefeed_udb3.token_credentials_factory_impersonator_decorator:
+      class: Drupal\culturefeed_udb3\Decorator\TokenCredentialsFactoryImpersonatorDecorator
+      arguments: ['@culturefeed.token_credentials.factory', '@culturefeed_udb3.impersonator']
+    culturefeed_udb3.user_factory_impersonator_decorator:
+      class: Drupal\culturefeed_udb3\Decorator\UserFactoryImpersonatorDecorator
+      arguments: ['@culturefeed_jwt.user_factory', '@culturefeed_udb3.impersonator']
