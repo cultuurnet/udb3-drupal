@@ -156,3 +156,11 @@ function culturefeed_udb3_update_8009() {
 function culturefeed_udb3_update_8010() {
   \Drupal::service('module_installer')->install(array('culturefeed_jwt'), TRUE);
 }
+
+
+/**
+ * Enable the cors module.
+ */
+function culturefeed_udb3_update_8011() {
+  \Drupal::service('module_installer')->install(array('cors'), TRUE);
+}
