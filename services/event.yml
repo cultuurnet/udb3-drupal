@@ -30,7 +30,7 @@ services:
     class: CultuurNet\UDB3\Event\Commands\EventCommandFactory
   culturefeed_udb3.event_command_handler:
     class: CultuurNet\UDB3\Event\EventCommandHandler
-    arguments: ['@culturefeed_udb3.event_repository', '@culturefeed_udb3.search_service']
+    arguments: ['@culturefeed_udb3.event_repository', '@culturefeed_udb3.organizer_repository']
   culturefeed_udb3.event_editor:
     class: CultuurNet\UDB3\Event\DefaultEventEditingService
     factory: culturefeed_udb3.event_editor.factory:get
