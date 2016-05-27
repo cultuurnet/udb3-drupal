@@ -106,15 +106,21 @@ class OfferMedia implements EventListenerInterface {
       $image = $image_added->getImage();
       // Translate the source location back to a Drupal stream wrapper uri.
       $uri = $this->streamUri . $this->mediaDirectory . '/' . basename($image->getSourceLocation());
+      $id = $image->getMediaObjectId();
 
-      /* @var \Drupal\file\Entity\File $file */
-      $file = $this->entityStorage->create(array(
-        'uuid' => $image->getMediaObjectId(),
-        'uri' => $uri,
-        'status' => FILE_STATUS_PERMANENT,
-      ));
-      $file->save();
-      $this->fileUsage->add($file, 'culturefeed_udb3', $this->type, $image_added->getItemId());
+      // Check if the image doesn't exist yet (in case of a replay).
+      if (empty($this->entityRepository->loadEntityByUuid('file', $id))) {
+
+        /* @var \Drupal\file\Entity\File $file */
+        $file = $this->entityStorage->create(array(
+          'uuid' => $id,
+          'uri' => $uri,
+          'status' => FILE_STATUS_PERMANENT,
+        ));
+        $file->save();
+        $this->fileUsage->add($file, 'culturefeed_udb3', $this->type, $image_added->getItemId());
+
+      }
 
     }
     catch (\Exception $e) {
