@@ -5,8 +5,9 @@ namespace Drupal\culturefeed_udb3\EventExport;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventExport\EventExportService;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
-use CultuurNet\UDB3\EventServiceInterface;
+use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 
 /**
@@ -19,7 +20,7 @@ class EventExportServiceFactory {
   /**
    * Create the event export service.
    *
-   * @param \CultuurNet\UDB3\EventServiceInterface $event_service
+   * @param \CultuurNet\UDB3\Event\EventServiceInterface $event_service
    *   The event service.
    * @param \CultuurNet\UDB3\Search\SearchServiceInterface $search_service
    *   The search service.
@@ -31,6 +32,8 @@ class EventExportServiceFactory {
    *   The iri generator.
    * @param \CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface $mailer
    *   The notification mailer.
+   * @param \CultuurNet\UDB3\Search\ResultsGeneratorInterface
+   *   The search results generator.
    *
    * @return \CultuurNet\UDB3\EventExport\EventExportService
    *   The event export service.
@@ -41,7 +44,8 @@ class EventExportServiceFactory {
     UuidGeneratorInterface $uuid_generator,
     $public_directory,
     IriGeneratorInterface $iri_generator,
-    NotificationMailerInterface $mailer
+    NotificationMailerInterface $mailer,
+    ResultsGeneratorInterface $results_generator
   ) {
 
     return new EventExportService(
@@ -50,7 +54,8 @@ class EventExportServiceFactory {
       $uuid_generator,
       drupal_realpath($public_directory),
       $iri_generator,
-      $mailer
+      $mailer,
+      $results_generator
     );
 
   }

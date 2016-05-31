@@ -1,7 +1,6 @@
 parameters:
 
-  command_bus.queue_name: culturefeed-udb3
-  resque.command.bus.event_command_context_set: broadway.command_handling.context
+  culturefeed_udb3.prince_binary_location: '/usr/local/bin/prince'
   culturefeed_udb3.export_folder_location: 'public://downloads'
 
 services:
@@ -12,14 +11,23 @@ services:
     # stream wrapper to its real path
     factory: [Drupal\culturefeed_udb3\EventExport\EventExportServiceFactory, create]
     arguments:
-      - '@culturefeed_udb3.event_service'
+      - '@culturefeed_udb3.variations_personal_decorated_event_service'
       - '@culturefeed_udb3.search_service'
       - '@culturefeed_udb3.uuid_generator'
       - '%culturefeed_udb3.export_folder_location%'
       - '@culturefeed_udb3.event_export.iri_generator'
       - '@culturefeed_udb3.event_export.mailer'
+      - '@culturefeed_udb3.search_results_generator'
+  culturefeed_udb3.event_export_command_handler:
+    class: CultuurNet\UDB3\EventExport\EventExportCommandHandler
+    arguments:
+      - '@culturefeed_udb3.event_export'
+      - '%culturefeed_udb3.prince_binary_location%'
+      - null
+      - '@culturefeed_udb3.event_calendar_repository'
   culturefeed_udb3.event_export.iri_generator:
     class: Drupal\culturefeed_udb3\LocalFileIriGenerator
+    arguments: ['@stream_wrapper_manager']
   culturefeed_udb3.event_export.mailer:
     class: Drupal\culturefeed_udb3\EventExport\NotificationMailer
     arguments: ['@plugin.manager.mail']

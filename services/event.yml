@@ -170,6 +170,9 @@ services:
   culturefeed_udb3.event_store:
     class: Drupal\culturefeed_udb3\Store\EventStore
     arguments: ['event_store', '@entity.manager', '@entity.query', '@culturefeed_udb3.eventstore_payload_serializer', '@culturefeed_udb3.serialize']
+  culturefeed_udb3.external_event_service:
+    class: CultuurNet\UDB3\Event\ExternalEventService
+    arguments: ['@culturefeed_udb3.http_guzzle']
 
   # UDB2
   culturefeed_udb3.udb2_event_cdbxml:
