@@ -18,6 +18,7 @@ services:
       - '@culturefeed_udb3.event_export.iri_generator'
       - '@culturefeed_udb3.event_export.mailer'
       - '@culturefeed_udb3.search_results_generator'
+      - '@stream_wrapper_manager'
   culturefeed_udb3.event_export_command_handler:
     class: CultuurNet\UDB3\EventExport\EventExportCommandHandler
     arguments:
@@ -27,7 +28,7 @@ services:
       - '@culturefeed_udb3.event_calendar_repository'
   culturefeed_udb3.event_export.iri_generator:
     class: Drupal\culturefeed_udb3\LocalFileIriGenerator
-    arguments: ['@stream_wrapper_manager']
+    arguments: ['@stream_wrapper_manager', '%culturefeed_udb3.export_folder_location%']
   culturefeed_udb3.event_export.mailer:
     class: Drupal\culturefeed_udb3\EventExport\NotificationMailer
     arguments: ['@plugin.manager.mail']

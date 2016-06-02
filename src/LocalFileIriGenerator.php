@@ -20,22 +20,27 @@ class LocalFileIriGenerator implements IriGeneratorInterface {
   protected $streamWrapperManager;
 
   /**
+   * @var String
+   */
+  private $publicDirectory;
+
+  /**
    * LocalFileIriGenerator constructor.
    *
    * @param \Drupal\Core\StreamWrapper\StreamWrapperManager $stream_wrapper_manager
    *   The stream wrapper manager.
    */
-  public function __construct(StreamWrapperManager $stream_wrapper_manager) {
+  public function __construct(StreamWrapperManager $stream_wrapper_manager, $public_directory) {
     $this->streamWrapperManager = $stream_wrapper_manager;
+    $this->publicDirectory = $public_directory;
   }
 
   /**
    * {@inheritdoc}
    */
   public function iri($item) {
-
-    $stream_wrapper = $this->streamWrapperManager->getViaUri('public://downloads/' . $item);
-    return $stream_wrapper->getExternalUrl();
+    $stream_wrapper = $this->streamWrapperManager->getViaUri($this->publicDirectory . '/' . $item);
+    return $stream_wrapper ? $stream_wrapper->getExternalUrl() : false;
   }
 
 }
