@@ -2,7 +2,6 @@ parameters:
 
   command_bus.queue_name: culturefeed-udb3
   resque.command.bus.event_command_context_set: broadway.command_handling.context
-  culturefeed_udb3.prince_binary_location: '/usr/local/bin/prince'
   culturefeed_udb3.cdb_xml_namespace_uri: 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
 
 services:
@@ -54,6 +53,7 @@ services:
       - [subscribe, ['@culturefeed_udb3.saved_searches_command_handler']]
       - [subscribe, ['@culturefeed_udb3.media_manager']]
       - [subscribe, ['@culturefeed_udb3.bulk_label_offer_command_handler']]
+      - [subscribe, ['@culturefeed_udb3.event_export_command_handler']]
     tags:
       - { name: 'service_collector', tag: 'culturefeed_udb3.command_bus.subscriber', call: 'subscribe' }
   culturefeed_udb3.event_command_bus_subscriber:

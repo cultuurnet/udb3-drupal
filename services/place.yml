@@ -30,7 +30,7 @@ services:
     class: CultuurNet\UDB3\Place\Commands\PlaceCommandFactory
   culturefeed_udb3.place_command_handler:
     class: CultuurNet\UDB3\Place\CommandHandler
-    arguments: ['@culturefeed_udb3.place_repository']
+    arguments: ['@culturefeed_udb3.place_repository', '@culturefeed_udb3.organizer_repository']
   culturefeed_udb3.place_editing_service:
     class: CultuurNet\UDB3\Place\DefaultPlaceEditingService
     factory: culturefeed_udb3.place_editing_service.factory:get

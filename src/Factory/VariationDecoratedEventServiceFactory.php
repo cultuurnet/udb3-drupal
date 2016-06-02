@@ -4,7 +4,7 @@ namespace Drupal\culturefeed_udb3\Factory;
 
 use CultureFeed_User;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\EventServiceInterface;
+use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Variations\Model\Properties\OwnerId;
 use CultuurNet\UDB3\Variations\Model\Properties\Purpose;
@@ -29,7 +29,7 @@ class VariationDecoratedEventServiceFactory {
   /**
    * The event service.
    *
-   * @var \CultuurNet\UDB3\EventServiceInterface
+   * @var \CultuurNet\UDB3\Event\EventServiceInterface
    */
   protected $eventService;
 
@@ -57,7 +57,7 @@ class VariationDecoratedEventServiceFactory {
   /**
    * VariationDecoratedEventServiceFactory constructor.
    *
-   * @param \CultuurNet\UDB3\EventServiceInterface $event_service
+   * @param \CultuurNet\UDB3\Event\EventServiceInterface $event_service
    *   The event service.
    * @param \CultuurNet\UDB3\Variations\ReadModel\Search\RepositoryInterface $variations_search_repository
    *   The variations search repository.
@@ -91,8 +91,12 @@ class VariationDecoratedEventServiceFactory {
   public function get() {
 
     $criteria = (new Criteria())
-      ->withPurpose(new Purpose('personal'))
-      ->withOwnerId(new OwnerId($this->user->id));
+      ->withPurpose(new Purpose('personal'));
+
+    // No user id from command line.
+    if ($this->user->id) {
+      $criteria = $criteria->withOwnerId(new OwnerId($this->user->id));
+    }
 
     return new VariationDecoratedEventService(
       $this->eventService,
