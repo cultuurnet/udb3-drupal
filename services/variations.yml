@@ -63,11 +63,11 @@ services:
     arguments: ['@culturefeed_udb3.culturefeed_udb3_variations_jsonld_cache']
   culturefeed_udb3.variations_personal_decorated_event_service:
     class: CultuurNet\UDB3\Variations\VariationDecoratedEventService
-    factory: culturefeed_udb3.variations_personal_decorated_event_service.factory
+    factory: culturefeed_udb3.variations_personal_decorated_event_service.factory:get
   culturefeed_udb3.variations_personal_decorated_event_service.factory:
     class: Drupal\culturefeed_udb3\Factory\VariationDecoratedEventServiceFactory
     arguments:
-      - '@culturefeed_udb3.event_service'
+      - '@culturefeed_udb3.external_event_service'
       - '@culturefeed_udb3.variations_search_repository'
       - '@culturefeed.current_user'
       - '@culturefeed_udb3.variations_jsonld_repository'
