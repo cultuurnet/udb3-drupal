@@ -4,7 +4,7 @@ culturefeed_udb3.export.jsonld:
     _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsJsonLd'
     _title: 'Export as JSONLD'
   requirements:
-    _access: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.export.ooxml:
@@ -13,7 +13,7 @@ culturefeed_udb3.export.ooxml:
     _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsOoXml'
     _title: 'Export as OOXML'
   requirements:
-    _access: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
 culturefeed_udb3.export.pdf:
@@ -22,6 +22,6 @@ culturefeed_udb3.export.pdf:
     _controller: '\Drupal\culturefeed_udb3\EventExport\Controller\EventExportController::exportAsPdf'
     _title: 'Export as PDF'
   requirements:
-    _access: 'TRUE'
+    _culturefeed_jwt_stateless_access: 'TRUE'
     _format: json
     _method: POST
