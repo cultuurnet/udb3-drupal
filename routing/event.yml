@@ -59,7 +59,7 @@ culturefeed_udb3.event_delete_organizer:
     _format: json
     _method: DELETE
 culturefeed_udb3.event_delete_typical_age_range:
-  path: '/udb3/api/1.0/event/{cdbid}/typicalAgeRange'
+  path: '/udb3/api/1.0/event/{cdbid}/typical-age-range'
   defaults:
     _controller: 'culturefeed_udb3.event_editing_controller:deleteTypicalAgeRange'
     _title: 'Delete the typical age range for this event'
@@ -184,7 +184,7 @@ culturefeed_udb3.event_update_organizer:
     _format: json
     _method: POST
 culturefeed_udb3.event_update_typical_age_range:
-  path: '/udb3/api/1.0/event/{cdbid}/typicalAgeRange'
+  path: '/udb3/api/1.0/event/{cdbid}/typical-age-range'
   defaults:
     _controller: 'culturefeed_udb3.event_editing_controller:updateTypicalAgeRange'
     _title: 'Update typical age range'
