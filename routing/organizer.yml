@@ -10,7 +10,7 @@ culturefeed_udb3.organizer:
 culturefeed_udb3.organizer_create:
   path: '/udb3/api/1.0/organizer'
   defaults:
-    _controller: 'culturefeed_udb3.organizer_edit_controller:createOrganizer'
+    _controller: 'culturefeed_udb3.organizer_edit_controller:create'
     _title: 'Create organizer'
   requirements:
     _culturefeed_jwt_stateless_access: 'TRUE'
