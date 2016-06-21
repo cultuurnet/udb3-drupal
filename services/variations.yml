@@ -69,7 +69,7 @@ services:
     arguments:
       - '@culturefeed_udb3.external_event_service'
       - '@culturefeed_udb3.variations_search_repository'
-      - '@culturefeed.current_user'
+      - '@culturefeed_jwt.stateless_current_user'
       - '@culturefeed_udb3.variations_jsonld_repository'
       - '@culturefeed_udb3.event_iri_generator'
   culturefeed_udb3.variations_repository:

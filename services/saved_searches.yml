@@ -3,10 +3,10 @@ services:
   # Controller
   culturefeed_udb3.saved_searches_controller:
     class: CultuurNet\UDB3\Symfony\SavedSearches\ReadSavedSearchesController
-    arguments: ['@culturefeed.current_user', '@culturefeed_udb3.saved_searches_repository']
+    arguments: ['@culturefeed_jwt.stateless_current_user', '@culturefeed_udb3.saved_searches_repository']
   culturefeed_udb3.saved_searches_editing_controller:
     class: CultuurNet\UDB3\Symfony\SavedSearches\EditSavedSearchesRestController
-    arguments: ['@culturefeed.current_user', '@culturefeed_udb3.event_command_bus']
+    arguments: ['@culturefeed_jwt.stateless_current_user', '@culturefeed_udb3.event_command_bus']
 
   # Default
   culturefeed_udb3.logger.channel.saved_searches:
@@ -24,7 +24,7 @@ services:
     arguments: ['@culturefeed_udb3.saved_searches_service.factory']
   culturefeed_udb3.saved_searches_fixed_repository:
     class: CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository
-    arguments: ['@culturefeed.current_user']
+    arguments: ['@culturefeed_jwt.stateless_current_user']
   culturefeed_udb3.saved_searches_repository:
     class: CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository
     arguments: ['@culturefeed_udb3.saved_searches_fixed_repository', '@culturefeed_udb3.saved_searches_uitid_repository']

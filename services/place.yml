@@ -10,7 +10,7 @@ services:
       - '@culturefeed_udb3.place_service'
       - '@culturefeed_udb3.place_editing_service'
       - '@culturefeed_udb3.event_relations_repository'
-      - '@culturefeed.current_user'
+      - '@culturefeed_jwt.stateless_current_user'
       - '@culturefeed_udb3.place_security'
       - '@culturefeed_udb3.media_manager'
       - '@culturefeed_udb3.place_iri_generator'
@@ -47,7 +47,7 @@ services:
     class: CultuurNet\UDB3\Offer\OfferEditingServiceWithLabelMemory
     arguments:
      - '@culturefeed_udb3.place_editing_service'
-     - '@culturefeed.current_user'
+     - '@culturefeed_jwt.stateless_current_user'
      - '@culturefeed_udb3.used_labels_memory'
   culturefeed_udb3.place_file_usage:
     class: Drupal\culturefeed_udb3\FileUsage\PlaceMedia
@@ -131,7 +131,7 @@ services:
     arguments: ['@config.factory', 'culturefeed_udb3.place', 'udb3_url']
   culturefeed_udb3.place_security:
     class: Drupal\culturefeed_udb3\Security
-    arguments: ['@culturefeed_udb3.place_permission_repository', '@culturefeed.current_user']
+    arguments: ['@culturefeed_udb3.place_permission_repository', '@culturefeed_jwt.stateless_current_user']
   culturefeed_udb3.place_service:
     class: CultuurNet\UDB3\PlaceService
     arguments: ['@culturefeed_udb3.place_jsonld_repository', '@culturefeed_udb3.place_repository', '@culturefeed_udb3.place_iri_generator']

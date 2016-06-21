@@ -10,7 +10,7 @@ services:
       - '@culturefeed_udb3.event_service'
       - '@culturefeed_udb3.event_editor'
       - '@culturefeed_udb3.used_labels_memory'
-      - '@culturefeed.current_user'
+      - '@culturefeed_jwt.stateless_current_user'
       - '@culturefeed_udb3.media_manager'
       - '@culturefeed_udb3.event_iri_generator'
       - '@culturefeed_udb3.event_security'
@@ -49,7 +49,7 @@ services:
     class: CultuurNet\UDB3\Offer\OfferEditingServiceWithLabelMemory
     arguments:
      - '@culturefeed_udb3.event_editor'
-     - '@culturefeed.current_user'
+     - '@culturefeed_jwt.stateless_current_user'
      - '@culturefeed_udb3.used_labels_memory'
   culturefeed_udb3.event_file_usage:
     class: Drupal\culturefeed_udb3\FileUsage\EventMedia
@@ -159,7 +159,7 @@ services:
     arguments: ['@config.factory', 'culturefeed_udb3.event', 'udb3_url']
   culturefeed_udb3.event_security:
     class: Drupal\culturefeed_udb3\Security
-    arguments: ['@culturefeed_udb3.event_permission_repository', '@culturefeed.current_user']
+    arguments: ['@culturefeed_udb3.event_permission_repository', '@culturefeed_jwt.stateless_current_user']
   culturefeed_udb3.event_service:
     class: CultuurNet\UDB3\Event\LocalEventService
     arguments:
