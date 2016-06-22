@@ -3,7 +3,7 @@ services:
   # Controller
   culturefeed_udb3.user_label_memory_controller:
     class: CultuurNet\UDB3\Symfony\User\UserLabelMemoryRestController
-    arguments: ['@culturefeed_udb3.used_labels_memory', '@culturefeed.current_user']
+    arguments: ['@culturefeed_udb3.used_labels_memory', '@culturefeed_jwt.stateless_current_user']
 
   # Default
   culturefeed_udb3.cdbxml_created_by_to_user_id_resolver:
