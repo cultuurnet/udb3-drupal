@@ -53,7 +53,7 @@ class CallableIriGeneratorFactory {
   /**
    * Get the callable iri generator.
    *
-   * @return \CultuurNet\UDB3\Iri\CallableIriGenerator
+   * @return \CultuurNet\UDB3\Iri\CallableIriGenerator|null
    *   The callable iri generator.
    */
   public function get() {
@@ -63,8 +63,10 @@ class CallableIriGeneratorFactory {
 
     return new CallableIriGenerator(
       function ($cdbid) use ($route_name, $base_url) {
-        $url = Url::fromRoute($route_name, array('cdbid' => $cdbid), array('base_url' => $base_url));
-        return $url->toString();
+        if ($cdbid) {
+          $url = Url::fromRoute($route_name, array('cdbid' => $cdbid), array('base_url' => $base_url));
+          return $url->toString();
+        }
       }
     );
 
