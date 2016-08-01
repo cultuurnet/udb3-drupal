@@ -46,6 +46,7 @@ class CdbXmlProxyMiddleWare implements HttpKernelInterface {
   public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = TRUE) {
 
     // Create a request clone so the drupal udb3 path prefix can be stripped.
+    // File attachments are also stripped to avoid problems with Diactoros.
     $path_info = $request->getPathInfo();
     $path = str_replace('udb3/api/1.0/', '', $path_info);
     $cdbxml_request = $request->duplicate(
@@ -53,7 +54,7 @@ class CdbXmlProxyMiddleWare implements HttpKernelInterface {
       NULL,
       NULL,
       NULL,
-      NULL,
+      array(),
       array_merge($request->server->all(), array('REQUEST_URI' => $path))
     );
 
