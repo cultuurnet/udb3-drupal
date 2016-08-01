@@ -57,6 +57,9 @@ class CdbXmlProxyMiddleWare implements HttpKernelInterface {
       array_merge($request->server->all(), array('REQUEST_URI' => $path))
     );
 
+    // Diactoros doesn't like the drupal file attachments.  They can be cleared
+    // as file attachments are not needed for cdbxml requests.
+    $cdbxml_request->files->replace(array());
     $cdbxml_response = $this->proxy->handle($cdbxml_request);
 
     if (!empty($cdbxml_response)) {
